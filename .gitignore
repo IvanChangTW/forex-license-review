@@ -1,0 +1,12 @@
+.DS_Store
+.venv/
+__pycache__/
+*.pyc
+
+# Temporary OCR / scratch outputs
+ocrtest/
+tmp113/
+
+# Local tunnel / editor noise
+.idea/
+.vscode/

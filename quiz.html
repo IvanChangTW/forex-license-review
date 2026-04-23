@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>113-114 外匯內部證照｜整合複習</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+  :root {
+    --ink:#172033; --paper:#f4efe6; --card:#fcfaf5; --border:#d8ccb6; --gold:#b5872f;
+    --accent:#b14a2e; --correct:#1d6b43; --wrong:#b5382d; --muted:#6c6b66;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:linear-gradient(180deg,#f8f3eb 0%,#f4efe6 100%);color:var(--ink);font:15px/1.7 'Noto Sans TC',sans-serif}
+  header{padding:24px 16px 18px;text-align:center;background:linear-gradient(180deg,#182237,#121a2b);color:#f8f3eb;border-bottom:3px solid var(--gold)}
+  header h1{font:700 1.3rem/1.3 'Noto Serif TC',serif;letter-spacing:.06em}
+  header .sub{margin-top:6px;color:rgba(248,243,235,.78);font-size:.82rem}
+  .controls{position:sticky;top:0;z-index:20;display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 14px;background:rgba(18,26,43,.95);border-bottom:2px solid var(--gold)}
+  .exam-tabs{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+  .tab-btn,.mode-toggle,.random-btn,.reset-btn{border-radius:999px;cursor:pointer;font:.75rem/1 'Noto Sans TC',sans-serif;padding:8px 12px;transition:.15s ease;white-space:nowrap}
+  .tab-btn{background:transparent;border:1px solid rgba(255,255,255,.16);color:#d6d3cc}
+  .tab-btn.active,.tab-btn:hover{background:linear-gradient(180deg,#cfad5c,var(--gold));color:var(--ink);border-color:var(--gold);font-weight:700}
+  .mode-toggle,.random-btn{border:none;color:#fff;background:linear-gradient(180deg,#c95d40,var(--accent))}
+  .random-btn{background:linear-gradient(180deg,#41567e,#2b3958)}
+  .reset-btn{border:1px solid rgba(255,255,255,.18);background:transparent;color:#ddd7cb}
+  .progress-info{color:#c7c1b3;font-size:.76rem}
+  .search-wrap{position:sticky;top:62px;z-index:15;padding:12px 14px;background:rgba(244,239,230,.92);border-bottom:1px solid var(--border)}
+  .search-bar{max-width:980px;margin:0 auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .search-bar input{flex:1;min-width:240px;padding:11px 14px;border-radius:12px;border:1px solid var(--border);background:#fff;font:.88rem 'Noto Sans TC',sans-serif}
+  .result-count,.tip{font-size:.74rem;color:var(--muted)}
+  .note{max-width:980px;margin:14px auto 0;padding:0 14px;color:var(--muted);font-size:.84rem}
+  .question-list{max-width:920px;margin:0 auto;padding:16px 12px 72px}
+  .q-card{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--border);border-radius:16px;margin-bottom:12px;overflow:hidden;box-shadow:0 12px 30px rgba(23,32,51,.08)}
+  .q-card.answered-correct{border-left-color:var(--correct)}
+  .q-card.answered-wrong{border-left-color:var(--wrong)}
+  .q-head{display:flex;gap:10px;align-items:flex-start;padding:13px 14px 11px;cursor:pointer}
+  .q-num,.flash-q-num{flex-shrink:0;padding:5px 8px;border-radius:10px;background:var(--ink);color:#f8f3eb;font-size:.68rem;font-weight:700}
+  .q-num.y113,.flash-q-num.y113{background:#295a84}
+  .q-num.y114,.flash-q-num.y114{background:#2d314c}
+  .q-text{flex:1;font-size:.9rem}
+  .q-arrow{font-size:.74rem;color:var(--muted);transition:transform .18s ease}
+  .q-card.open .q-arrow{transform:rotate(180deg)}
+  .q-body{display:none;padding:0 14px 14px;border-top:1px dashed var(--border)}
+  .q-card.open .q-body{display:block}
+  .q-media,.flash-media{margin-top:12px;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:#fff}
+  .q-media img,.flash-media img{display:block;width:100%;height:auto}
+  .options,.flash-opts{display:flex;flex-direction:column;gap:7px;margin-top:10px}
+  .opt-btn,.flash-opt{display:flex;gap:9px;align-items:flex-start;border-radius:12px;border:1px solid var(--border);background:#fff;padding:10px 11px;text-align:left;color:var(--ink);cursor:pointer;font:.84rem/1.58 'Noto Sans TC',sans-serif}
+  .opt-num{flex-shrink:0;min-width:18px;color:var(--gold);font-weight:700}
+  .opt-btn.correct,.flash-opt.correct{background:#e8f4ec;border-color:var(--correct)}
+  .opt-btn.wrong,.flash-opt.wrong{background:#fbe9e7;border-color:var(--wrong)}
+  .answer-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+  .show-ans-btn,.ans-badge,.note-badge,.open-link{border-radius:999px;padding:6px 12px;font:.76rem 'Noto Sans TC',sans-serif}
+  .show-ans-btn{border:none;background:var(--ink);color:#f7f1e5;cursor:pointer}
+  .ans-badge,.note-badge{display:none;color:#fff;font-weight:700}
+  .ans-badge{background:var(--correct)}
+  .note-badge{background:#78633f}
+  .ans-badge.visible,.note-badge.visible{display:inline-block}
+  .open-link{display:inline-block;border:1px solid var(--border);background:#fff;color:var(--accent);text-decoration:none;font-weight:700}
+  #flash-mode{display:none;max-width:760px;margin:24px auto 0;padding:0 14px 72px}
+  #flash-mode.active{display:block}
+  .flash-progress{text-align:center;color:var(--muted);font-size:.8rem;margin-bottom:12px}
+  .flash-card{position:relative;min-height:280px;border:1px solid var(--border);border-radius:22px;padding:24px 20px 20px;background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(255,255,255,.18)),var(--card);box-shadow:0 12px 30px rgba(23,32,51,.08)}
+  .flash-q-num{position:absolute;top:14px;left:14px}
+  .flash-q-text{margin-top:22px;font-size:1rem;line-height:1.72;text-align:left}
+  .flash-nav{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .flash-nav button{padding:9px 16px;border-radius:999px;border:none;cursor:pointer;color:#f7f1e5;background:var(--ink);font:.82rem 'Noto Sans TC',sans-serif}
+  .flash-nav button.secondary{color:var(--ink);background:transparent;border:1px solid var(--border)}
+  .score-box{margin-top:8px;border-radius:18px;padding:24px 18px;text-align:center;color:#f8f3eb;background:linear-gradient(180deg,#15213a,#101826)}
+  .score-box .score-num{display:block;margin:8px 0;color:#e1c98b;font:700 2.2rem/1 'Noto Serif TC',serif}
+  .empty-state{padding:56px 18px;text-align:center;color:var(--muted)}
+  .hidden{display:none!important}
+  @media (max-width:720px){.controls{padding:10px}.search-wrap{top:118px}.q-text,.flash-q-text{font-size:.9rem}}
+</style>
+</head>
+<body>
+<header>
+  <h1>113-114 外匯內部證照｜整合複習</h1>
+  <div class="sub">單一網頁整合 640 題｜可跨年份搜尋、錯題重練、抽卡、隨機抽題</div>
+</header>
+
+<div class="controls">
+  <div class="exam-tabs">
+    <button class="tab-btn active" onclick="setFilter('all',this)">全部 640 題</button>
+    <button class="tab-btn" onclick="setFilter('113',this)">113 全部</button>
+    <button class="tab-btn" onclick="setFilter('114',this)">114 全部</button>
+    <button class="tab-btn" onclick="setFilter('113-E1',this)">113 第一次</button>
+    <button class="tab-btn" onclick="setFilter('113-E2',this)">113 第二次</button>
+    <button class="tab-btn" onclick="setFilter('114-E1',this)">114 第一次</button>
+    <button class="tab-btn" onclick="setFilter('114-E2',this)">114 第二次</button>
+    <button class="tab-btn" onclick="setFilter('wrong',this)">錯題重看</button>
+  </div>
+  <button class="random-btn" onclick="jumpRandom()">隨機 1 題</button>
+  <button class="mode-toggle" id="mode-toggle" onclick="toggleMode()">抽卡模式</button>
+  <button class="reset-btn" onclick="resetProgress()">清空進度</button>
+  <span class="progress-info" id="progress-info">0 / 640 已作答</span>
+</div>
+
+<div class="search-wrap">
+  <div class="search-bar">
+    <input type="text" id="search-input" placeholder="搜尋關鍵字，例如：信用狀、押匯、OBU、DBU、防洗錢…" oninput="doSearch()">
+    <span class="result-count" id="result-count">共 640 題</span>
+    <span class="tip">113 為圖片題卡，搜尋依 OCR 題幹；114 為文字題卡。</span>
+  </div>
+</div>
+
+<div class="note">隨機抽題會從目前篩選結果中抽取，所以你可以先切到某年度或某次檢定，再做隨機練習。</div>
+
+<div class="question-list" id="list-mode"></div>
+
+<div id="flash-mode">
+  <div class="flash-progress" id="flash-prog"></div>
+  <div class="flash-card" id="flash-card">
+    <span class="flash-q-num" id="flash-num"></span>
+    <div class="flash-q-text" id="flash-q"></div>
+    <div class="flash-media hidden" id="flash-media"><img id="flash-img" alt="題目圖片"></div>
+    <div class="flash-opts" id="flash-opts"></div>
+    <div class="answer-row"><a class="open-link hidden" id="flash-open" href="#" target="_blank" rel="noopener noreferrer">另開題目圖片</a></div>
+  </div>
+  <div class="flash-nav">
+    <button class="secondary" onclick="flashPrev()">上一題</button>
+    <button class="secondary" onclick="flashReveal()">顯示答案</button>
+    <button class="secondary" onclick="flashSkip()">跳過</button>
+    <button onclick="flashNext()">下一題</button>
+  </div>
+  <div id="flash-score-box"></div>
+</div>
+
+<script src="data113.js"></script>
+<script src="data114.js"></script>
+<script>
+const STORAGE_KEY='fx-license-review-combined-v1';
+let currentFilter='all', currentMode='list', searchTerm='', flashIdx=0, flashPool=[], flashAnswered=false, answeredMap={};
+const NUMS=['①','②','③','④'];
+
+function shuffle(arr){
+  const next=[...arr];
+  for(let i=next.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [next[i],next[j]]=[next[j],next[i]];
+  }
+  return next;
+}
+
+function loadState(){try{answeredMap=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}')}catch(e){answeredMap={}}}
+function saveState(){localStorage.setItem(STORAGE_KEY, JSON.stringify(answeredMap))}
+
+function normalize114(){
+  return Object.entries(DATA_114).flatMap(([exam, arr]) => arr.map(q => ({
+    ...q,
+    year:'114',
+    exam,
+    key:`${exam}-${q.n}`,
+    img:null
+  })));
+}
+function normalize113(){
+  return Object.entries(DATA_113).flatMap(([exam, arr]) => arr.map(q => ({
+    ...q,
+    year:'113',
+    exam,
+    opts:['第 1 項','第 2 項','第 3 項','第 4 項'],
+    key:`${exam}-${q.n}`
+  })));
+}
+function allQuestions(){return [...normalize113(), ...normalize114()]}
+function examLabel(exam){
+  const year=exam.slice(0,3), sess=exam.includes('-E1-')?'第一次':'第二次', vol=exam.endsWith('1A')?'1A':'2A';
+  return `${year} ${sess} ${vol}`;
+}
+function yearClass(year){return year==='113'?'y113':'y114'}
+function filtered(){
+  let qs=allQuestions();
+  if(currentFilter==='113') qs=qs.filter(q=>q.year==='113');
+  else if(currentFilter==='114') qs=qs.filter(q=>q.year==='114');
+  else if(currentFilter==='113-E1') qs=qs.filter(q=>q.exam.startsWith('113-E1'));
+  else if(currentFilter==='113-E2') qs=qs.filter(q=>q.exam.startsWith('113-E2'));
+  else if(currentFilter==='114-E1') qs=qs.filter(q=>q.exam.startsWith('114-E1'));
+  else if(currentFilter==='114-E2') qs=qs.filter(q=>q.exam.startsWith('114-E2'));
+  else if(currentFilter==='wrong') qs=qs.filter(q=>answeredMap[q.key]===false);
+  if(searchTerm){
+    const t=searchTerm.toLowerCase();
+    qs=qs.filter(q=>((q.text||'').toLowerCase().includes(t))||((q.opts||[]).some(o=>o.toLowerCase().includes(t))));
+  }
+  return qs;
+}
+function updateProgress(){
+  const total=allQuestions().length, done=Object.keys(answeredMap).length, correct=Object.values(answeredMap).filter(v=>v===true).length;
+  document.getElementById('progress-info').textContent=`${done} / ${total} 已作答・答對 ${correct} 題`;
+}
+function toggleCard(key){document.getElementById(`card-${key}`).classList.toggle('open')}
+function renderList(){
+  const qs=filtered(), container=document.getElementById('list-mode');
+  document.getElementById('result-count').textContent=`共 ${qs.length} 題`;
+  if(!qs.length){container.innerHTML='<div class="empty-state">沒有符合條件的題目</div>'; updateProgress(); return;}
+  container.innerHTML=qs.map(q=>{
+    const state=answeredMap[q.key], cls=state===true?'answered-correct':state===false?'answered-wrong':'';
+    return `<div class="q-card ${cls}" id="card-${q.key}">
+      <div class="q-head" onclick="toggleCard('${q.key}')">
+        <span class="q-num ${yearClass(q.year)}">${examLabel(q.exam)} Q${q.n}</span>
+        <span class="q-text">${q.text || `${examLabel(q.exam)} Q${q.n}`}</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="q-body">
+        ${q.img ? `<div class="q-media"><img src="${q.img}" alt="${examLabel(q.exam)} Q${q.n}"></div>` : ''}
+        <div class="options">${q.opts.map((opt,i)=>`<button class="opt-btn" id="opt-${q.key}-${i+1}" onclick="selectOpt('${q.key}',${i+1},${q.ans})"><span class="opt-num">${NUMS[i]}</span><span>${opt}</span></button>`).join('')}</div>
+        <div class="answer-row">
+          <button class="show-ans-btn" onclick="showAns('${q.key}',${q.ans})">顯示答案</button>
+          <span class="ans-badge" id="badge-${q.key}">答案：第 ${q.ans} 項</span>
+          <span class="note-badge" id="note-${q.key}">已記錄作答</span>
+          ${q.img ? `<a class="open-link" href="${q.img}" target="_blank" rel="noopener noreferrer">另開題目圖片</a>` : ''}
+        </div>
+      </div>
+    </div>`
+  }).join('');
+  restoreStyles(qs); updateProgress();
+}
+function restoreStyles(qs){
+  qs.forEach(q=>{
+    const state=answeredMap[q.key]; if(state===undefined) return;
+    const chosen=Number(localStorage.getItem(`choice-${q.key}`));
+    for(let i=1;i<=4;i++){
+      const btn=document.getElementById(`opt-${q.key}-${i}`); if(!btn) continue;
+      btn.onclick=null;
+      if(i===q.ans) btn.classList.add('correct');
+      else if(chosen===i&&state===false) btn.classList.add('wrong');
+    }
+    document.getElementById(`badge-${q.key}`)?.classList.add('visible');
+    document.getElementById(`note-${q.key}`)?.classList.add('visible');
+  });
+}
+function selectOpt(key,chosen,correct){
+  const ok=chosen===correct; answeredMap[key]=ok; localStorage.setItem(`choice-${key}`,String(chosen)); saveState();
+  for(let i=1;i<=4;i++){
+    const btn=document.getElementById(`opt-${key}-${i}`); if(!btn) continue;
+    btn.classList.remove('correct','wrong');
+    if(i===correct) btn.classList.add('correct'); else if(i===chosen&&!ok) btn.classList.add('wrong');
+    btn.onclick=null;
+  }
+  const card=document.getElementById(`card-${key}`);
+  if(card){card.classList.remove('answered-correct','answered-wrong'); card.classList.add(ok?'answered-correct':'answered-wrong')}
+  document.getElementById(`badge-${key}`)?.classList.add('visible');
+  document.getElementById(`note-${key}`)?.classList.add('visible');
+  updateProgress();
+}
+function showAns(key,ans){
+  for(let i=1;i<=4;i++){const btn=document.getElementById(`opt-${key}-${i}`); if(btn&&i===ans) btn.classList.add('correct')}
+  document.getElementById(`badge-${key}`)?.classList.add('visible');
+}
+function setFilter(filter,btn){currentFilter=filter; document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active')); if(btn) btn.classList.add('active'); currentMode==='list'?renderList():startFlash()}
+function doSearch(){searchTerm=document.getElementById('search-input').value.trim(); currentMode==='list'?renderList():startFlash()}
+function toggleMode(){
+  const btn=document.getElementById('mode-toggle');
+  if(currentMode==='list'){currentMode='flash'; btn.textContent='列表模式'; document.getElementById('list-mode').classList.add('hidden'); document.getElementById('flash-mode').classList.add('active'); startFlash()}
+  else{currentMode='list'; btn.textContent='抽卡模式'; document.getElementById('flash-mode').classList.remove('active'); document.getElementById('list-mode').classList.remove('hidden'); renderList()}
+}
+function startFlash(){
+  flashPool=shuffle(filtered());
+  if(!flashPool.length){
+    document.getElementById('flash-prog').textContent='目前沒有題目可以練習';
+    document.getElementById('flash-num').textContent='';
+    document.getElementById('flash-q').textContent='請先調整篩選條件或搜尋關鍵字。';
+    document.getElementById('flash-opts').innerHTML='';
+    document.getElementById('flash-media').classList.add('hidden');
+    document.getElementById('flash-img').removeAttribute('src');
+    document.getElementById('flash-open').classList.add('hidden');
+    document.getElementById('flash-score-box').innerHTML='<div class="empty-state">目前沒有題目可以練習</div>';
+    return;
+  }
+  flashIdx=0; flashAnswered=false; renderFlash();
+}
+function renderFlash(){
+  if(flashIdx>=flashPool.length){showFlashScore(); return;}
+  const q=flashPool[flashIdx]; flashAnswered=false;
+  document.getElementById('flash-prog').textContent=`第 ${flashIdx+1} / ${flashPool.length} 題`;
+  const numEl=document.getElementById('flash-num'); numEl.textContent=`${examLabel(q.exam)} Q${q.n}`; numEl.className=`flash-q-num ${yearClass(q.year)}`;
+  document.getElementById('flash-q').textContent=q.text || `${examLabel(q.exam)} Q${q.n}`;
+  document.getElementById('flash-opts').innerHTML=q.opts.map((opt,i)=>`<button class="flash-opt" id="fo-${i+1}" onclick="flashSel(${i+1},${q.ans})"><span class="opt-num">${NUMS[i]}</span><span>${opt}</span></button>`).join('');
+  const media=document.getElementById('flash-media'), img=document.getElementById('flash-img'), open=document.getElementById('flash-open');
+  if(q.img){media.classList.remove('hidden'); img.src=q.img; open.href=q.img; open.classList.remove('hidden')} else {media.classList.add('hidden'); img.removeAttribute('src'); open.classList.add('hidden')}
+  document.getElementById('flash-score-box').innerHTML='';
+  const prior=answeredMap[q.key], chosen=Number(localStorage.getItem(`choice-${q.key}`));
+  if(prior!==undefined&&chosen){
+    flashAnswered=true;
+    for(let i=1;i<=4;i++){const btn=document.getElementById(`fo-${i}`); if(!btn) continue; btn.onclick=null; if(i===q.ans) btn.classList.add('correct'); else if(i===chosen&&prior===false) btn.classList.add('wrong')}
+  }
+}
+function flashSel(chosen,correct){
+  if(flashAnswered) return;
+  flashAnswered=true; const q=flashPool[flashIdx], ok=chosen===correct;
+  answeredMap[q.key]=ok; localStorage.setItem(`choice-${q.key}`,String(chosen)); saveState();
+  for(let i=1;i<=4;i++){const btn=document.getElementById(`fo-${i}`); if(!btn) continue; btn.onclick=null; if(i===correct) btn.classList.add('correct'); else if(i===chosen&&!ok) btn.classList.add('wrong')}
+  updateProgress();
+}
+function flashReveal(){if(!flashPool.length) return; const q=flashPool[flashIdx]; for(let i=1;i<=4;i++){const btn=document.getElementById(`fo-${i}`); if(btn&&i===q.ans) btn.classList.add('correct')}}
+function flashNext(){if(flashPool.length){flashIdx=Math.min(flashIdx+1, flashPool.length); renderFlash()}}
+function flashPrev(){if(flashIdx>0){flashIdx--; renderFlash()}}
+function flashSkip(){flashNext()}
+function showFlashScore(){
+  const total=flashPool.length, correct=flashPool.filter(q=>answeredMap[q.key]===true).length, pct=total?Math.round(correct/total*100):0;
+  document.getElementById('flash-prog').textContent=`本回合完成 ${total} 題`;
+  document.getElementById('flash-num').textContent='';
+  document.getElementById('flash-q').textContent='本回合題目已抽完，可以直接重新切換篩選條件再抽一輪。';
+  document.getElementById('flash-opts').innerHTML='';
+  document.getElementById('flash-media').classList.add('hidden');
+  document.getElementById('flash-img').removeAttribute('src');
+  document.getElementById('flash-open').classList.add('hidden');
+  document.getElementById('flash-score-box').innerHTML=`<div class="score-box"><div>本回合練習完成</div><span class="score-num">${correct} / ${total}</span><div>答對率 ${pct}%</div><div style="margin-top:8px;font-size:.8rem;color:rgba(248,243,235,.75)">可切回列表模式重看錯題，或先篩年份再重新抽題。</div></div>`;
+}
+function jumpRandom(){
+  if(currentMode!=='list') toggleMode();
+  const qs=filtered(); if(!qs.length) return;
+  const q=qs[Math.floor(Math.random()*qs.length)];
+  renderList();
+  const card=document.getElementById(`card-${q.key}`); if(card){card.classList.add('open'); card.scrollIntoView({behavior:'smooth',block:'center'})}
+}
+function resetProgress(){
+  if(!confirm('要清空 113 與 114 的所有作答進度嗎？')) return;
+  answeredMap={}; localStorage.removeItem(STORAGE_KEY); allQuestions().forEach(q=>localStorage.removeItem(`choice-${q.key}`));
+  currentMode==='list'?renderList():startFlash();
+}
+
+loadState();
+renderList();
+</script>
+</body>
+</html>
