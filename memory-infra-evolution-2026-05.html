@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>跨 AI Agent、跨機器長期記憶管理：架構演化進程 — 2026/05</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f4ed;
+    --bg-card: #fbf8f0;
+    --bg-code: #efe9dc;
+    --text: #1a1a1c;
+    --muted: #6a665d;
+    --border: #d6cfc1;
+    --border-strong: #b5ad9c;
+    --accent: #2c4a52;
+    --accent-light: #4a6d76;
+    --warning: #b8543a;
+    --warning-light: #d4886f;
+    --success: #4a6741;
+    --layer-state: #c9b988;
+    --layer-process: #88a8a8;
+    --layer-method: #9d7e6b;
+    --shadow: 0 1px 0 rgba(0,0,0,0.04);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    font-feature-settings: "ss01", "ss02", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── Layout ────────────────────────────────────────── */
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+
+  .layout { display: grid; grid-template-columns: 260px 1fr; gap: 3rem; align-items: start; padding: 2rem 0 6rem; }
+
+  nav.toc {
+    position: sticky;
+    top: 2rem;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+    font-size: 0.875rem;
+    padding-right: 1rem;
+    border-right: 1px solid var(--border);
+  }
+
+  nav.toc .toc-title {
+    font-family: 'Fraunces', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  nav.toc ol { list-style: none; counter-reset: section; }
+  nav.toc li { counter-increment: section; margin: 0.4rem 0; }
+  nav.toc li::before {
+    content: counter(section, decimal-leading-zero);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-right: 0.6rem;
+  }
+  nav.toc a {
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s;
+  }
+  nav.toc a:hover { border-bottom-color: var(--accent); }
+
+  main { min-width: 0; max-width: 820px; }
+
+  /* ─── Hero ─────────────────────────────────────────── */
+  header.hero {
+    border-bottom: 2px solid var(--text);
+    padding: 4rem 0 3rem;
+    margin-bottom: 3rem;
+    position: relative;
+  }
+  header.hero::before {
+    content: "REFERENCE / ARCHIVE";
+    position: absolute;
+    top: 1rem;
+    right: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+  }
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .hero-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-variation-settings: "opsz" 80;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+  .hero-subtitle {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 640px;
+    margin-bottom: 2rem;
+  }
+  .hero-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem 2rem;
+    font-size: 0.875rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .hero-meta dt { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.2rem; }
+  .hero-meta dd { font-weight: 500; }
+
+  /* ─── Section ──────────────────────────────────────── */
+  section { margin-bottom: 4rem; scroll-margin-top: 2rem; }
+
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-variation-settings: "opsz" 60;
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.015em;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.3rem;
+    margin: 2rem 0 0.75rem;
+    color: var(--accent);
+  }
+  h4 {
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin: 1.5rem 0 0.6rem;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  p { margin-bottom: 1rem; }
+  strong { font-weight: 700; color: var(--accent); }
+
+  ul, ol { margin: 0.5rem 0 1rem 1.5rem; }
+  li { margin-bottom: 0.35rem; }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85em;
+    background: var(--bg-code);
+    padding: 0.1em 0.4em;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+
+  pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    overflow-x: auto;
+  }
+  pre code { background: none; border: none; padding: 0; font-size: inherit; }
+
+  /* ─── Tables ──────────────────────────────────────── */
+  .table-wrap { margin: 1.5rem 0; overflow-x: auto; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-card); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  th {
+    text-align: left;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    padding: 0.7rem 1rem;
+    background: var(--bg-code);
+    border-bottom: 1px solid var(--border-strong);
+    color: var(--accent);
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+  }
+  td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: rgba(214, 207, 193, 0.15); }
+
+  /* ─── Glossary ────────────────────────────────────── */
+  .glossary {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 4px;
+    padding: 1.5rem 1.8rem;
+    margin: 1.5rem 0;
+  }
+  .glossary h3 {
+    margin-top: 0;
+    color: var(--accent);
+    font-size: 1.1rem;
+  }
+  .glossary dl { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1rem; }
+  .glossary dt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.2rem;
+  }
+  .glossary dd { font-size: 0.92rem; color: var(--text); margin-left: 0; }
+
+  /* ─── Callout: WHY MORE STABLE ──────────────────────── */
+  .callout {
+    background: linear-gradient(180deg, #fdf6e3 0%, #faf2db 100%);
+    border: 1px solid #d4b886;
+    border-left: 4px solid var(--warning);
+    border-radius: 4px;
+    padding: 1.2rem 1.5rem;
+    margin: 1.5rem 0;
+    position: relative;
+  }
+  .callout-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--warning);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout strong { color: var(--warning); }
+
+  .callout.term {
+    background: #eef2f3;
+    border-color: #b5c7cb;
+    border-left-color: var(--accent);
+  }
+  .callout.term .callout-label { color: var(--accent); }
+  .callout.term strong { color: var(--accent); }
+
+  /* ─── SVG containers ──────────────────────────────── */
+  .figure {
+    margin: 2rem 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.5rem;
+  }
+  .figure svg { display: block; width: 100%; height: auto; max-width: 100%; }
+  .figure figcaption {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ─── Day block ──────────────────────────────────── */
+  .day-block {
+    border-left: 3px solid var(--border);
+    padding: 0.2rem 0 0.2rem 1.5rem;
+    margin: 2rem 0;
+    position: relative;
+  }
+  .day-block::before {
+    content: "";
+    position: absolute;
+    left: -7px;
+    top: 0;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .day-block.day-key::before { background: var(--warning); width: 14px; height: 14px; left: -8px; }
+  .day-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .day-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    background: var(--accent);
+    color: var(--bg);
+    padding: 0.15rem 0.6rem;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+  }
+  .day-block.day-key .day-date { background: var(--warning); }
+  .day-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.25rem;
+    color: var(--text);
+  }
+
+  /* ─── Pull-quote ──────────────────────────────────── */
+  .pullquote {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.25rem;
+    line-height: 1.45;
+    color: var(--accent);
+    padding: 1.5rem 0 1.5rem 2rem;
+    border-left: 3px solid var(--accent);
+    margin: 2rem 0;
+    background: linear-gradient(90deg, rgba(44, 74, 82, 0.04) 0%, transparent 100%);
+  }
+
+  /* ─── Stat grid ────────────────────────────────── */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .stat {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem 1.2rem;
+  }
+  .stat-value {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--accent);
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  /* ─── Mobile ───────────────────────────────────── */
+  @media (max-width: 880px) {
+    .container { padding: 0 1.2rem; }
+    .layout { grid-template-columns: 1fr; gap: 1rem; padding: 1rem 0 4rem; }
+    nav.toc { position: static; max-height: none; border-right: none; border-bottom: 1px solid var(--border); padding: 0 0 1.5rem; margin-bottom: 1rem; }
+    nav.toc ol { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.3rem 1.5rem; }
+    main { max-width: 100%; }
+    header.hero { padding: 2rem 0 1.5rem; }
+    header.hero::before { display: none; }
+  }
+
+  /* ─── Footer ───────────────────────────────────── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0 4rem;
+    margin-top: 4rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<header class="hero">
+  <div class="hero-eyebrow">Memory Infrastructure · Internal Reference</div>
+  <h1 class="hero-title">跨 AI Agent、跨機器<br>長期記憶管理：演化進程</h1>
+  <p class="hero-subtitle">9 天從零到生產級的個人 AI 工作流記憶治理系統。本文件記錄完整演化軌跡、衍生方法論、外部架構對照、與設計哲學。</p>
+  <dl class="hero-meta">
+    <div><dt>期間</dt><dd>2026/05/06 — 05/14</dd></div>
+    <div><dt>範圍</dt><dd>4 端 + Notion + Chat</dd></div>
+    <div><dt>關鍵 Repo</dt><dd>claude-memory</dd></div>
+    <div><dt>版本</dt><dd>v1.0 / 2026-05-14</dd></div>
+  </dl>
+</header>
+
+<div class="layout">
+
+<nav class="toc">
+  <div class="toc-title">Contents</div>
+  <ol>
+    <li><a href="#terms">關鍵術語</a></li>
+    <li><a href="#summary">整體軸與時間表</a></li>
+    <li><a href="#timeline">逐日演化</a></li>
+    <li><a href="#layers">三個 abstraction layer</a></li>
+    <li><a href="#baton">Cross-agent baton 演化</a></li>
+    <li><a href="#bytes">AGENTS bytes 趨勢</a></li>
+    <li><a href="#external">外部架構研究</a></li>
+    <li><a href="#methods">累積的方法論</a></li>
+    <li><a href="#state">目前狀態與 open threads</a></li>
+    <li><a href="#philosophy">設計哲學</a></li>
+    <li><a href="#future">未來方向</a></li>
+    <li><a href="#conclusion">結論</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="terms">
+<div class="section-number">SECTION 01</div>
+<h2>關鍵術語</h2>
+
+<p>本文件大量使用以下技術用語、先在此一次定義、後續直接引用：</p>
+
+<div class="glossary">
+<h3>核心詞彙表</h3>
+<dl>
+  <dt>AGENTS.md / CLAUDE.md</dt>
+  <dd>AI agent 開新對話時自動載入的「系統提示主檔」。AGENTS.md 是 Codex 用的、CLAUDE.md 是 Claude Code 用的。內容是工作背景 + 紀律 + 記憶索引。本架構的 AGENTS.md 由 sync 腳本動態編譯產生、非手寫。</dd>
+
+  <dt>SSOT（Single Source of Truth）</dt>
+  <dd>同一個事實只在一處權威保存、其他地方都是衍生副本。本架構選 <code>claude-memory</code> GitHub repo 為 SSOT — 所有 memory 真實內容只在這、其他地方（AGENTS.md、agent 本機 dir）都是 sync 出來的。</dd>
+
+  <dt>Scope</dt>
+  <dd>Memory 檔的隔離維度、決定哪些檔在哪些機器上載入。本架構分三層：<code>shared/</code>（四端共用）、<code>office/</code>（公司 Windows only）、<code>home/</code>（家裡 Mac only）。</dd>
+
+  <dt>codex_tier</dt>
+  <dd>Memory 檔 frontmatter 標籤、控制檔在 AGENTS.md 編譯時的呈現粒度。四級：<code>core</code>（全文進）、<code>summary</code>（只進摘要段）、<code>detail</code>（只列檔名、agent 需要再讀）、<code>off</code>（不進）。</dd>
+
+  <dt>Tier compilation（編譯版 AGENTS）</dt>
+  <dd>5/11 引入的機制 — sync 腳本不再直接拼接所有 memory 檔、而是依 codex_tier 標籤分層編譯。把 AGENTS.md 從 ~32 KiB 壓到 ~13.6 KiB、prompt 預算打開。</dd>
+
+  <dt>SessionStart hook</dt>
+  <dd>Claude Code 新對話開始時自動執行的腳本。本架構用於：<code>git pull</code> 拉最新 memory、跑 sync 腳本、跑 health check。每天每端各跑一次、不需人工觸發。</dd>
+
+  <dt>Sync 腳本</dt>
+  <dd>四端各自的同步工具：<code>sync-office.ps1</code>、<code>sync-home.sh</code>、<code>sync-codex.{ps1,sh}</code>。職責：git pull、編譯 AGENTS.md、跑 health check。</dd>
+
+  <dt>Cross-agent baton</dt>
+  <dd>跨 AI agent 工作交接的紀律。當工作從一個 agent（如公司 Claude Code）接到另一個（如家裡 Codex），用「baton」隱喻接力棒、避免 context 在切換時遺失。</dd>
+
+  <dt>Selective load / includes directive</dt>
+  <dd>5/13 引入的 frontmatter 機制。檔可宣告 <code>includes: [其他檔]</code> 形成依賴圖、配合 <code>codex_load: include_only</code> flag 讓被引用檔預設不載、只在 parent include 時才出現。目的是減少 AGENTS.md prompt 佔用。</dd>
+
+  <dt>Inline boundedness</dt>
+  <dd>在 memory 檔內 inline 宣告「自己什麼時候該被拆」+「條目什麼時候該被移走」的紀律。例如：backlog 檔自己寫「&gt;10 條時拆出 BACKLOG.md」。避免規則寫在外部然後被忘記。</dd>
+
+  <dt>memory_health / lifecycle_health</dt>
+  <dd>兩個 enforcement 腳本（不只是 reference 文件）— 跑起來會偵測 AGENTS.md 接近上限、cross-scope leak、檔長期沒更新等問題、給 warning。從 5/12 開始把紀律從「文件描述」升級到「執行檢查」。</dd>
+
+  <dt>MCP（Model Context Protocol）</dt>
+  <dd>Anthropic 推的 AI agent 接外部工具的標準協議。本架構用於 Claude Chat 接 Notion / Google Drive / Calendar 等服務。</dd>
+</dl>
+</div>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="summary">
+<div class="section-number">SECTION 02</div>
+<h2>整體軸與時間表</h2>
+
+<p>9 天內、從零建立到生產級的個人 AI 工作流記憶治理系統。<strong>每一天加的不是 incremental feature、而是 architectural step</strong>。下圖顯示 9 個 milestone：</p>
+
+<figure class="figure">
+<svg viewBox="0 0 900 280" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d6cfc1"/>
+      <stop offset="100%" stop-color="#2c4a52"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Timeline base line -->
+  <line x1="60" y1="140" x2="840" y2="140" stroke="url(#lineGrad)" stroke-width="2"/>
+
+  <!-- Day nodes -->
+  <g font-family="JetBrains Mono, monospace" font-size="10" fill="#6a665d">
+    <!-- Day 0 -->
+    <circle cx="80" cy="140" r="6" fill="#d6cfc1" stroke="#1a1a1c" stroke-width="1.5"/>
+    <text x="80" y="125" text-anchor="middle">5/06</text>
+    <text x="80" y="170" text-anchor="middle" font-size="9" fill="#1a1a1c">Notion db</text>
+    <text x="80" y="183" text-anchor="middle" font-size="9" fill="#1a1a1c">誕生</text>
+
+    <!-- Day 1 -->
+    <circle cx="170" cy="140" r="7" fill="#2c4a52"/>
+    <text x="170" y="125" text-anchor="middle">5/07</text>
+    <text x="170" y="170" text-anchor="middle" font-size="9" fill="#1a1a1c" font-weight="600">跨機架構</text>
+    <text x="170" y="183" text-anchor="middle" font-size="9" fill="#1a1a1c">奠基</text>
+
+    <!-- Day 2 -->
+    <circle cx="260" cy="140" r="6" fill="#2c4a52"/>
+    <text x="260" y="125" text-anchor="middle">5/08</text>
+    <text x="260" y="170" text-anchor="middle" font-size="9" fill="#1a1a1c">Codex 接入</text>
+    <text x="260" y="183" text-anchor="middle" font-size="9" fill="#1a1a1c">四端成形</text>
+
+    <!-- Day 3 -->
+    <circle cx="350" cy="140" r="6" fill="#2c4a52"/>
+    <text x="350" y="125" text-anchor="middle">5/09</text>
+    <text x="350" y="170" text-anchor="middle" font-size="9" fill="#1a1a1c">SOP</text>
+    <text x="350" y="183" text-anchor="middle" font-size="9" fill="#1a1a1c">對稱化</text>
+
+    <!-- Day 4 -->
+    <circle cx="440" cy="140" r="6" fill="#2c4a52"/>
+    <text x="440" y="125" text-anchor="middle">5/10</text>
+    <text x="440" y="170" text-anchor="middle" font-size="9" fill="#1a1a1c">方法論</text>
+    <text x="440" y="183" text-anchor="middle" font-size="9" fill="#1a1a1c">首次提取</text>
+
+    <!-- Day 5 (KEY) -->
+    <circle cx="530" cy="140" r="9" fill="#b8543a"/>
+    <text x="530" y="123" text-anchor="middle" font-weight="600">5/11</text>
+    <text x="530" y="172" text-anchor="middle" font-size="10" fill="#b8543a" font-weight="700">2.1 升級</text>
+    <text x="530" y="187" text-anchor="middle" font-size="9" fill="#1a1a1c">編譯+baton</text>
+
+    <!-- Day 6 (KEY) -->
+    <circle cx="620" cy="140" r="9" fill="#b8543a"/>
+    <text x="620" y="123" text-anchor="middle" font-weight="600">5/12</text>
+    <text x="620" y="172" text-anchor="middle" font-size="10" fill="#b8543a" font-weight="700">紀律→自動化</text>
+    <text x="620" y="187" text-anchor="middle" font-size="9" fill="#1a1a1c">health 哨兵</text>
+
+    <!-- Day 7 (KEY) -->
+    <circle cx="710" cy="140" r="9" fill="#b8543a"/>
+    <text x="710" y="123" text-anchor="middle" font-weight="600">5/13</text>
+    <text x="710" y="172" text-anchor="middle" font-size="10" fill="#b8543a" font-weight="700">外部對照</text>
+    <text x="710" y="187" text-anchor="middle" font-size="9" fill="#1a1a1c">Path A pilot</text>
+
+    <!-- Day 8 (KEY) -->
+    <circle cx="810" cy="140" r="10" fill="#b8543a" stroke="#1a1a1c" stroke-width="1.5"/>
+    <text x="810" y="121" text-anchor="middle" font-weight="600">5/14</text>
+    <text x="810" y="172" text-anchor="middle" font-size="10" fill="#b8543a" font-weight="700">SOP 正式化</text>
+    <text x="810" y="187" text-anchor="middle" font-size="9" fill="#1a1a1c">收斂</text>
+  </g>
+
+  <!-- Title -->
+  <text x="60" y="40" font-family="Fraunces, serif" font-size="18" fill="#1a1a1c" font-weight="500">9-Day Architectural Arc</text>
+  <text x="60" y="60" font-family="JetBrains Mono, monospace" font-size="10" fill="#6a665d">每日一個 step、沒有空轉日</text>
+
+  <!-- Legend -->
+  <g transform="translate(60, 230)" font-family="JetBrains Mono, monospace" font-size="10" fill="#6a665d">
+    <circle cx="6" cy="0" r="5" fill="#2c4a52"/>
+    <text x="20" y="3">一般 milestone</text>
+    <circle cx="160" cy="0" r="6" fill="#b8543a"/>
+    <text x="175" y="3">關鍵 architectural step（後 4 天）</text>
+  </g>
+</svg>
+<figcaption>Fig. 01 — 9 天演化主軸：每日一個 architectural step</figcaption>
+</figure>
+
+<h3>關鍵特徵</h3>
+
+<ul>
+  <li><strong>每階段都先研究外部對照後再決定內部設計</strong>（cc-switch / Hermes / PLUR / superpowers / Cowork）— 不閉門造車</li>
+  <li><strong>每階段產出至少一條可重用方法論</strong>、且方法論寫進 memory 自己（<code>feedback_*.md</code>）</li>
+  <li><strong>每階段都經得起跨 4 端 + Notion 工作日誌的證據追溯</strong></li>
+  <li><strong>設計哲學一以貫之</strong>：explicit authoring、git 為 SSOT、local-first、與 31 年手寫日記哲學對齊</li>
+</ul>
+
+<h3>核心架構圖</h3>
+
+<p>整套系統由一個 git repo 為 SSOT、四個物理 endpoint + Notion 工作日誌（外部 raw 記錄層）構成：</p>
+
+<figure class="figure">
+<svg viewBox="0 0 700 460" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="hatch" patternUnits="userSpaceOnUse" width="4" height="4">
+      <path d="M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2" stroke="#d6cfc1" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="700" height="460" fill="#fbf8f0"/>
+
+  <!-- Title -->
+  <text x="350" y="30" text-anchor="middle" font-family="Fraunces, serif" font-size="16" fill="#1a1a1c" font-weight="500">核心架構：1 個 SSOT + 4 個 endpoint + Notion</text>
+
+  <!-- Central git repo -->
+  <g transform="translate(350, 230)">
+    <rect x="-90" y="-50" width="180" height="100" fill="#2c4a52" stroke="#1a1a1c" stroke-width="2" rx="4"/>
+    <text x="0" y="-15" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#fbf8f0" font-weight="700">claude-memory</text>
+    <text x="0" y="2" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#d6cfc1">GitHub private</text>
+    <text x="0" y="20" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#fbf8f0">SSOT</text>
+    <text x="0" y="38" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#d6cfc1">shared/ office/ home/</text>
+  </g>
+
+  <!-- Endpoint: 公司 Claude Code -->
+  <g transform="translate(120, 120)">
+    <rect x="-80" y="-30" width="160" height="60" fill="#fbf8f0" stroke="#2c4a52" stroke-width="1.5" rx="3"/>
+    <text x="0" y="-10" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" font-weight="600" fill="#1a1a1c">公司 Win10</text>
+    <text x="0" y="6" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#2c4a52">Claude Code</text>
+    <text x="0" y="20" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#6a665d">CLAUDE.md</text>
+  </g>
+
+  <!-- Endpoint: 公司 Codex -->
+  <g transform="translate(120, 340)">
+    <rect x="-80" y="-30" width="160" height="60" fill="#fbf8f0" stroke="#2c4a52" stroke-width="1.5" rx="3"/>
+    <text x="0" y="-10" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" font-weight="600" fill="#1a1a1c">公司 Win10</text>
+    <text x="0" y="6" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#2c4a52">Codex</text>
+    <text x="0" y="20" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#6a665d">AGENTS.md / 24.4 KiB</text>
+  </g>
+
+  <!-- Endpoint: 家裡 Claude Code -->
+  <g transform="translate(580, 120)">
+    <rect x="-80" y="-30" width="160" height="60" fill="#fbf8f0" stroke="#2c4a52" stroke-width="1.5" rx="3"/>
+    <text x="0" y="-10" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" font-weight="600" fill="#1a1a1c">家裡 Mac mini</text>
+    <text x="0" y="6" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#2c4a52">Claude Code</text>
+    <text x="0" y="20" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#6a665d">CLAUDE.md</text>
+  </g>
+
+  <!-- Endpoint: 家裡 Codex -->
+  <g transform="translate(580, 340)">
+    <rect x="-80" y="-30" width="160" height="60" fill="#fbf8f0" stroke="#2c4a52" stroke-width="1.5" rx="3"/>
+    <text x="0" y="-10" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" font-weight="600" fill="#1a1a1c">家裡 Mac mini</text>
+    <text x="0" y="6" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#2c4a52">Codex</text>
+    <text x="0" y="20" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#6a665d">AGENTS.md / 21.2 KiB</text>
+  </g>
+
+  <!-- Connection lines (bidirectional sync) -->
+  <g stroke="#2c4a52" stroke-width="1.5" fill="none">
+    <path d="M 200 130 Q 260 180, 270 200" marker-end="url(#arrow)"/>
+    <path d="M 200 340 Q 260 290, 270 270" marker-end="url(#arrow)"/>
+    <path d="M 500 130 Q 440 180, 430 200" marker-end="url(#arrow)"/>
+    <path d="M 500 340 Q 440 290, 430 270" marker-end="url(#arrow)"/>
+
+    <path d="M 270 220 Q 260 180, 200 130" stroke-dasharray="3,3"/>
+    <path d="M 270 240 Q 260 290, 200 340" stroke-dasharray="3,3"/>
+    <path d="M 430 220 Q 440 180, 500 130" stroke-dasharray="3,3"/>
+    <path d="M 430 240 Q 440 290, 500 340" stroke-dasharray="3,3"/>
+  </g>
+
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M 0 0 L 6 3 L 0 6 z" fill="#2c4a52"/>
+    </marker>
+  </defs>
+
+  <!-- Notion (external raw) -->
+  <g transform="translate(350, 410)">
+    <rect x="-100" y="-22" width="200" height="44" fill="url(#hatch)" stroke="#9d7e6b" stroke-width="1.5" rx="3"/>
+    <text x="0" y="-3" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" font-weight="600" fill="#1a1a1c">Notion 工作日誌</text>
+    <text x="0" y="12" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6a665d">raw conversation log</text>
+  </g>
+  <line x1="350" y1="282" x2="350" y2="386" stroke="#9d7e6b" stroke-width="1" stroke-dasharray="2,3"/>
+
+  <!-- Legend -->
+  <g transform="translate(60, 440)" font-family="JetBrains Mono, monospace" font-size="9" fill="#6a665d">
+    <line x1="0" y1="0" x2="20" y2="0" stroke="#2c4a52" stroke-width="1.5"/>
+    <text x="26" y="3">git sync（pull/push）</text>
+    <line x1="180" y1="0" x2="200" y2="0" stroke="#9d7e6b" stroke-width="1" stroke-dasharray="2,3"/>
+    <text x="206" y="3">外部記錄、非 SSOT</text>
+  </g>
+</svg>
+<figcaption>Fig. 02 — 四端 + git SSOT + Notion 工作日誌的拓樸關係</figcaption>
+</figure>
+
+<div class="callout">
+<div class="callout-label">為什麼 git 為 SSOT 比 cloud-backed memory 穩</div>
+<p><strong>可 diff、可 rollback、可離線</strong>：git 提供完整歷史、出錯可回滾、網路斷線仍能 work。</p>
+<p><strong>無 vendor lock-in</strong>：Anthropic 哪天倒了、memory 仍是純 markdown、平台中立。</p>
+<p><strong>跟 31 年手寫日記哲學一致</strong>：explicit、可追溯、可遷移、人類可讀。</p>
+</div>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="timeline">
+<div class="section-number">SECTION 03</div>
+<h2>逐日演化</h2>
+
+<div class="day-block">
+<div class="day-header"><span class="day-date">Day 0 · 05/06</span><span class="day-title">Notion 工作日誌資料庫誕生</span></div>
+<p>當天還沒有「memory infra」概念。三件事打下後續基礎：RunLossReport AHK 重構 + Notion MCP 接通、family-assets 從零打造 + 公網部署、family-allowance 主題系統大擴增。<strong>沒有意識到「memory 是獨立 problem」</strong>、只是把日常結論寫進 Notion 試試。</p>
+</div>
+
+<div class="day-block">
+<div class="day-header"><span class="day-date">Day 1 · 05/07</span><span class="day-title">跨機器同步架構奠基</span></div>
+<p>跨出 Notion 後第一個真正的 memory infra 設計。<code>claude-memory</code> repo 落定：<code>shared/</code> + <code>office/</code> + <code>home/</code> + <code>scripts/</code>。當天落定的 5 個關鍵設計：</p>
+<div class="table-wrap">
+<table>
+  <thead><tr><th style="width:40%">設計</th><th>為什麼這樣設</th></tr></thead>
+  <tbody>
+    <tr><td>GitHub repo 為 SSOT</td><td>與 Claude Code「本地檔 + auto-load」機制對齊、不把 Notion 塞進不擅長的 use case</td></tr>
+    <tr><td><code>MEMORY.&lt;scope&gt;.md</code> 由 sync 串接生成、不 commit</td><td>索引片段各 scope 自己維護、避免兩地手動同步</td></tr>
+    <tr><td><code>reference_claude_memory_repo.md</code>（meta-memory）</td><td>「memory 自己的規則」也是 memory；新對話 auto-load 就懂規則、不用每次重新解釋</td></tr>
+    <tr><td>SessionStart hook 自動 git pull + hash 比對 no-op</td><td>解掉「100 個無意義 .bak」+「PowerShell Set-Content 偷加 CRLF」兩個隱形坑</td></tr>
+    <tr><td><code>.gitattributes</code> 鎖死 line endings</td><td>.sh 在 Mac 不會炸 — 經驗值不是試出來的</td></tr>
+  </tbody>
+</table>
+</div>
+<p><em>這天之後的所有改動、都是這個架構的延伸或精修。</em></p>
+</div>
+
+<div class="day-block">
+<div class="day-header"><span class="day-date">Day 2 · 05/08</span><span class="day-title">Codex 跨機器整合</span></div>
+<p>把 Codex（公司 + 家裡兩個 host）也接進 memory 系統。<code>sync-home.sh</code> 落地、Codex 跨機器 memory 整合 + 接 Notion + 抽 <code>notion_helper</code>。<strong>四端架構正式成形</strong>。但 SOP 對稱仍有 debt、5/09 收。</p>
+</div>
+
+<div class="day-block">
+<div class="day-header"><span class="day-date">Day 3 · 05/09</span><span class="day-title">Codex SOP 對稱化 + 跨對話視窗</span></div>
+<p>「四端可用、但 SOP 不對稱」的 debt 收尾。「<strong>跨 agent baton</strong>」概念雛形浮現 — 但還沒命名、是隱含的開工 SOP。</p>
+</div>
+
+<div class="day-block">
+<div class="day-header"><span class="day-date">Day 4 · 05/10</span><span class="day-title">紀律驗證 + 方法論首次正式提取</span></div>
+<p>family-allowance 一日 22 commits / 10 件大改、過程中 SOP 被三度驗證。當天提取首批正式方法論（第 8/9 條 firm rule、同日成功應用）。<strong>「方法論文件化」這個 pattern 第一次自然發生</strong> — 不是刻意做、是工作自然產出。後續 inline_size_limits 等都是這個 pattern 的延續。</p>
+</div>
+
+<div class="day-block day-key">
+<div class="day-header"><span class="day-date">Day 5 · 05/11</span><span class="day-title">2.1 升級：tier 編譯 + cross-agent baton 閉環</span></div>
+
+<h4>從拼接到編譯</h4>
+<p>AGENTS.md 一路加東西、~32 KiB 接近 Codex prompt 預算上限。引入 <code>codex_tier</code> 四級標籤（core/summary/detail/off）、把 AGENTS.md 從直接拼接改成依 tier 編譯。</p>
+
+<figure class="figure" style="margin: 1rem 0;">
+<svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg">
+  <text x="350" y="25" text-anchor="middle" font-family="Fraunces, serif" font-size="14" fill="#1a1a1c" font-weight="500">Tier compilation: ~32 KiB → ~13.6 KiB（41%）</text>
+
+  <!-- BEFORE -->
+  <text x="150" y="60" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#6a665d" font-weight="700">BEFORE (5/10)</text>
+  <text x="150" y="78" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#1a1a1c">直接拼接所有檔</text>
+
+  <rect x="60" y="90" width="180" height="80" fill="#b8543a" rx="2"/>
+  <text x="150" y="125" text-anchor="middle" font-family="Fraunces, serif" font-size="22" fill="#fbf8f0" font-weight="600">~32 KiB</text>
+  <text x="150" y="148" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#fbf8f0">prompt 預算上限</text>
+  <text x="150" y="160" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#fbf8f0">逼近 100%</text>
+
+  <text x="150" y="195" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="#6a665d" font-style="italic">加新 SOP = 撞天花板</text>
+
+  <!-- Arrow -->
+  <g stroke="#2c4a52" stroke-width="2" fill="none">
+    <path d="M 270 130 L 350 130"/>
+  </g>
+  <polygon points="350,130 340,124 340,136" fill="#2c4a52"/>
+  <text x="310" y="120" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="#2c4a52" font-weight="600">2.1 升級</text>
+
+  <!-- AFTER -->
+  <text x="530" y="60" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#6a665d" font-weight="700">AFTER (5/11)</text>
+  <text x="530" y="78" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#1a1a1c">依 codex_tier 分層編譯</text>
+
+  <rect x="440" y="115" width="180" height="55" fill="#4a6741" rx="2"/>
+  <text x="530" y="146" text-anchor="middle" font-family="Fraunces, serif" font-size="22" fill="#fbf8f0" font-weight="600">~13.6 KiB</text>
+  <text x="530" y="160" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#fbf8f0">core 全文 + summary 摘要</text>
+
+  <text x="530" y="195" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="#6a665d" font-style="italic">predict 預算重新打開</text>
+
+  <!-- 32 KiB ceiling line -->
+  <line x1="40" y1="90" x2="660" y2="90" stroke="#b8543a" stroke-width="0.5" stroke-dasharray="2,3" opacity="0.6"/>
+  <text x="40" y="86" font-family="JetBrains Mono, monospace" font-size="8" fill="#b8543a">32K 上限</text>
+</svg>
+<figcaption>Fig. 03 — 2.1 升級：從直接拼接到 tier-based 編譯</figcaption>
+</figure>
+
+<div class="callout">
+<div class="callout-label">為什麼 tier 編譯比 flat 拼接穩</div>
+<p><strong>容量可控</strong>：core 嚴選必載、summary 提供索引、detail 按需讀取。AGENTS.md 不會無限長大。</p>
+<p><strong>同份檔多種解析度</strong>：Claude（看全文）和 Codex（看編譯版）能用同一份 source、不需要 fork 兩套 memory。</p>
+<p><strong>新增 SOP 不撞天花板</strong>：把詳細內容降為 detail tier、AGENTS 主檔保持精簡、後續演化空間打開。</p>
+</div>
+
+<h4>Cross-agent baton 概念閉環</h4>
+<p>當天首次正式運作「Claude Code 提疑問 → 使用者橋接 → Codex 驗證 → 回寫」的 round-trip、約 12 分鐘。寫進 <code>reference_codex_memory_strategy.md</code>、首次成為可命名的 architectural pattern。但此時還是<strong>口頭傳遞為主、markdown 為輔</strong>（後續會 invert）。</p>
+</div>
+
+<div class="day-block day-key">
+<div class="day-header"><span class="day-date">Day 6 · 05/12</span><span class="day-title">從紀律到自動化</span></div>
+
+<p>5/11 之前所有「紀律」都是 markdown 描述（agent 讀過自己記得）。5/12 開始<strong>把紀律寫成 enforcement script</strong>。</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Step</th><th>內容</th><th>本質變化</th></tr></thead>
+  <tbody>
+    <tr><td><code>memory_health.ps1</code> 落地</td><td>AGENTS 接近上限警告 / core 漏掉偵測 / cross-scope leak / sync timestamp</td><td>紀律 → 哨兵</td></tr>
+    <tr><td><code>project_lifecycle_health.ps1</code></td><td>30/90 天 commit-age 自動掃描、warn / suggest archive</td><td>原則 → 執行</td></tr>
+    <tr><td>Inline 邊界全套 propagate</td><td>8 份 status card + MEMORY.shared + feedback_daily_workflow 都加邊界</td><td>外部規則 → inline 自我宣告</td></tr>
+    <tr><td><code>feedback_daily_workflow.md</code> 拆檔</td><td>hub + morning / evening / memory_write / cross-day / home-Claude 5 個專檔</td><td>monolith → 模組化</td></tr>
+    <tr><td>Detail tier 雙層驗證</td><td>Claude 端 sync-codex 加 5 行存在性檢查 + Codex 端 SOP first-5-message verify</td><td>單點假設 → 雙層 fallback</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout term">
+<div class="callout-label">新方法論：Inline boundedness 兩層 pattern</div>
+<p><strong>條目層</strong>：什麼時機把條目從檔內移走（例：P0 done → 移除、不留 ✅）</p>
+<p><strong>檔層</strong>：什麼時機本檔該拆成多檔（例：backlog &gt;10 條 → 拆 BACKLOG.md）</p>
+<p>且<strong>閾值要可觀察</strong>（&gt;10 條 / &gt;30 天無 commit ✓；「感覺太肥」✗）。寫進 <code>feedback_inline_size_limits.md</code>、5/14 selective load 決策時自然應用。</p>
+</div>
+
+<div class="callout">
+<div class="callout-label">為什麼 inline 邊界比外部 policy 穩</div>
+<p><strong>自我宣告、不會被忘記</strong>：規則寫在檔內、編輯時就看到、外部 policy 容易隨時間漂移失憶。</p>
+<p><strong>觸發條件強制可觀察</strong>：用具體數字（&gt;10 條）取代主觀感受（「太肥了」），避免 reviewer 之間 disagree。</p>
+<p><strong>方法論可重用</strong>：同 pattern 用在 backlog、status card、Notion 日誌、AGENTS.md — 不必為每個容器設計新規則。</p>
+</div>
+
+<h4>cc-switch 研究（5/12 evening）</h4>
+<p>研究 cc-switch repo、原本標題寫「吸收 CC-Switch guardrails」、事後驗證 <strong>cc-switch 跟你的場景不對應</strong>（它做 provider config switching、你做 memory governance）。但「guardrail 該被產品化」這個設計衝動是真的、驅動了當天從紀律到自動化的轉折。<em>研究外部對象的價值不只在「採納什麼」、也在「觸發什麼設計衝動」。</em></p>
+</div>
+
+<div class="day-block day-key">
+<div class="day-header"><span class="day-date">Day 7 · 05/13</span><span class="day-title">外部對照 + selective load pilot</span></div>
+
+<p>當天<strong>密度最高</strong>的一天 — 三個外部架構研究 + 一個重大實作。</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th style="width:25%">研究對象</th><th>主要學習</th><th>採納</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Hermes Agent</strong>（NousResearch）</td><td>同 problem space、互補設計；我們 indexed memory + scope 分割比社群方案<strong>領先 2 天</strong></td><td>採納 includes directive 概念</td></tr>
+    <tr><td><strong>PLUR</strong>（plur-ai）</td><td>對立哲學（auto-emerge vs explicit）、bench thesis（memory 是 bottleneck）validation</td><td>採納 3 條概念（type / mem-used / access、提案 v1.0）</td></tr>
+    <tr><td><strong>superpowers</strong>（obra）</td><td>Skill = auto-triggered + enforced（vs memory = passive loaded）</td><td>不採納、確認 skill gap 不是漏洞</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h4>Hermes 提案 → Codex 實作（同日）</h4>
+<p>Claude Chat 起草 9 章節 markdown 提案 → Codex 接到後直接落地 Proposal 2/3 + Proposal 1 Path A pilot。<strong>Codex 補上提案漏掉的 <code>codex_load: include_only</code> flag</strong>（提案只寫 <code>includes:</code> 陣列、沒寫如何讓被引用檔預設不進選集）。</p>
+
+<h4>家裡端 reliability round（同日晚）</h4>
+<p>家裡 Codex 補上 <code>memory_health.sh</code>（Bash parity）、清掉 7 個 shared cross-scope warning、macOS shasum locale warning 局部修法。</p>
+
+<div class="callout">
+<div class="callout-label">新方法論：Pilot → Reliability baseline → Expansion</div>
+<p><strong>當 pilot 證明 breadth 夠</strong>、下一步應補 reliability baseline、不是繼續擴 coverage。很多 project 死在「pilot 跑通了就直接擴大」、跳過 reliability baseline 階段、結果擴大後 reliability debt 一次性爆出來。</p>
+<p>5/13 家裡 Codex 沒去加更多 includes、而是先補 Bash parity 跟 health check — <strong>是這條方法論的活例</strong>。</p>
+</div>
+
+<div class="callout">
+<div class="callout-label">為什麼「修問題、不修 check」比反向穩</div>
+<p><strong>Health check 抓到 warning 時、預設動作是「驗證 warning 是否真實」、不是「降 check 標準」</strong>。</p>
+<p>5/13 抓到 7 個 cross-scope warning、選擇修 shared 檔內容、不選擇調低 check 敏感度。<strong>反向路徑會把 health check 變成 placebo</strong>、5/12 從紀律到自動化的成果反向退步。</p>
+</div>
+</div>
+
+<div class="day-block day-key">
+<div class="day-header"><span class="day-date">Day 8 · 05/14</span><span class="day-title">SOP 正式化 + parity 收斂</span></div>
+
+<p>5/13 累積的觀察、5/14 收斂成正式 SOP。三件 architectural step：</p>
+
+<h4>(a) Cross-agent baton SOP 正式化</h4>
+<p>新增 <code>shared/feedback_cross_agent_baton.md</code>。<strong>雙層規則</strong>：</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>層</th><th>角色</th><th>規則</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Primary</strong></td><td>Markdown 留存層</td><td>Source-of-truth、必信</td></tr>
+    <tr><td>Secondary</td><td>口頭交接</td><td>補速度、不替代 markdown</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>順序顛倒就 drift。Baton 規則 propagate 進 4 個入口（MEMORY.shared / Claude 早上開工 / 家裡 Claude SOP / Codex 日常 workflow）。</p>
+
+<div class="callout">
+<div class="callout-label">為什麼 markdown-primary 比 verbal-primary 穩</div>
+<p><strong>持久性</strong>：markdown 寫進 repo、跨日跨 session 仍在；口頭內容隨 session 關閉消失。</p>
+<p><strong>可追溯</strong>：markdown 有 git history、可追究決策來源；口頭內容無 audit trail。</p>
+<p><strong>跨 agent 對等</strong>：markdown 對任何 agent 都能 read；口頭傳遞需要人為轉述、有 distortion 風險。</p>
+<p><strong>速度由 secondary 補</strong>：口頭依舊有用、但是「速度補充」不是「source of truth」。</p>
+</div>
+
+<h4>(b) memory_health 雙端 defaults 共用</h4>
+<p>新增 <code>scripts/memory_health.common.env</code>、抽出 6 個最容易 silent drift 的 defaults：<code>MAX_BYTES</code>、<code>WARN_BYTES</code>、<code>DEFAULT_STALE_HOURS</code>、<code>REQUIRED_CORE_ENTRY</code>、<code>VALID_TIERS</code>、<code>VALID_LOADS</code>。</p>
+
+<p><strong>沒抽的部分</strong>（檢查邏輯、輸出格式、subprocess handling）保留兩份實作 — Bash vs PowerShell 差異太大、強求同碼會引入更多 bug。</p>
+
+<div class="callout">
+<div class="callout-label">為什麼「只抽 defaults」比「抽全部 code」穩</div>
+<p><strong>跨 shell parity 不是追求同碼</strong>、是先共用最容易 drift 處。Bash 跟 PowerShell 在 subprocess handling、locale、error code 慣例上差異大、強求同碼會引入更多 bug。</p>
+<p><strong>共用最穩定的層（defaults / thresholds）</strong>、保留兩 shell 各自做最熟悉的事（檢查 logic）— 是真正的 platform-aware unification。</p>
+</div>
+
+<h4>(c) Selective load 第 3 題：先 observe</h4>
+<p>評估 Path A 擴張到 <code>project_status_*</code> 的時機、結論「<strong>先 observe 不擴</strong>」。觸發條件設明確：AGENTS 逼近 26 KiB / 依賴關係重複出現。<strong>這是 <code>feedback_inline_size_limits.md</code> 兩層 pattern 在生產環境第一次自然應用</strong> — 5/11 寫下規則、5/14 在不被提醒情況下用它做決策。</p>
+</div>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="layers">
+<div class="section-number">SECTION 04</div>
+<h2>三個 abstraction layer</h2>
+
+<p>整個演化可以拆三層、且每層各自有 evolution arc。三層之間有<strong>自指（self-referential）模式</strong> — Layer 1 的 pattern 被觀察、寫成 Layer 3 的 methodology、再被 Layer 2 的 enforcement script 實作。</p>
+
+<figure class="figure">
+<svg viewBox="0 0 700 410" xmlns="http://www.w3.org/2000/svg">
+  <text x="350" y="25" text-anchor="middle" font-family="Fraunces, serif" font-size="16" fill="#1a1a1c" font-weight="500">三個 Abstraction Layer 與自指循環</text>
+
+  <!-- Layer 3 -->
+  <g transform="translate(100, 60)">
+    <rect width="500" height="80" fill="#9d7e6b" rx="4"/>
+    <text x="20" y="28" font-family="JetBrains Mono, monospace" font-size="10" fill="#fbf8f0" font-weight="700">LAYER 3</text>
+    <text x="20" y="48" font-family="Fraunces, serif" font-size="18" fill="#fbf8f0" font-weight="500">Methodology</text>
+    <text x="20" y="68" font-family="Source Sans 3, sans-serif" font-size="11" fill="#fbf8f0">SOP / feedback / awareness 等規範性文件</text>
+    <text x="480" y="68" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="9" fill="#fbf8f0">5/07 → 5/14（feedback_*.md / reference_*.md）</text>
+  </g>
+
+  <!-- Layer 2 -->
+  <g transform="translate(100, 175)">
+    <rect width="500" height="80" fill="#88a8a8" rx="4"/>
+    <text x="20" y="28" font-family="JetBrains Mono, monospace" font-size="10" fill="#fbf8f0" font-weight="700">LAYER 2</text>
+    <text x="20" y="48" font-family="Fraunces, serif" font-size="18" fill="#fbf8f0" font-weight="500">Process</text>
+    <text x="20" y="68" font-family="Source Sans 3, sans-serif" font-size="11" fill="#fbf8f0">sync / health / lifecycle 執行碼</text>
+    <text x="480" y="68" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="9" fill="#fbf8f0">5/07 → 5/14（sync-*.sh, memory_health.*）</text>
+  </g>
+
+  <!-- Layer 1 -->
+  <g transform="translate(100, 290)">
+    <rect width="500" height="80" fill="#c9b988" rx="4"/>
+    <text x="20" y="28" font-family="JetBrains Mono, monospace" font-size="10" fill="#1a1a1c" font-weight="700">LAYER 1</text>
+    <text x="20" y="48" font-family="Fraunces, serif" font-size="18" fill="#1a1a1c" font-weight="500">State</text>
+    <text x="20" y="68" font-family="Source Sans 3, sans-serif" font-size="11" fill="#1a1a1c">memory files 本身（內容）</text>
+    <text x="480" y="68" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="9" fill="#1a1a1c">5/06 → 5/14（shared/, office/, home/）</text>
+  </g>
+
+  <!-- Self-referential arrows -->
+  <g stroke="#b8543a" stroke-width="1.5" fill="none">
+    <path d="M 80 330 Q 30 240, 30 145 Q 30 100, 80 100" marker-end="url(#redarrow)"/>
+    <text x="-22" y="240" font-family="JetBrains Mono, monospace" font-size="9" fill="#b8543a" transform="rotate(-90, 40, 240)">pattern 觀察 → methodology</text>
+
+    <path d="M 620 100 Q 670 145, 670 215 Q 670 220, 620 215" marker-end="url(#redarrow)"/>
+    <text x="675" y="160" font-family="JetBrains Mono, monospace" font-size="9" fill="#b8543a" transform="rotate(90, 685, 160)">methodology → enforcement</text>
+  </g>
+
+  <defs>
+    <marker id="redarrow" markerWidth="6" markerHeight="6" refX="4" refY="3" orient="auto">
+      <path d="M 0 0 L 4 3 L 0 6 z" fill="#b8543a"/>
+    </marker>
+  </defs>
+
+  <text x="350" y="395" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#6a665d" font-style="italic">每層各自演化、自指循環使每層強化彼此</text>
+</svg>
+<figcaption>Fig. 04 — 三個 abstraction layer 與自指循環</figcaption>
+</figure>
+
+<h3>自指循環的具體例子</h3>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>觀察起點（Layer 1）</th><th>方法論（Layer 3）</th><th>執行碼（Layer 2）</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>CURRENT_WORK backlog 容易膨脹（5/11）</td>
+      <td><code>feedback_inline_size_limits.md</code> 兩層 pattern（5/12）</td>
+      <td><code>memory_health.ps1</code> 偵測接近上限（5/12）</td>
+    </tr>
+    <tr>
+      <td>跨 agent 工作切換時 context drift（5/11）</td>
+      <td><code>feedback_cross_agent_baton.md</code> 雙層規則（5/14）</td>
+      <td>Baton 規則 propagate 進 4 個入口（5/14）</td>
+    </tr>
+    <tr>
+      <td>Codex 5/13 在 sync stdout 加 included-by 註記</td>
+      <td>「驗證 through use」延伸（隱含）</td>
+      <td>下次 sync 自動顯示 dependency graph</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="baton">
+<div class="section-number">SECTION 05</div>
+<h2>Cross-agent baton 演化軌跡</h2>
+
+<p>整段歷程裡「跨 agent 協作」這條軸演化特別清晰、值得單獨 visualize：</p>
+
+<figure class="figure">
+<svg viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg">
+  <text x="400" y="25" text-anchor="middle" font-family="Fraunces, serif" font-size="16" fill="#1a1a1c" font-weight="500">5 個 Stage、9 天內走完</text>
+
+  <!-- Stages as horizontal flow -->
+  <g font-family="Source Sans 3, sans-serif">
+    <!-- Stage 1 -->
+    <g transform="translate(80, 100)">
+      <circle r="34" fill="#fbf8f0" stroke="#d6cfc1" stroke-width="2"/>
+      <text y="-5" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6a665d">STAGE 1</text>
+      <text y="10" text-anchor="middle" font-size="11" fill="#1a1a1c">隱含</text>
+      <text y="55" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6a665d">5/06-5/10</text>
+      <text y="75" text-anchor="middle" font-size="9" fill="#1a1a1c">未命名</text>
+      <text y="88" text-anchor="middle" font-size="9" fill="#1a1a1c">ad-hoc 重建 context</text>
+    </g>
+
+    <!-- Arrow -->
+    <path d="M 125 100 L 195 100" stroke="#2c4a52" stroke-width="1.5" marker-end="url(#arrow2)"/>
+
+    <!-- Stage 2 -->
+    <g transform="translate(240, 100)">
+      <circle r="36" fill="#fbf8f0" stroke="#2c4a52" stroke-width="2"/>
+      <text y="-5" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#2c4a52">STAGE 2</text>
+      <text y="10" text-anchor="middle" font-size="11" fill="#1a1a1c">命名</text>
+      <text y="55" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6a665d">5/11</text>
+      <text y="75" text-anchor="middle" font-size="9" fill="#1a1a1c">寫進 strategy 檔</text>
+      <text y="88" text-anchor="middle" font-size="9" fill="#1a1a1c">口頭主導</text>
+    </g>
+
+    <path d="M 285 100 L 355 100" stroke="#2c4a52" stroke-width="1.5" marker-end="url(#arrow2)"/>
+
+    <!-- Stage 3 -->
+    <g transform="translate(400, 100)">
+      <circle r="36" fill="#fbf8f0" stroke="#2c4a52" stroke-width="2"/>
+      <text y="-5" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#2c4a52">STAGE 3</text>
+      <text y="10" text-anchor="middle" font-size="11" fill="#1a1a1c">跨組合驗證</text>
+      <text y="55" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6a665d">5/13</text>
+      <text y="75" text-anchor="middle" font-size="9" fill="#1a1a1c">Claude Chat ↔ Code</text>
+      <text y="88" text-anchor="middle" font-size="9" fill="#1a1a1c">通用 pattern</text>
+    </g>
+
+    <path d="M 445 100 L 515 100" stroke="#2c4a52" stroke-width="1.5" marker-end="url(#arrow2)"/>
+
+    <!-- Stage 4 -->
+    <g transform="translate(560, 100)">
+      <circle r="38" fill="#fdf6e3" stroke="#b8543a" stroke-width="2"/>
+      <text y="-5" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#b8543a">STAGE 4</text>
+      <text y="10" text-anchor="middle" font-size="11" fill="#1a1a1c">Payload 對比</text>
+      <text y="55" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6a665d">5/13</text>
+      <text y="75" text-anchor="middle" font-size="9" fill="#1a1a1c">verbal vs markdown</text>
+      <text y="88" text-anchor="middle" font-size="9" fill="#1a1a1c">trade-off 浮現</text>
+    </g>
+
+    <path d="M 605 100 L 675 100" stroke="#2c4a52" stroke-width="1.5" marker-end="url(#arrow2)"/>
+
+    <!-- Stage 5 -->
+    <g transform="translate(720, 100)">
+      <circle r="42" fill="#fdf6e3" stroke="#b8543a" stroke-width="2.5"/>
+      <text y="-7" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#b8543a" font-weight="700">STAGE 5</text>
+      <text y="8" text-anchor="middle" font-size="11" fill="#1a1a1c" font-weight="600">SOP 正式</text>
+      <text y="55" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6a665d">5/14</text>
+      <text y="75" text-anchor="middle" font-size="9" fill="#1a1a1c" font-weight="600">雙層規則</text>
+      <text y="88" text-anchor="middle" font-size="9" fill="#1a1a1c">markdown primary</text>
+    </g>
+  </g>
+
+  <defs>
+    <marker id="arrow2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M 0 0 L 6 3 L 0 6 z" fill="#2c4a52"/>
+    </marker>
+  </defs>
+
+  <!-- Bottom: invert moment -->
+  <line x1="60" y1="220" x2="740" y2="220" stroke="#d6cfc1" stroke-width="1" stroke-dasharray="3,3"/>
+
+  <g transform="translate(80, 240)" font-family="Source Sans 3, sans-serif" font-size="10" fill="#1a1a1c">
+    <text font-weight="600">關鍵 invert（Stage 4 → 5）</text>
+    <text y="20" font-size="11">Stage 1-4：口頭 primary、markdown 是輔助</text>
+    <text y="38" font-size="11" fill="#b8543a" font-weight="600">Stage 5：markdown primary、口頭只補速度</text>
+    <text y="55" font-size="10" fill="#6a665d" font-style="italic">穩定性靠 markdown 留存層、速度靠口頭、順序顛倒就 drift</text>
+  </g>
+</svg>
+<figcaption>Fig. 05 — Cross-agent baton 5 個 stage</figcaption>
+</figure>
+
+<div class="callout">
+<div class="callout-label">為什麼雙層 baton 規則比單層穩</div>
+<p><strong>單一 channel 都有失效模式</strong>：純口頭忘記、純 markdown 太慢。雙層讓兩種 channel 各補對方的不足。</p>
+<p><strong>明確 primary/secondary 避免歧義</strong>：如果兩種 channel 內容衝突、規則明確以 markdown 為準、不會卡在「誰對」。</p>
+<p><strong>順序顛倒就 drift</strong>：5/11 的口頭主導其實已踩坑（提案內容太詳盡、跳過 ask-back 環節）— 反向順序設定才是 SOP 正式化的關鍵。</p>
+</div>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="bytes">
+<div class="section-number">SECTION 06</div>
+<h2>AGENTS.md bytes 容量趨勢</h2>
+
+<p>AGENTS.md（Codex 用的 system prompt 主檔）容量是<strong>容量壓力的 single most important indicator</strong>。5/11 編譯機制把它壓到 ~13.6 KiB、但 9 天累積 architectural change 之後已逼近警戒線：</p>
+
+<figure class="figure">
+<svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg">
+  <text x="350" y="25" text-anchor="middle" font-family="Fraunces, serif" font-size="14" fill="#1a1a1c" font-weight="500">AGENTS.md 公司端 bytes 趨勢（KiB）</text>
+
+  <!-- Grid -->
+  <g stroke="#d6cfc1" stroke-width="0.5">
+    <line x1="80" y1="80" x2="640" y2="80"/>
+    <line x1="80" y1="130" x2="640" y2="130"/>
+    <line x1="80" y1="180" x2="640" y2="180"/>
+    <line x1="80" y1="230" x2="640" y2="230"/>
+    <line x1="80" y1="260" x2="640" y2="260"/>
+  </g>
+
+  <!-- Y-axis labels (KiB) -->
+  <g font-family="JetBrains Mono, monospace" font-size="9" fill="#6a665d" text-anchor="end">
+    <text x="75" y="83">32 (100%)</text>
+    <text x="75" y="133">26 (warn)</text>
+    <text x="75" y="183">20</text>
+    <text x="75" y="233">14</text>
+    <text x="75" y="263">10</text>
+  </g>
+
+  <!-- 32 KiB ceiling line -->
+  <line x1="80" y1="80" x2="640" y2="80" stroke="#b8543a" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="640" y="76" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="9" fill="#b8543a">32 KiB 預算上限</text>
+
+  <!-- 26 KiB warning line -->
+  <line x1="80" y1="130" x2="640" y2="130" stroke="#d4886f" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="640" y="126" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="9" fill="#d4886f">26 KiB selective load 重審 trigger</text>
+
+  <!-- Data line -->
+  <polyline points="120,238 220,238 320,212 420,186 520,177 620,150"
+            fill="none" stroke="#2c4a52" stroke-width="2.5"/>
+
+  <!-- Data points -->
+  <g fill="#2c4a52">
+    <circle cx="120" cy="238" r="4"/>
+    <circle cx="220" cy="238" r="4"/>
+    <circle cx="320" cy="212" r="4"/>
+    <circle cx="420" cy="186" r="4"/>
+    <circle cx="520" cy="177" r="4"/>
+    <circle cx="620" cy="150" r="5" fill="#b8543a"/>
+  </g>
+
+  <!-- Labels on points -->
+  <g font-family="JetBrains Mono, monospace" font-size="8" fill="#1a1a1c">
+    <text x="120" y="260" text-anchor="middle">5/10</text>
+    <text x="120" y="225" text-anchor="middle">~14.0</text>
+
+    <text x="220" y="260" text-anchor="middle">5/11</text>
+    <text x="220" y="225" text-anchor="middle">~13.6</text>
+
+    <text x="320" y="260" text-anchor="middle">5/12</text>
+    <text x="320" y="199" text-anchor="middle">17.7</text>
+
+    <text x="420" y="260" text-anchor="middle">5/13</text>
+    <text x="420" y="173" text-anchor="middle">20.9</text>
+
+    <text x="520" y="260" text-anchor="middle">5/13 home</text>
+    <text x="520" y="164" text-anchor="middle">21.2</text>
+
+    <text x="620" y="285" text-anchor="middle" font-weight="700">5/14</text>
+    <text x="620" y="298" text-anchor="middle" font-weight="700">公司</text>
+    <text x="620" y="137" text-anchor="middle" font-weight="700" fill="#b8543a">24.4 (74.5%)</text>
+  </g>
+
+  <!-- Pre-2.1 reference -->
+  <rect x="80" y="55" width="20" height="20" fill="#b8543a" opacity="0.3"/>
+  <text x="105" y="65" font-family="JetBrains Mono, monospace" font-size="9" fill="#6a665d">5/10 pre-2.1：~32 KiB（撞天花板）</text>
+  <text x="105" y="78" font-family="JetBrains Mono, monospace" font-size="9" fill="#6a665d">5/11 後 → ~13.6 KiB（編譯壓縮 41%）</text>
+</svg>
+<figcaption>Fig. 06 — AGENTS bytes 趨勢：壓縮後再緩慢累積、目前距 26 KiB 警戒線約 1.6 KiB</figcaption>
+</figure>
+
+<div class="stat-grid">
+  <div class="stat"><div class="stat-value">+38%</div><div class="stat-label">3 天淨增（5/12→5/14）</div></div>
+  <div class="stat"><div class="stat-value">74.5%</div><div class="stat-label">當前佔預算</div></div>
+  <div class="stat"><div class="stat-value">1.6 KiB</div><div class="stat-label">距警戒線</div></div>
+  <div class="stat"><div class="stat-value">~3-5d</div><div class="stat-label">同速度逼近警戒線</div></div>
+</div>
+
+<p>「先大後小 transition 期」這個 5/13 寫進策略檔的觀察、<strong>到 5/14 仍只看到「先大」、沒看到「後小」</strong>。三個合理解釋：</p>
+
+<ol>
+  <li>反覆 architectural change 期、每次都加 SOP / methodology 條目進 shared、量本來就會持續成長</li>
+  <li>Selective load 還沒大規模 rollout、include_only 檔少、reduction 效果未顯</li>
+  <li>真的就需要這些 bytes、74.5% 仍在預算內、不痛</li>
+</ol>
+
+<p>26 KiB warning line 逼近時、應該重審「先 observe」決策、考慮把 selective load 擴張到 <code>project_status_*</code>。</p>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="external">
+<div class="section-number">SECTION 07</div>
+<h2>外部架構研究與吸收策略</h2>
+
+<p>5 個外部研究、各自產出不同類別的學習。重要的是 — <strong>研究外部的價值不只在「採納什麼」、也在「觸發什麼設計衝動」、甚至「反向驗證自己的設計」</strong>：</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>研究</th><th>日期</th><th>主要學習</th><th>採納類型</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>cc-switch</strong><br>(farion1231)</td>
+      <td>5/12</td>
+      <td>場景對應不上（它做 provider config switch）。<strong>但「guardrail 該被產品化」設計衝動是真的</strong></td>
+      <td>觸發設計衝動<br>不採納 patterns</td>
+    </tr>
+    <tr>
+      <td><strong>Hermes Agent</strong><br>(NousResearch)</td>
+      <td>5/13</td>
+      <td>同 problem space、互補設計；我們 indexed memory + scope 分割<strong>領先社群方案 2 天</strong>；缺 plugin abstraction</td>
+      <td>採納 includes directive 概念<br>不採納 vector search / plugin</td>
+    </tr>
+    <tr>
+      <td><strong>PLUR</strong><br>(plur-ai)</td>
+      <td>5/13</td>
+      <td>對立哲學 validation（memory 是 bottleneck 不是 model intelligence）；3 條相容概念</td>
+      <td>採納 3 條概念（type / mem-used / access、提案 v1.0）<br>不採納 auto-emerge / engram</td>
+    </tr>
+    <tr>
+      <td><strong>superpowers</strong><br>(obra)</td>
+      <td>5/13</td>
+      <td>Skill vs memory 區分；skill = auto-triggered + enforced</td>
+      <td>反向驗證自己（state-centric vs methodology-centric）<br>確認 gap 不是漏洞</td>
+    </tr>
+    <tr>
+      <td><strong>Cowork</strong><br>(Anthropic)</td>
+      <td>5/14</td>
+      <td>Multi-surface fragmentation 風險 — 對 SSOT 哲學是負面</td>
+      <td>反向驗證 surface 收斂的合理性<br>不導入（架構整體性考量）</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h3>研究外部的價值矩陣</h3>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>結果類型</th><th>意義</th><th>範例</th></tr></thead>
+  <tbody>
+    <tr><td><strong>直接採納</strong></td><td>把外部 design 直接 port 進來</td><td>Hermes Issue #22612 indexed memory 概念</td></tr>
+    <tr><td><strong>概念吸收</strong></td><td>取概念、自己實作</td><td>PLUR 三條（type / mem-used / access）</td></tr>
+    <tr><td><strong>觸發內部設計衝動</strong></td><td>研究本身啟動架構演進</td><td>cc-switch → 「guardrail 產品化」</td></tr>
+    <tr><td><strong>反向驗證</strong>（最隱形、最重要）</td><td>確認自己的設計選擇對</td><td>superpowers 確認 skill gap 不是漏洞；Cowork 確認 surface 收斂合理</td></tr>
+    <tr><td><strong>純 mapping</strong></td><td>不採納、純了解</td><td>Cowork 與 use case 對位差</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p><strong>研究外部前先判斷會用哪一類</strong> — 這是後續可以記成元層級方法論的觀察。</p>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="methods">
+<div class="section-number">SECTION 08</div>
+<h2>累積的方法論清單</h2>
+
+<p>9 天提取出來的可重用 pattern（已成檔 / 已隱含）：</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>方法論</th><th>來源</th><th>寫進哪</th><th>狀態</th></tr></thead>
+  <tbody>
+    <tr><td>Meta-memory（memory 自己的規則也是 memory）</td><td>5/07</td><td><code>reference_claude_memory_repo.md</code></td><td>成檔</td></tr>
+    <tr><td>Architecture change checklist</td><td>5/11（事後補）</td><td><code>reference_codex_memory_strategy.md</code></td><td>成檔</td></tr>
+    <tr><td><code>shared/</code> ≠ 對等 context</td><td>5/11</td><td>同上</td><td>成檔</td></tr>
+    <tr><td>Inline boundedness 兩層 pattern</td><td>5/12</td><td><code>feedback_inline_size_limits.md</code></td><td>成檔 + 已應用</td></tr>
+    <tr><td>Validation through use（非 inspection）</td><td>5/12</td><td>隱含、未成檔</td><td>待提取</td></tr>
+    <tr><td>Cross-shell parity 從 defaults 起手</td><td>5/14</td><td><code>memory_health.common.env</code></td><td>成檔</td></tr>
+    <tr><td>「Selective」需要 declaration + exclusion</td><td>5/13</td><td>Codex 設計上（codex_load: include_only）</td><td>已實作</td></tr>
+    <tr><td>Pilot → Reliability baseline → Expansion</td><td>5/13</td><td>隱含、未成檔</td><td>待提取</td></tr>
+    <tr><td>Health check warning 預設驗證、不降標準</td><td>5/13</td><td>隱含</td><td>待提取</td></tr>
+    <tr><td>局部、可證明無副作用的 fix（最小爆炸半徑）</td><td>5/13</td><td>隱含</td><td>待提取</td></tr>
+    <tr><td>Markdown-as-baton vs verbal trade-off</td><td>5/13-14</td><td><code>feedback_cross_agent_baton.md</code></td><td>成檔</td></tr>
+    <tr><td>Baton 雙層規則（markdown primary、口頭 secondary）</td><td>5/14</td><td>同上</td><td>成檔</td></tr>
+    <tr><td>26 KiB / dependency repetition 為 selective load trigger</td><td>5/14</td><td>Strategy 檔 + 5/14 Notion 日誌</td><td>成檔</td></tr>
+  </tbody>
+</table>
+</div>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="state">
+<div class="section-number">SECTION 09</div>
+<h2>目前狀態與 open threads</h2>
+
+<h3>四端狀態（2026/05/14 收尾）</h3>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>端</th><th>Memory infra</th><th>Health</th><th>AGENTS bytes</th></tr></thead>
+  <tbody>
+    <tr><td>公司 Claude Code</td><td>完整</td><td>clean</td><td>N/A（不走 AGENTS）</td></tr>
+    <tr><td>公司 Codex</td><td>完整 + Path A pilot</td><td>clean</td><td>24406 / 32768（<strong>74.5%</strong>）</td></tr>
+    <tr><td>家裡 Claude Code</td><td>完整 + Path A 驗證</td><td>clean</td><td>N/A</td></tr>
+    <tr><td>家裡 Codex</td><td>完整 + reliability parity</td><td>clean（5/13）</td><td>21181</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Open threads（未閉環的事項）</h3>
+
+<ol>
+  <li><strong>家裡端 Codex 5/14 改動後重驗</strong> — <code>memory_health.common.env</code> 在家裡端 runtime 是否正確讀取、AGENTS 編譯是否一致</li>
+  <li><strong>AGENTS bytes 趨勢監控</strong> — 9 天從 ~13.6 KiB → 24.4 KiB、若按目前增速 3-5 天會逼近 26 KiB 觸發 selective load 擴張決策</li>
+  <li><strong>PLUR 概念吸收提案</strong> — 已寫提案 v1.0（type 四分 / mem-used / access count）、等 Path A pilot 全面 rollout 後再開工</li>
+  <li><strong>方法論未成檔項</strong> — Validation through use、Pilot → baseline → expansion、研究外部分類 — 都還是隱含</li>
+  <li><strong>Skill layer 評估</strong> — 確認 gap 不是漏洞、但若未來 SOP 違規率上升要重新評估 hybrid 化</li>
+</ol>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="philosophy">
+<div class="section-number">SECTION 10</div>
+<h2>設計哲學</h2>
+
+<p>整個架構走下來、underlying principles 可以總結為 7 條。<strong>每條都附「為什麼這樣比反向選擇穩」的說明</strong>：</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th style="width:30%">原則</th><th>內容 + 為什麼穩</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>1. Explicit authoring over auto-emerge</strong></td>
+      <td>Memory 由人 curate、不由 LLM 自動 derive。<br><em>為什麼穩</em>：完整 control、git 可 audit、跟 31 年手寫日記哲學一致、不依賴 LLM 黑箱判斷。</td>
+    </tr>
+    <tr>
+      <td><strong>2. Git as single source of truth</strong></td>
+      <td>所有 memory 變動可 diff / rollback / git log。<br><em>為什麼穩</em>：版本控制完整、distributed、離線可用、無 vendor lock-in。</td>
+    </tr>
+    <tr>
+      <td><strong>3. Local-first</strong></td>
+      <td>Memory 在本機檔系統、不依賴外部 API endpoint。<br><em>為什麼穩</em>：隱私、不受 vendor 服務中斷影響、不受網路延遲影響、不受 API 收費政策影響。</td>
+    </tr>
+    <tr>
+      <td><strong>4. Platform-agnostic data portability</strong></td>
+      <td>用 markdown、不用 vendor-specific format。<br><em>為什麼穩</em>：Anthropic 哪天倒了、memory 仍可讀。對應 31 年日記哲學的延伸。</td>
+    </tr>
+    <tr>
+      <td><strong>5. Filesystem as unification layer</strong></td>
+      <td>Claude Code / Codex 都認 filesystem、可被 git 串起來。<br><em>為什麼穩</em>：unified layer 必須是兩個 agent 都認的、filesystem 是當前最低共識基礎。Cowork 不認 filesystem → 不收編。</td>
+    </tr>
+    <tr>
+      <td><strong>6. Methodology written into memory itself</strong></td>
+      <td>規則寫進 memory 自己（<code>feedback_*.md</code>），下次 session auto-load 就懂。<br><em>為什麼穩</em>：規則不外掛、不靠人記、不會被忘記、跨 session 自動 propagate。</td>
+    </tr>
+    <tr>
+      <td><strong>7. Minimum blast radius for changes</strong></td>
+      <td><code>_v2</code> 不覆寫、局部修不全域改、common.env 只抽 defaults 不抽 logic。<br><em>為什麼穩</em>：可回退、可隔離 bug、可驗證無副作用、降低任一改動的風險面。</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="pullquote">
+這 7 條跟 Anthropic 自家產品演化方向部份對立。但對立不是 bug、是設計權衡。
+</div>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Anthropic 方向</th><th>Ivan 方向</th></tr></thead>
+  <tbody>
+    <tr><td>多 surface（Chat / Cowork / Code / Dispatch）</td><td>Filesystem-unified 4 端、收斂 surface</td></tr>
+    <tr><td>Server-side memory derive（auto-emerge）</td><td>Explicit markdown authoring</td></tr>
+    <tr><td>Cloud-backed memory provider</td><td>Local-first git repo</td></tr>
+    <tr><td>Vendor-managed convenience</td><td>Platform-agnostic 31 年可追溯</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Ivan 的路徑 trade off 了「自動化便利」、換來「31 年可追溯 + 完整 control + platform 中立」。</p>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="future">
+<div class="section-number">SECTION 11</div>
+<h2>未來方向（open、未承諾）</h2>
+
+<p>按優先序：</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>方向</th><th>觸發條件</th><th>預期投入</th></tr></thead>
+  <tbody>
+    <tr><td>AGENTS 26 KiB selective load 擴張</td><td>bytes 逼近 26 KiB / 重複 dependency 出現</td><td>3-5 hr</td></tr>
+    <tr><td>PLUR 概念吸收提案執行（type 四分先做）</td><td>Path A pilot 全面 rollout 穩定後</td><td>10-13 hr（三條全做）</td></tr>
+    <tr><td>方法論成檔（validation through use 等）</td><td>自然觸發、不主動排期</td><td>各 ~30 min</td></tr>
+    <tr><td>Hybrid skill layer 評估</td><td>SOP 違反率上升、出現具體 enforcement gap</td><td>未估</td></tr>
+    <tr><td>Cowork / 多 surface 評估</td><td>Anthropic 推出 unified memory layer</td><td>未估、被動觀望</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>故意不做的事</h3>
+
+<ul>
+  <li>不導入 PLUR 工具本身（哲學對立）</li>
+  <li>不導入 cc-switch（場景不對）</li>
+  <li>不導入 Cowork（破壞 SSOT）</li>
+  <li>不全面 skill 化（use case 不需要）</li>
+  <li>不引入 vector / semantic search（規模未到）</li>
+  <li>不引入 cloud-backed memory provider（隱私 + 控制權）</li>
+</ul>
+
+<p><em>負面列表比正面列表更能防止之後 scope creep。</em></p>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="conclusion">
+<div class="section-number">SECTION 12</div>
+<h2>結論</h2>
+
+<p>9 天從零到生產級。每天一個 architectural step、沒有空轉、沒有 cleanup-only 的日子。</p>
+
+<h3>最值得記住的三條觀察</h3>
+
+<div class="callout">
+<div class="callout-label">觀察 1</div>
+<p><strong>Compound effect 真實存在。</strong>5/06 沒有 memory infra 概念、5/14 已經有正式 baton SOP + cross-shell parity + inline boundedness pattern 在生產應用。每天一個 step、9 步成林。如果中間某天 skip、後面整個鏈條會斷。</p>
+</div>
+
+<div class="callout">
+<div class="callout-label">觀察 2</div>
+<p><strong>研究外部 + 設計內部 + 落地實作 + 提取方法論</strong>，這條 loop 是這幾天唯一的工作流。每外部研究都產出 internal 設計、每設計都進落地、每落地都產出方法論、方法論寫進 memory 自己。這條 loop 自我增強。</p>
+</div>
+
+<div class="callout">
+<div class="callout-label">觀察 3</div>
+<p><strong>Memory infra 是 surface 收斂的對應物。</strong>Cowork 多 surface vs Ivan filesystem-unified — 兩條路都有 logic、但選了後者後、整個 memory infra 才能 work。SSOT 跟 surface 收斂是同一個哲學的兩面。</p>
+</div>
+
+</section>
+
+<footer>
+<p><strong>文件 metadata</strong></p>
+<dl style="display:grid; grid-template-columns: 200px 1fr; gap: 0.4rem; margin-top: 1rem;">
+  <dt>版本</dt><dd>v1.0 / 2026-05-14</dd>
+  <dt>用途</dt><dd>歷史紀錄 / 新 agent onboarding context / 跨日回顧</dd>
+  <dt>建議存放</dt><dd><code>claude-memory/shared/reference_memory_evolution_2026_05.md</code>（tier: summary, agents: [claude, codex]）</dd>
+  <dt>更新觸發</dt><dd>下一個 architectural milestone（PLUR 提案執行、selective load 大規模 rollout、AGENTS 突破 26 KiB）</dd>
+  <dt>整理</dt><dd>Ivan + Claude Chat（claude.ai web）</dd>
+</dl>
+</footer>
+
+</main>
+
+</div>
+
+</div>
+
+</body>
+</html>
