@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>115 年外匯內部證照｜7 日攻略</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Serif+TC:wght@400;500;700;900&family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #f7f3ec;
+  --paper-2: #efe8dc;
+  --ink: #1a1f3a;
+  --ink-soft: #4a4f6a;
+  --ink-muted: #7a7e92;
+  --rule: #d8cfbf;
+  --burgundy: #8b1538;
+  --burgundy-dim: #b14a64;
+  --gold: #b8893a;
+  --navy: #1a3b6e;
+  --emerald: #2d5a3d;
+  --warn: #c2410c;
+  --serif-display: 'DM Serif Display', 'Noto Serif TC', serif;
+  --serif: 'Noto Serif TC', 'Times New Roman', serif;
+  --sans: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+body {
+  font-family: var(--sans);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.7;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(184,137,58,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 60%, rgba(139,21,56,0.03) 0%, transparent 50%);
+}
+
+/* === TOP NAV === */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(247,243,236,0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule);
+}
+.topbar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.topbar-title {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+}
+.topbar-title em { font-style: italic; color: var(--burgundy); }
+.topbar-nav {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.topbar-nav a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border-radius: 3px;
+  transition: all 0.2s;
+}
+.topbar-nav a:hover {
+  background: var(--paper-2);
+  color: var(--burgundy);
+}
+
+/* === HERO === */
+.hero {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 24px 40px;
+  position: relative;
+}
+.hero-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.hero-meta span:nth-child(2) { color: var(--burgundy); font-weight: 700; }
+.hero h1 {
+  font-family: var(--serif-display);
+  font-weight: 400;
+  font-size: clamp(36px, 6vw, 68px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+  color: var(--ink);
+}
+.hero h1 em {
+  font-style: italic;
+  color: var(--burgundy);
+}
+.hero .subtitle {
+  font-family: var(--serif);
+  font-size: clamp(16px, 2vw, 20px);
+  color: var(--ink-soft);
+  font-style: italic;
+  margin-bottom: 32px;
+  max-width: 720px;
+}
+
+/* === STAT GRID === */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  margin-top: 32px;
+}
+.stat {
+  background: var(--paper);
+  padding: 20px 16px;
+}
+.stat-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 8px;
+}
+.stat-value {
+  font-family: var(--serif-display);
+  font-size: 32px;
+  line-height: 1;
+  color: var(--ink);
+}
+.stat-value .unit {
+  font-size: 14px;
+  color: var(--ink-muted);
+  font-family: var(--sans);
+  font-weight: 400;
+  margin-left: 2px;
+}
+.stat-sub {
+  font-size: 11px;
+  color: var(--ink-muted);
+  margin-top: 6px;
+}
+
+/* === SECTION === */
+section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+.section-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-eyebrow::before {
+  content: "";
+  width: 32px;
+  height: 1px;
+  background: var(--burgundy);
+}
+h2 {
+  font-family: var(--serif-display);
+  font-weight: 400;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin-bottom: 32px;
+  color: var(--ink);
+}
+h2 em {
+  font-style: italic;
+  color: var(--burgundy);
+}
+h3 {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 22px;
+  margin: 32px 0 12px;
+  color: var(--ink);
+}
+h4 {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  margin: 24px 0 8px;
+}
+
+/* === WEIGHT BARS === */
+.weight-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid var(--rule);
+}
+.weight-row {
+  display: grid;
+  grid-template-columns: 28px 1fr 60px;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.weight-row .rank {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+.weight-row .name {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.weight-row .name-text {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 15px;
+}
+.weight-bar {
+  height: 4px;
+  background: var(--paper-2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.weight-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--burgundy), var(--burgundy-dim));
+  border-radius: 2px;
+}
+.weight-row .pct {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 14px;
+  text-align: right;
+  color: var(--ink);
+}
+.weight-row.priority .pct { color: var(--burgundy); }
+
+/* === ANSWER DIST === */
+.answer-bars {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+}
+.answer-bar {
+  background: var(--paper-2);
+  padding: 16px;
+  position: relative;
+  border-top: 3px solid var(--ink);
+  text-align: center;
+}
+.answer-bar.warn { border-top-color: var(--warn); }
+.answer-bar.high { border-top-color: var(--burgundy); }
+.answer-bar .num {
+  font-family: var(--serif-display);
+  font-size: 36px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.answer-bar .pct {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.answer-bar .delta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+.answer-bar.warn .delta { color: var(--warn); font-weight: 700; }
+.answer-bar.high .delta { color: var(--burgundy); font-weight: 700; }
+
+/* === BIAS TABLE === */
+.bias-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-size: 14px;
+}
+.bias-table th {
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  padding: 10px 12px;
+  border-bottom: 2px solid var(--ink);
+  font-weight: 700;
+}
+.bias-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 13px;
+}
+.bias-table tbody tr:hover { background: var(--paper-2); }
+.bias-table .extreme-high {
+  background: rgba(139,21,56,0.12);
+  font-weight: 700;
+  color: var(--burgundy);
+}
+.bias-table .extreme-low {
+  background: rgba(194,65,12,0.12);
+  font-weight: 700;
+  color: var(--warn);
+}
+.bias-table .cat-name {
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 500;
+}
+.bias-table .note {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+/* === DAY CARDS === */
+.day-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--rule);
+}
+.day-tab {
+  padding: 12px 18px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ink-muted);
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  font-weight: 700;
+}
+.day-tab:hover { color: var(--burgundy); }
+.day-tab.active {
+  color: var(--burgundy);
+  border-bottom-color: var(--burgundy);
+}
+.day-panel {
+  display: none;
+  animation: fade 0.3s ease;
+}
+.day-panel.active { display: block; }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+.day-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-bottom: 12px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--rule);
+}
+.day-title {
+  font-family: var(--serif-display);
+  font-size: 32px;
+  line-height: 1.1;
+}
+.day-title em { font-style: italic; color: var(--burgundy); }
+.day-stats {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-muted);
+  letter-spacing: 0.05em;
+}
+.day-stats strong { color: var(--ink); font-size: 14px; }
+
+/* === CHECKLIST === */
+.check-list {
+  list-style: none;
+  padding: 0;
+}
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px dashed var(--rule);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.check-item:hover { background: var(--paper-2); padding-left: 8px; padding-right: 8px; margin-left: -8px; margin-right: -8px; }
+.check-item input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--ink-soft);
+  border-radius: 2px;
+  margin-top: 3px;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  background: var(--paper);
+  transition: all 0.2s;
+}
+.check-item input:checked {
+  background: var(--burgundy);
+  border-color: var(--burgundy);
+}
+.check-item input:checked::after {
+  content: "✓";
+  color: white;
+  position: absolute;
+  left: 3px;
+  top: -3px;
+  font-size: 14px;
+  font-weight: bold;
+}
+.check-item input:checked + .check-body {
+  opacity: 0.45;
+  text-decoration: line-through;
+}
+.check-body {
+  flex: 1;
+  transition: opacity 0.2s;
+}
+.check-body strong {
+  font-family: var(--serif);
+  display: block;
+  margin-bottom: 4px;
+  font-size: 15px;
+}
+.check-body span {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+/* === SUBSECTION TABLE === */
+.subsec {
+  margin: 20px 0;
+  background: var(--paper-2);
+  padding: 16px 18px;
+  border-left: 3px solid var(--burgundy);
+}
+.subsec-title {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.subsec-body {
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.7;
+}
+.subsec-body code {
+  background: var(--paper);
+  padding: 1px 6px;
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--burgundy);
+  font-weight: 700;
+}
+
+/* === DATA TABLE === */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 14px;
+}
+.data-table th, .data-table td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--rule);
+}
+.data-table th {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.data-table tbody tr:hover { background: var(--paper-2); }
+.data-table .qty {
+  font-family: var(--mono);
+  font-weight: 700;
+  text-align: right;
+  width: 60px;
+}
+.data-table .key-num {
+  font-family: var(--mono);
+  font-weight: 700;
+  color: var(--burgundy);
+  font-size: 13px;
+}
+
+/* === MUST-MEMORIZE CARDS === */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  margin: 24px 0;
+}
+.card {
+  background: var(--paper);
+  padding: 24px;
+}
+.card-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 8px;
+}
+.card-num {
+  font-family: var(--serif-display);
+  font-size: 48px;
+  line-height: 1;
+  color: var(--burgundy);
+  margin-bottom: 8px;
+}
+.card-num small {
+  font-size: 18px;
+  color: var(--ink-soft);
+  margin-left: 4px;
+}
+.card-desc {
+  font-family: var(--serif);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.card-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-muted);
+  margin-top: 12px;
+  letter-spacing: 0.05em;
+}
+
+/* === ABBREV / GLOSSARY === */
+.glossary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+.gloss-item {
+  background: var(--paper-2);
+  padding: 14px 16px;
+  border-left: 2px solid var(--ink);
+}
+.gloss-item:nth-child(3n) { border-left-color: var(--burgundy); }
+.gloss-item:nth-child(3n+1) { border-left-color: var(--gold); }
+.gloss-item:nth-child(3n+2) { border-left-color: var(--navy); }
+.gloss-term {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.gloss-def {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+/* === STRATEGY CALLOUT === */
+.callout {
+  background: linear-gradient(135deg, var(--ink) 0%, #2a3050 100%);
+  color: var(--paper);
+  padding: 32px;
+  margin: 32px 0;
+  position: relative;
+}
+.callout::before {
+  content: "“";
+  font-family: var(--serif-display);
+  font-size: 80px;
+  position: absolute;
+  top: 0;
+  left: 16px;
+  color: var(--gold);
+  line-height: 1;
+  opacity: 0.5;
+}
+.callout-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+.callout-body {
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.7;
+  position: relative;
+  z-index: 1;
+}
+.callout-body strong { color: var(--gold); }
+
+/* === PROGRESS METER === */
+.progress-meter {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 14px 18px;
+  border-radius: 100px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  box-shadow: 0 8px 24px rgba(26,31,58,0.25);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.progress-ring {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: conic-gradient(var(--gold) 0%, transparent 0%);
+  position: relative;
+}
+.progress-ring::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  background: var(--ink);
+  border-radius: 50%;
+}
+.progress-text {
+  position: relative;
+}
+
+/* === FOOTER === */
+footer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+  border-top: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-muted);
+  letter-spacing: 0.05em;
+  line-height: 1.8;
+}
+footer strong { color: var(--ink); }
+.footer-row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .topbar-nav { display: none; }
+  .hero { padding: 32px 18px 24px; }
+  section { padding: 40px 18px; }
+  .answer-bars { grid-template-columns: repeat(2, 1fr); }
+  .day-tabs { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
+  .day-tab { white-space: nowrap; }
+  .bias-table { font-size: 12px; }
+  .bias-table th, .bias-table td { padding: 8px 6px; }
+  .data-table { font-size: 12px; }
+  .data-table th, .data-table td { padding: 8px 6px; }
+  .progress-meter { bottom: 12px; right: 12px; padding: 10px 14px; font-size: 11px; }
+  .card-num { font-size: 36px; }
+}
+
+/* === PRINT === */
+@media print {
+  .topbar, .progress-meter { display: none; }
+  body { background: white; font-size: 11pt; }
+  section { padding: 16px 0; max-width: none; page-break-inside: avoid; }
+  .day-panel { display: block !important; page-break-before: always; }
+  .day-tabs { display: none; }
+  h2 { font-size: 22pt; }
+  .callout { background: white; color: black; border: 1px solid #333; }
+  .callout-eyebrow, .callout-body strong { color: #8b1538; }
+  a { color: inherit; text-decoration: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-title">外匯內部證照 <em>·</em> 7 日攻略</div>
+    <div class="topbar-nav">
+      <a href="#overview">總覽</a>
+      <a href="#weights">權重</a>
+      <a href="#answers">答案陷阱</a>
+      <a href="#plan">7 日計畫</a>
+      <a href="#cheatsheet">速查</a>
+      <a href="#strategy">策略</a>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-meta">
+    <span>Vol. 115 · 第一次檢定</span>
+    <span id="countdown">D-7</span>
+    <span>704 題庫深度解析</span>
+  </div>
+  <h1>七天<em>攻略</em>。<br>命中率最大化的<em>讀書策略</em>。</h1>
+  <p class="subtitle">不是把 704 題讀完，而是用 11 大類別權重 × 出處頻次 × 答案分布偏差，把時間花在 60% 的關鍵題型上。</p>
+
+  <div class="stat-grid">
+    <div class="stat">
+      <div class="stat-label">Total Questions</div>
+      <div class="stat-value">704<span class="unit">題</span></div>
+      <div class="stat-sub">105 頁 · 11 類別</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Top 5 Cover</div>
+      <div class="stat-value">61.4<span class="unit">%</span></div>
+      <div class="stat-sub">432 題集中於 5 類</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Best Guess</div>
+      <div class="stat-value">答 4</div>
+      <div class="stat-sub">27.3% · 高於答 1 之 21.2%</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Anomaly</div>
+      <div class="stat-value">41<span class="unit">%</span></div>
+      <div class="stat-sub">衍生性商品答 4 異常偏高</div>
+    </div>
+  </div>
+</header>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="section-eyebrow">01 · Overview</div>
+  <h2>分析<em>方法</em>與<em>核心發現</em></h2>
+  <p style="font-family:var(--serif); font-size:17px; line-height:1.8; max-width:760px; color:var(--ink-soft);">
+  將 704 題依「類別 × 章節 × 出處 × 答案 × 關鍵字」五個維度交叉統計，得出三條決定 7 日讀書順序的事實：
+  </p>
+
+  <div class="cards" style="margin-top:32px;">
+    <div class="card">
+      <div class="card-eyebrow">Finding 01</div>
+      <div class="card-num">61<small>%</small></div>
+      <div class="card-desc"><strong>前 5 大類別佔總題庫 61.4%。</strong>UCP+ISBP、國外匯兌、外幣授信、衍生性商品、電子金融。剩下 6 類合計僅 38.6%。</div>
+      <div class="card-meta">PRIORITIZE TOP 5</div>
+    </div>
+    <div class="card">
+      <div class="card-eyebrow">Finding 02</div>
+      <div class="card-num">41<small>%</small></div>
+      <div class="card-desc"><strong>衍生性商品題答案 4 異常偏高至 41%</strong>，答案 2 僅 11%。完全不會時直接猜 4，期望命中接近一半。</div>
+      <div class="card-meta">EXPLOIT ANSWER BIAS</div>
+    </div>
+    <div class="card">
+      <div class="card-eyebrow">Finding 03</div>
+      <div class="card-num">102<small>×</small></div>
+      <div class="card-desc"><strong>「外 5」manual 章節被引用 102 次最多</strong>，「外 4」94 次、「外 2」85 次。三本內規佔出處引用過半，必讀。</div>
+      <div class="card-meta">MANUAL HOT ZONES</div>
+    </div>
+  </div>
+</section>
+
+<!-- WEIGHTS -->
+<section id="weights">
+  <div class="section-eyebrow">02 · Weight Distribution</div>
+  <h2>11 大類別<em>權重分布</em></h2>
+  <p style="font-family:var(--serif); font-size:16px; max-width:680px; color:var(--ink-soft); margin-bottom:32px;">
+  按題數降冪排列。前 5 大標紅，是 7 日計畫的攻擊重點。
+  </p>
+
+  <div class="weight-list">
+    <div class="weight-row priority">
+      <span class="rank">01</span>
+      <div class="name">
+        <div class="name-text">UCP + ISBP</div>
+        <div class="weight-bar"><div class="weight-bar-fill" style="width:100%"></div></div>
+      </div>
+      <span class="pct">15.8%</span>
+    </div>
+    <div class="weight-row priority">
+      <span class="rank">02</span>
+      <div class="name">
+        <div class="name-text">國外匯兌業務</div>
+        <div class="weight-bar"><div class="weight-bar-fill" style="width:81%"></div></div>
+      </div>
+      <span class="pct">12.8%</span>
+    </div>
+    <div class="weight-row priority">
+      <span class="rank">03</span>
+      <div class="name">
+        <div class="name-text">外幣授信</div>
+        <div class="weight-bar"><div class="weight-bar-fill" style="width:81%"></div></div>
+      </div>
+      <span class="pct">12.8%</span>
+    </div>
+    <div class="weight-row priority">
+      <span class="rank">04</span>
+      <div class="name">
+        <div class="name-text">衍生性商品作業準則</div>
+        <div class="weight-bar"><div class="weight-bar-fill" style="width:64%"></div></div>
+      </div>
+      <span class="pct">10.1%</span>
+    </div>
+    <div class="weight-row priority">
+      <span class="rank">05</span>
+      <div class="name">
+        <div class="name-text">電子金融</div>
+        <div class="weight-bar"><div class="weight-bar-fill" style="width:63%"></div></div>
+      </div>
+      <span class="pct">9.9%</span>
+    </div>
+    <div class="weight-row">
+      <span class="rank">06</span>
+      <div class="name">
+        <div class="name-text">資金營運篇</div>
+        <div class="weight-bar"><div class="weight-bar-fill" style="width:54%"></div></div>
+      </div>
+      <span class="pct">8.5%</span>
+    </div>
+    <div class="weight-row">
+      <span class="rank">07</span>
+      <div class="name">
+        <div class="name-text">出口業務</div>
+        <div class="weight-bar"><div class="weight-bar-fill" style="width:51%"></div></div>
+      </div>
+      <span class="pct">8.1%</span>
+    </div>
+    <div class="weight-row">
+      <span class="rank">08</span>
+      <div class="name">
+        <div class="name-text">進口業務</div>
+        <div class="weight-bar"><div class="weight-bar-fill" style="width:50%"></div></div>
+      </div>
+      <span class="pct">7.8%</span>
+    </div>
+    <div class="weight-row">
+      <span class="rank">09</span>
+      <div class="name">
+        <div class="name-text">外匯業務法規及其他</div>
+        <div class="weight-bar"><div class="weight-bar-fill" style="width:32%"></div></div>
+      </div>
+      <span class="pct">5.1%</span>
+    </div>
+    <div class="weight-row">
+      <span class="rank">10</span>
+      <div class="name">
+        <div class="name-text">OBU 貿易商品篇</div>
+        <div class="weight-bar"><div class="weight-bar-fill" style="width:31%"></div></div>
+      </div>
+      <span class="pct">4.8%</span>
+    </div>
+    <div class="weight-row">
+      <span class="rank">11</span>
+      <div class="name">
+        <div class="name-text">國際應收帳款 Factoring</div>
+        <div class="weight-bar"><div class="weight-bar-fill" style="width:27%"></div></div>
+      </div>
+      <span class="pct">4.3%</span>
+    </div>
+  </div>
+</section>
+
+<!-- ANSWERS -->
+<section id="answers">
+  <div class="section-eyebrow">03 · Answer Bias</div>
+  <h2>答案分布<em>陷阱</em></h2>
+  <p style="font-family:var(--serif); font-size:16px; max-width:680px; color:var(--ink-soft); margin-bottom:32px;">
+  本題庫答案 1 偏低、3/4 偏高 — 與 113/114 年「答案 2 偏低」型態相反。猜題時用得上。
+  </p>
+
+  <h4>全題庫答案分布</h4>
+  <div class="answer-bars">
+    <div class="answer-bar warn">
+      <div class="num">1</div>
+      <div class="pct">21.2%</div>
+      <div class="delta">−3.8pp</div>
+    </div>
+    <div class="answer-bar">
+      <div class="num">2</div>
+      <div class="pct">24.4%</div>
+      <div class="delta">−0.6pp</div>
+    </div>
+    <div class="answer-bar">
+      <div class="num">3</div>
+      <div class="pct">27.1%</div>
+      <div class="delta">+2.1pp</div>
+    </div>
+    <div class="answer-bar high">
+      <div class="num">4</div>
+      <div class="pct">27.3%</div>
+      <div class="delta">+2.3pp</div>
+    </div>
+  </div>
+
+  <h4>類別內極端偏差 — 考前秒猜可用</h4>
+  <table class="bias-table">
+    <thead>
+      <tr>
+        <th>類別</th>
+        <th>1</th>
+        <th>2</th>
+        <th>3</th>
+        <th>4</th>
+        <th>備註</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="cat-name">衍生性商品</td>
+        <td>17%</td>
+        <td class="extreme-low">11%</td>
+        <td>31%</td>
+        <td class="extreme-high">41%</td>
+        <td class="note">不會就猜 4，避開 2</td>
+      </tr>
+      <tr>
+        <td class="cat-name">國際應收帳款</td>
+        <td class="extreme-low">10%</td>
+        <td>30%</td>
+        <td>27%</td>
+        <td>33%</td>
+        <td class="note">避開 1</td>
+      </tr>
+      <tr>
+        <td class="cat-name">OBU</td>
+        <td>24%</td>
+        <td>15%</td>
+        <td>24%</td>
+        <td class="extreme-high">38%</td>
+        <td class="note">偏 4</td>
+      </tr>
+      <tr>
+        <td class="cat-name">進口業務</td>
+        <td>20%</td>
+        <td>15%</td>
+        <td>33%</td>
+        <td>33%</td>
+        <td class="note">偏 3 / 4</td>
+      </tr>
+      <tr>
+        <td class="cat-name">資金營運</td>
+        <td>17%</td>
+        <td class="extreme-high">38%</td>
+        <td>22%</td>
+        <td>23%</td>
+        <td class="note">偏 2</td>
+      </tr>
+      <tr>
+        <td class="cat-name">UCP+ISBP</td>
+        <td>21%</td>
+        <td>28%</td>
+        <td>24%</td>
+        <td>27%</td>
+        <td class="note">分布平均</td>
+      </tr>
+      <tr>
+        <td class="cat-name">國外匯兌業務</td>
+        <td>24%</td>
+        <td>24%</td>
+        <td>33%</td>
+        <td>18%</td>
+        <td class="note">偏 3</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 7-DAY PLAN -->
+<section id="plan">
+  <div class="section-eyebrow">04 · The 7-Day Plan</div>
+  <h2>七天<em>讀書計畫</em></h2>
+  <p style="font-family:var(--serif); font-size:16px; max-width:680px; color:var(--ink-soft); margin-bottom:32px;">
+  每天約 2 小時。勾選項目進度會自動存在瀏覽器，下次打開繼續。
+  </p>
+
+  <div class="day-tabs" id="dayTabs">
+    <button class="day-tab active" data-day="1">DAY 1</button>
+    <button class="day-tab" data-day="2">DAY 2</button>
+    <button class="day-tab" data-day="3">DAY 3</button>
+    <button class="day-tab" data-day="4">DAY 4</button>
+    <button class="day-tab" data-day="5">DAY 5</button>
+    <button class="day-tab" data-day="6">DAY 6</button>
+    <button class="day-tab" data-day="7">DAY 7</button>
+  </div>
+
+  <!-- DAY 1 -->
+  <div class="day-panel active" data-day="1">
+    <div class="day-header">
+      <div>
+        <div class="day-title">DAY 1 · <em>UCP + ISBP</em></div>
+      </div>
+      <div class="day-stats">範圍 <strong>111 題</strong> · 全題庫 <strong>15.8%</strong></div>
+    </div>
+
+    <div class="subsec">
+      <div class="subsec-title">核心 Manual</div>
+      <div class="subsec-body">UCP 600 全文 + ISBP 821；最高頻條文為 <code>UCP 第 3 條</code> (8 次)、第 14、20、28、38 條</div>
+    </div>
+
+    <h4>必背要點</h4>
+    <ul class="check-list" data-day="1">
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>保險最低投保 110%</strong><span>CIF/CIP 價值 × 110% 為最低投保金額 (UCP 28，出題 9 次)</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>保險日 ≤ 裝船日</strong><span>保險生效日不得晚於裝運日，否則為瑕疵</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>銀行審單期限 5 個營業日</strong><span>UCP 第 14b 條：自提示文件之翌日起 max 5 個銀行營業日</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>保險單正本超過一份須全數提示</strong><span>UCP 28 — all originals must be presented</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>發票毋須簽署</strong><span>ISBP 規定 — 但須符合信用狀其他要求</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>第三方 SGS 檢驗報告之更改</strong><span>未經簽署確認的更改 — 不視為瑕疵</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>INCOTERMS 2020</strong><span>FOB / CIF / CFR / EXW / DAP / DDP 交貨時點與費用劃分 (FOB = 賣方完成交貨於裝載港船上)</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>eUCP 電子提示</strong><span>版本一致性、e-record 真實性、與 UCP 衝突時優先適用 eUCP</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>轉讓信用狀 (UCP 38)</strong><span>可分割、不可轉讓給第三受益人；費用由第一受益人負擔</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>on board notation 證明裝運日</strong><span>已裝船提單由裝船註記日期決定裝運日</span></div></li>
+    </ul>
+  </div>
+
+  <!-- DAY 2 -->
+  <div class="day-panel" data-day="2">
+    <div class="day-header">
+      <div><div class="day-title">DAY 2 · <em>進口 + 出口業務</em></div></div>
+      <div class="day-stats">範圍 <strong>112 題</strong> · 全題庫 <strong>15.9%</strong></div>
+    </div>
+
+    <div class="subsec">
+      <div class="subsec-title">進口業務 · 外 2</div>
+      <div class="subsec-body">21 題開狀、13 題單據審核、9 題進口託收、6 題擔保提貨、5 題信用狀修改</div>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">出口業務 · 外 3</div>
+      <div class="subsec-body">33 題出口押匯 (本卷最重)、10 題 Forfaiting、5 題出口託收</div>
+    </div>
+
+    <h4>必背要點</h4>
+    <ul class="check-list" data-day="2">
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>賣方遠期押匯息計算</strong><span>匯票期間 30 days after BL date：押匯息計收 BL→押匯日；貼現息計收押匯日→到期日</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>進口遠期延遲還款違約金 1 成</strong><span>6 個月內按延遲息 1 成計收</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>非正式提單須核准</strong><span>FCR、Charter Party B/L、Beneficiary's Delivery Note 須開狀簡報單敘明 + 單位主管簽章</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>進口信用狀修改加金額 NTD400</strong><span>DBU 進口信用狀修改 — 增加金額每筆最低 NTD400</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>DBU 信用狀通知電詢費 NTD800</strong><span>須徵得受益人書面證明、每筆 NTD800</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>擔保提貨對航運公司無限責任</strong><span>無確定金額之保證、不得申請信用狀餘額註銷</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>轉押匯息 7 天</strong><span>轉押匯息固定計收 7 天</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>第三銀行求償加郵費半數</strong><span>須向第三銀行求償者，該地區郵費 ÷ 2 加計</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>Master L/C Final Payment 條款</strong><span>轉開信用狀加註 Final Payment — 屬託收性質，須 Master L/C 入帳銷帳後始撥付</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>D/P vs D/A</strong><span>付款交單 vs 承兌交單 — D/A 風險顯著高於 D/P</span></div></li>
+    </ul>
+  </div>
+
+  <!-- DAY 3 -->
+  <div class="day-panel" data-day="3">
+    <div class="day-header">
+      <div><div class="day-title">DAY 3 · <em>國外匯兌 + 外匯法規</em></div></div>
+      <div class="day-stats">範圍 <strong>126 題</strong> · 全題庫 <strong>17.9%</strong></div>
+    </div>
+
+    <div class="subsec">
+      <div class="subsec-title">國外匯兌 · 外 4 (出處最高頻 102 次)</div>
+      <div class="subsec-body">外幣存款 23、匯出匯款 19、光票託收 16、現鈔旅支 14、匯入匯款 8</div>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">外匯法規 · 外 8 + 央行令</div>
+      <div class="subsec-body">申報義務人 14、申報辦法 11、銀行業作業規範 6、業務管理辦法 3</div>
+    </div>
+
+    <h4>必背要點</h4>
+    <ul class="check-list" data-day="3">
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>大額結匯門檻</strong><span>公司行號 100 萬美元 / 個人 50 萬美元以上需檢附文件</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>央行核准門檻</strong><span>公司行號年累積 5000 萬美元 / 個人 500 萬美元以上須央行核准</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>人民幣現鈔每次 2 萬</strong><span>自然人購買人民幣現鈔每人每次不得逾 2 萬人民幣</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>外幣定存年天數</strong><span>美元 365 / 英鎊 360 — 注意各幣別不同</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>外幣存款計息</strong><span>活存按日計息；定存足月按月、畸零按日</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>未掛牌幣別匯款</strong><span>業務代碼「50」；當日未交割完畢得自行刪除</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>申報義務人國民身分判定</strong><span>居留證 1 年以上列我國國民；港澳居民持入出境許可證非我國國民</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>匯款人資訊充足判定</strong><span>姓名 + 地址 + 扣帳帳號 — 三者必備；電話號碼非必要</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>外匯存款匯出單證</strong><span>掣發「其他交易憑證」(非買賣匯水單、非結匯證實書)</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>金額更改 — 申報義務人簽章</strong><span>申報書金額有更改應由申報義務人簽名或蓋章</span></div></li>
+    </ul>
+  </div>
+
+  <!-- DAY 4 -->
+  <div class="day-panel" data-day="4">
+    <div class="day-header">
+      <div><div class="day-title">DAY 4 · <em>外幣授信 + Factoring</em></div></div>
+      <div class="day-stats">範圍 <strong>120 題</strong> · 全題庫 <strong>17.0%</strong></div>
+    </div>
+
+    <div class="subsec">
+      <div class="subsec-title">外幣授信 · 外 5 (出處 #1 高頻 102 次)</div>
+      <div class="subsec-body">進口授信 34、外銷貸款 22、外幣貸款 21、外幣保證 9</div>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">國際應收帳款 · 外 6</div>
+      <div class="subsec-body">三種類型 R / F / NR；本類答案 1 僅 10% — 避開猜 1</div>
+    </div>
+
+    <h4>必背要點</h4>
+    <ul class="check-list" data-day="4">
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>擔保品適格性</strong><span>客戶本人外幣活存 ✓、關係企業活存 ✗、OBU 海外分行定存單 ✓、國內他行定存單 ✗</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>三角貿易開狀保證金 3 成</strong><span>除自備款全額結匯外，三角貿易案件徵提開狀金額 3 成以上保證金</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>外銷貸款檢核表</strong><span>動撥時填寫「貿易融資暨防制洗錢及打擊資恐檢核表」</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>代償他行外幣貸款限制</strong><span>確認無重複融資、期限不得逾原貸款、金額不得逾原餘額</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>Factoring 三型</strong><span>R 型 = 有追索權；F 型 = 無追索權有預支價金；NR 型 = 無追索權無預支價金</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>預支價金最高八成</strong><span>應收帳款預支價金最高以發票金額 80% 為原則</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>承購期間最長兩年</strong><span>承購及融資期間最長不超過 2 年為原則</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>R 型融資到期日 +30 天</strong><span>有追索權融資以最長應收帳款到期日 + 30 天計算</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>商業糾紛 5 日內函覆</strong><span>客戶接獲商糾通知書後應於 5 日內函覆本行</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>承購商理賠原因</strong><span>限「買方財務因素破產」— 商業糾紛、買方詐欺、買方未依指示付款均不理賠</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>應避免產業 — 生鮮業</strong><span>生鮮業易發生商業糾紛，應避免承作 Factoring</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>免買方額度條件</strong><span>有追索權案件免買方額度；初次往來 R 型需首次買方照會、NR 型免辦</span></div></li>
+    </ul>
+  </div>
+
+  <!-- DAY 5 -->
+  <div class="day-panel" data-day="5">
+    <div class="day-header">
+      <div><div class="day-title">DAY 5 · <em>衍生性商品作業準則</em></div></div>
+      <div class="day-stats">範圍 <strong>71 題</strong> · 全題庫 <strong>10.1%</strong></div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-eyebrow">Bias Alert</div>
+      <div class="callout-body">本類答案 <strong>4 高達 41%</strong>，答案 <strong>2 僅 11%</strong>。完全不會時直接猜 4，期望命中接近一半。</div>
+    </div>
+
+    <h4>必背要點</h4>
+    <ul class="check-list" data-day="5">
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>遠匯實需文件徵提時點</strong><span>訂約、展期、提前交割「三時點皆需」徵提實需證明文件</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>專業法人客戶條件</strong><span>最近一期經會計師查核之財報「總資產 ≥ 新台幣 1 億」(非 5000 萬)</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>1 BP = 0.01%</strong><span>基點 Basis Point = 萬分之一 = 0.01% = 0.0001</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>IRS 不交換名目本金</strong><span>利率交換契約不交換本金；期間無上限 (非「不得超過 1 年」)</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>Forward vs Future</strong><span>共同點：未來特定時日、價格、數量買賣；Forward 客製、Future 制式</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>進口商遠匯交割日</strong><span>遠匯訂約交割日「不晚於」文件付款日</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>出口商遠匯交割日</strong><span>遠匯訂約交割日「不早於」文件收款日</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>提前/延後交割須佐證</strong><span>客戶提前或延後交割需求須提出相關佐證文件 + 於交易文件加註預計收/付款日</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>組合式商品第三人確認</strong><span>一定金額以上交易確認人員須為 FO/FA 以外之第三人；不得拆單規避</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>電話確認需錄音 + 編號</strong><span>確認人員填寫確認時間 + 音檔編號</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>NDF 無本金交割</strong><span>不交割本金、僅淨額結算 — 央行對國人交易管制嚴</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>KO / KI / TRF</strong><span>敲出 / 敲入 / 目標可贖回遠期；適合度評估嚴格</span></div></li>
+    </ul>
+  </div>
+
+  <!-- DAY 6 -->
+  <div class="day-panel" data-day="6">
+    <div class="day-header">
+      <div><div class="day-title">DAY 6 · <em>電子金融 + 資金營運</em></div></div>
+      <div class="day-stats">範圍 <strong>130 題</strong> · 全題庫 <strong>18.4%</strong></div>
+    </div>
+
+    <div class="subsec">
+      <div class="subsec-title">電子金融 · 電 3 + 電 4</div>
+      <div class="subsec-body">企業網銀外幣 34、網路銀行 19、個人網銀外幣 15</div>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">資金營運 · 財務四</div>
+      <div class="subsec-body">第四章外匯交易 60 題；本類答案 2 達 38% 偏高</div>
+    </div>
+
+    <h4>必背要點</h4>
+    <ul class="check-list" data-day="6">
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>網銀幣別轉換限額</strong><span>每筆最低等值 USD 100、每日最高等值 USD 100 萬；限轉本人本行約定帳戶</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>電子憑證安控門檻</strong><span>單筆或當日累計達等值 NTD 50 萬 (含) 以上 — 限電子憑證</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>美金現鈔申購</strong><span>營業日 15:30 前透過網銀成功送出 — 當日臨櫃領取</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>行員優惠匯率 NTD 40 萬</strong><span>每營業日線上自動議價結匯 (購售合併) 累積不得超逾 NTD 40 萬；不得代他人結匯</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>油品商行業需上傳文件</strong><span>液體氣體燃料批發業 — 須上傳交易文件方完成網銀匯出</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>美元 / 外幣間幣別轉換議價</strong><span>等值美元 50 萬以下 — 營業單位可在優惠範圍自行承做；50 萬以上洽財務處</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>議價編號修改可改項目</strong><span>不影響部位下：交割日 T+2 內、客戶帳號 / 統編、交易類別 ✓；買賣別 ✗</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>洗錢及資恐制裁國家</strong><span>受款國別屬制裁國/地區 — 須單筆逐筆上傳交易文件</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>網銀匯款待確認日報表</strong><span>每日列印前一營業日「外幣匯款 - 與受款人往來情形待確認日報表」</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>Spot / Tom / Next</strong><span>即期 T+2 / Tom Next T+1；Forward = T+3 以上</span></div></li>
+    </ul>
+  </div>
+
+  <!-- DAY 7 -->
+  <div class="day-panel" data-day="7">
+    <div class="day-header">
+      <div><div class="day-title">DAY 7 · <em>OBU + 總複習 + 模考</em></div></div>
+      <div class="day-stats">範圍 <strong>34 題 + 全卷</strong></div>
+    </div>
+
+    <div class="subsec">
+      <div class="subsec-title">OBU · OBU 1</div>
+      <div class="subsec-body">存款業務 29、OBU 法規 4、匯兌 1；本類答案 4 達 38% 偏高</div>
+    </div>
+
+    <h4>必背要點</h4>
+    <ul class="check-list" data-day="7">
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>OBU 高風險開戶仍須核准</strong><span>客戶風險等級高 — 「仍須單位主管核准」(非毋須)</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>境外公司開戶必要文件</strong><span>公司章程、董事任命書、登記證明；「註冊地外匯管理局核准文件」非必要</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>OBU 利息全免扣繳</strong><span>境外個人 / 法人 / 政府機關 — 皆免扣繳利息所得稅</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>境外個人定義</strong><span>持外國護照 + 我國境內無住所；無戶籍且未取得外僑居留證 / 臺灣地區居留證</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>OBU 定存計息</strong><span>足月按月、畸零按日 (同 DBU 規則)</span></div></li>
+      <li class="check-item"><input type="checkbox"><div class="check-body"><strong>KYC POLICY 落實</strong><span>OBU 開戶 / 帳戶異動 — 落實 KYC、徵提完整文件、填寫風險檢核評估表</span></div></li>
+    </ul>
+
+    <h4>考前最後一輪 — 重複出處 (各看 1 遍)</h4>
+    <table class="data-table">
+      <thead>
+        <tr><th>出處</th><th class="qty">次</th><th>主題</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="key-num">外 3-4-3</td><td class="qty">9</td><td>出口押匯收費</td></tr>
+        <tr><td class="key-num">UCP 第 3 條</td><td class="qty">8</td><td>信用狀解釋規則</td></tr>
+        <tr><td class="key-num">外 2-1-6</td><td class="qty">7</td><td>進口開狀核准權限</td></tr>
+        <tr><td class="key-num">外 5-2-5</td><td class="qty">6</td><td>進口授信擔保</td></tr>
+        <tr><td class="key-num">99/10/12 彰資易 0990026735</td><td class="qty">6</td><td>議價編號修改</td></tr>
+        <tr><td class="key-num">電 4-3-7</td><td class="qty">6</td><td>企業網銀外幣業務</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- CHEATSHEET -->
+<section id="cheatsheet">
+  <div class="section-eyebrow">05 · Speed Reference</div>
+  <h2>必記<em>速查表</em></h2>
+
+  <h3>關鍵金額／天數／百分比</h3>
+  <div class="cards">
+    <div class="card">
+      <div class="card-eyebrow">大額結匯門檻</div>
+      <div class="card-num">100<small>萬 USD</small></div>
+      <div class="card-desc"><strong>公司行號</strong>大額結匯交易須檢附文件之門檻</div>
+      <div class="card-meta">個人 / 團體為 50 萬美元</div>
+    </div>
+    <div class="card">
+      <div class="card-eyebrow">央行核准門檻</div>
+      <div class="card-num">5000<small>萬 USD</small></div>
+      <div class="card-desc"><strong>公司行號</strong>年累積結匯 5000 萬 / 個人 500 萬以上須央行核准</div>
+      <div class="card-meta">每年計算</div>
+    </div>
+    <div class="card">
+      <div class="card-eyebrow">保險最低投保</div>
+      <div class="card-num">110<small>%</small></div>
+      <div class="card-desc"><strong>CIF / CIP 價值 × 110%</strong>為信用狀未指明時的最低投保金額</div>
+      <div class="card-meta">UCP 600 第 28 條</div>
+    </div>
+    <div class="card">
+      <div class="card-eyebrow">人民幣現鈔</div>
+      <div class="card-num">2<small>萬 CNY</small></div>
+      <div class="card-desc">自然人購買人民幣現鈔 <strong>每人每次</strong> 不得逾 2 萬人民幣</div>
+      <div class="card-meta">非每日</div>
+    </div>
+    <div class="card">
+      <div class="card-eyebrow">銀行審單期限</div>
+      <div class="card-num">5<small>日</small></div>
+      <div class="card-desc">UCP 14b — 自提示文件之翌日起 <strong>最多 5 個銀行營業日</strong></div>
+      <div class="card-meta">為決定是否符合</div>
+    </div>
+    <div class="card">
+      <div class="card-eyebrow">轉押匯息</div>
+      <div class="card-num">7<small>天</small></div>
+      <div class="card-desc">出口轉押匯 — 轉押匯息固定計收 <strong>7 天</strong></div>
+      <div class="card-meta">外 3-4</div>
+    </div>
+    <div class="card">
+      <div class="card-eyebrow">Factoring 預支</div>
+      <div class="card-num">80<small>%</small></div>
+      <div class="card-desc">應收帳款預支價金最高 <strong>發票金額 80%</strong> 為原則</div>
+      <div class="card-meta">外 6-2</div>
+    </div>
+    <div class="card">
+      <div class="card-eyebrow">電子憑證門檻</div>
+      <div class="card-num">50<small>萬 NTD</small></div>
+      <div class="card-desc">企業網銀結匯 <strong>單筆或當日累計 ≥ 50 萬</strong> 限電子憑證</div>
+      <div class="card-meta">電 4-3-11</div>
+    </div>
+    <div class="card">
+      <div class="card-eyebrow">行員優惠匯率</div>
+      <div class="card-num">40<small>萬 NTD</small></div>
+      <div class="card-desc">每營業日線上議價結匯 <strong>累積不得超逾 40 萬</strong></div>
+      <div class="card-meta">不可代他人結匯</div>
+    </div>
+    <div class="card">
+      <div class="card-eyebrow">違約金率</div>
+      <div class="card-num">1<small>成</small></div>
+      <div class="card-desc">進口遠期延遲還款 — 6 個月內按延遲息 <strong>1 成</strong>計收違約金</div>
+      <div class="card-meta">外 2-3-4</div>
+    </div>
+    <div class="card">
+      <div class="card-eyebrow">三角貿易保證金</div>
+      <div class="card-num">3<small>成</small></div>
+      <div class="card-desc">三角貿易案件 — 徵提開狀金額 <strong>3 成以上</strong>保證金</div>
+      <div class="card-meta">外 5-2-2</div>
+    </div>
+    <div class="card">
+      <div class="card-eyebrow">基點 (BP)</div>
+      <div class="card-num">0.01<small>%</small></div>
+      <div class="card-desc"><strong>1 Basis Point = 0.01% = 0.0001</strong> — 萬分之一</div>
+      <div class="card-meta">財務四-3</div>
+    </div>
+  </div>
+
+  <h3>英文縮寫速查</h3>
+  <div class="glossary">
+    <div class="gloss-item"><div class="gloss-term">UCP 600</div><div class="gloss-def">信用狀統一慣例</div></div>
+    <div class="gloss-item"><div class="gloss-term">eUCP</div><div class="gloss-def">電子提示版本</div></div>
+    <div class="gloss-item"><div class="gloss-term">ISBP 821</div><div class="gloss-def">國際標準銀行實務</div></div>
+    <div class="gloss-item"><div class="gloss-term">URC 522</div><div class="gloss-def">託收統一規則</div></div>
+    <div class="gloss-item"><div class="gloss-term">URDG 758</div><div class="gloss-def">即付保證統一規則</div></div>
+    <div class="gloss-item"><div class="gloss-term">URR 725</div><div class="gloss-def">銀行間補償統一規則</div></div>
+    <div class="gloss-item"><div class="gloss-term">ISP 98</div><div class="gloss-def">擔保信用狀慣例</div></div>
+    <div class="gloss-item"><div class="gloss-term">D/P · D/A</div><div class="gloss-def">付款交單 · 承兌交單</div></div>
+    <div class="gloss-item"><div class="gloss-term">O/A</div><div class="gloss-def">Open Account 記帳</div></div>
+    <div class="gloss-item"><div class="gloss-term">B/L · AWB</div><div class="gloss-def">海運提單 · 空運提單</div></div>
+    <div class="gloss-item"><div class="gloss-term">HAWB · MAWB</div><div class="gloss-def">分提單 · 主提單</div></div>
+    <div class="gloss-item"><div class="gloss-term">FCR</div><div class="gloss-def">Forwarder's Cargo Receipt 須核准</div></div>
+    <div class="gloss-item"><div class="gloss-term">Charter Party B/L</div><div class="gloss-def">傭船契約提單 須核准</div></div>
+    <div class="gloss-item"><div class="gloss-term">FOB · CIF · CFR</div><div class="gloss-def">INCOTERMS 2020 主要條件</div></div>
+    <div class="gloss-item"><div class="gloss-term">EXW · DAP · DDP</div><div class="gloss-def">工廠交貨 · 目的地 · 完稅後</div></div>
+    <div class="gloss-item"><div class="gloss-term">DBU · OBU</div><div class="gloss-def">外匯指定 · 國際金融業務</div></div>
+    <div class="gloss-item"><div class="gloss-term">Sight L/C</div><div class="gloss-def">即期信用狀</div></div>
+    <div class="gloss-item"><div class="gloss-term">Usance L/C</div><div class="gloss-def">遠期信用狀 (Seller's/Buyer's)</div></div>
+  </div>
+
+  <h3>SWIFT MT 報文</h3>
+  <table class="data-table">
+    <thead><tr><th>報文</th><th>用途</th></tr></thead>
+    <tbody>
+      <tr><td class="key-num">MT103</td><td>客戶匯款</td></tr>
+      <tr><td class="key-num">MT202</td><td>銀行間匯款</td></tr>
+      <tr><td class="key-num">MT700</td><td>開發信用狀</td></tr>
+      <tr><td class="key-num">MT707</td><td>信用狀修改</td></tr>
+      <tr><td class="key-num">MT734</td><td>拒付通知</td></tr>
+      <tr><td class="key-num">MT799</td><td>自由格式</td></tr>
+    </tbody>
+  </table>
+
+  <h3>衍生性商品</h3>
+  <table class="data-table">
+    <thead><tr><th>縮寫</th><th>商品</th><th>關鍵點</th></tr></thead>
+    <tbody>
+      <tr><td class="key-num">DF</td><td>遠期外匯 Forward</td><td>訂約 / 展期 / 提前交割「皆需」實需文件</td></tr>
+      <tr><td class="key-num">SWAP</td><td>換匯</td><td>兩個方向交易組合</td></tr>
+      <tr><td class="key-num">CCS</td><td>換匯換利</td><td>跨幣別利率交換</td></tr>
+      <tr><td class="key-num">IRS</td><td>利率交換</td><td>不交換名目本金；期間無上限</td></tr>
+      <tr><td class="key-num">NDF</td><td>無本金交割遠期</td><td>淨額結算；國人交易管制嚴</td></tr>
+      <tr><td class="key-num">TRF</td><td>目標可贖回遠期</td><td>適合度評估嚴格</td></tr>
+      <tr><td class="key-num">KO / KI</td><td>敲出 / 敲入</td><td>障礙選擇權</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- STRATEGY -->
+<section id="strategy">
+  <div class="section-eyebrow">06 · Exam Strategy</div>
+  <h2>考前<em>作答策略</em></h2>
+
+  <h3>時間分配 (80 題 / 80 分鐘)</h3>
+  <table class="data-table">
+    <thead><tr><th>輪次</th><th>時間</th><th>策略</th></tr></thead>
+    <tbody>
+      <tr><td>第一輪</td><td>40 分鐘</td><td>逐題作答，確定的填掉，不確定的標記跳過</td></tr>
+      <tr><td>第二輪</td><td>25 分鐘</td><td>處理標記題目</td></tr>
+      <tr><td>第三輪</td><td>15 分鐘</td><td>檢查答案卡 + 全卷再掃</td></tr>
+    </tbody>
+  </table>
+
+  <h3>純猜題 — 期望命中率最大化</h3>
+  <ul class="check-list">
+    <li class="check-item"><input type="checkbox"><div class="check-body"><strong>全題庫不會就猜 4</strong><span>4 (27.3%) &gt; 3 (27.1%) &gt; 2 (24.4%) &gt; 1 (21.2%)</span></div></li>
+    <li class="check-item"><input type="checkbox"><div class="check-body"><strong>衍生性商品題不會 → 猜 4</strong><span>類別內答案 4 達 41%，期望命中接近一半</span></div></li>
+    <li class="check-item"><input type="checkbox"><div class="check-body"><strong>進口 / OBU 題不會 → 猜 4 或 3</strong><span>進口 33%/33%、OBU 24%/38%</span></div></li>
+    <li class="check-item"><input type="checkbox"><div class="check-body"><strong>資金營運題不會 → 猜 2</strong><span>類別內答案 2 達 38%</span></div></li>
+    <li class="check-item"><input type="checkbox"><div class="check-body"><strong>應收帳款題不會 → 避開 1</strong><span>答案 1 只有 10%，幾乎排除</span></div></li>
+  </ul>
+
+  <h3>「下列何者錯誤」型陷阱</h3>
+  <div class="subsec">
+    <div class="subsec-title">語意陷阱</div>
+    <div class="subsec-body">錯誤選項常含「絕對化用語」：<code>無須</code>、<code>一律不得</code>、<code>皆</code>、<code>均不</code>、<code>無限額</code>、<code>無須申請</code>。看到這些字眼先標記。</div>
+  </div>
+  <div class="subsec">
+    <div class="subsec-title">數字陷阱</div>
+    <div class="subsec-body">天數 5 天寫成 7 天、金額 100 萬寫成 50 萬、5000 萬寫成 3000 萬、成數 3 成寫成 2 成、110% 寫成 105%。<br>對速查表中關鍵數字，特別小心。</div>
+  </div>
+  <div class="subsec">
+    <div class="subsec-title">題庫 vs 實考</div>
+    <div class="subsec-body">題庫附註明示「選項出題時會稍作變化」— 不要死背選項位置，要記<strong>概念</strong>。重點是分得清楚哪個敘述「實務上是對的」。</div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-row">
+    <div>
+      <strong>產出基礎</strong>　115 年外匯內部證照第一次檢定題庫<br>
+      704 題 · 105 頁 · 三月發版
+    </div>
+    <div>
+      <strong>分析維度</strong>　類別 × 章節 × 出處 × 答案 × 關鍵字<br>
+      Five-axis cross-tabulation
+    </div>
+    <div>
+      <strong>提醒</strong>　選項實考會微調 · 重點是觀念<br>
+      Concepts &gt; memorized option positions
+    </div>
+  </div>
+</footer>
+
+<!-- PROGRESS METER -->
+<div class="progress-meter">
+  <div class="progress-ring" id="progressRing"></div>
+  <div class="progress-text"><span id="doneCount">0</span> / <span id="totalCount">0</span> 已完成</div>
+</div>
+
+<script>
+// === Tab switching ===
+const tabs = document.querySelectorAll('.day-tab');
+const panels = document.querySelectorAll('.day-panel');
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const day = tab.dataset.day;
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.day === day));
+    panels.forEach(p => p.classList.toggle('active', p.dataset.day === day));
+  });
+});
+
+// === Checkbox persistence ===
+const STORAGE_KEY = 'forex_115_progress_v1';
+const checkboxes = document.querySelectorAll('.check-item input[type="checkbox"]');
+
+function loadProgress() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    checkboxes.forEach((cb, i) => {
+      if (saved[i]) cb.checked = true;
+    });
+  } catch (e) {}
+  updateProgress();
+}
+
+function saveProgress() {
+  const state = Array.from(checkboxes).map(cb => cb.checked);
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) {}
+}
+
+function updateProgress() {
+  const total = checkboxes.length;
+  const done = Array.from(checkboxes).filter(cb => cb.checked).length;
+  document.getElementById('doneCount').textContent = done;
+  document.getElementById('totalCount').textContent = total;
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  const ring = document.getElementById('progressRing');
+  ring.style.background = `conic-gradient(var(--gold) ${pct}%, transparent ${pct}%)`;
+}
+
+checkboxes.forEach(cb => {
+  cb.addEventListener('change', () => {
+    saveProgress();
+    updateProgress();
+  });
+});
+
+// Click anywhere on check-item to toggle
+document.querySelectorAll('.check-item').forEach(item => {
+  item.addEventListener('click', (e) => {
+    if (e.target.tagName !== 'INPUT') {
+      const cb = item.querySelector('input');
+      cb.checked = !cb.checked;
+      cb.dispatchEvent(new Event('change'));
+    }
+  });
+});
+
+loadProgress();
+</script>
+
+</body>
+</html>
