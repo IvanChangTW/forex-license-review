@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>跨 AI Agent、跨機器長期記憶管理：演化進程 II — 治理與擴充性 — 2026/07</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f4ed;
+    --bg-card: #fbf8f0;
+    --bg-code: #efe9dc;
+    --text: #1a1a1c;
+    --muted: #6a665d;
+    --border: #d6cfc1;
+    --border-strong: #b5ad9c;
+    --accent: #2c4a52;
+    --accent-light: #4a6d76;
+    --warning: #b8543a;
+    --warning-light: #d4886f;
+    --success: #4a6741;
+    --layer-state: #c9b988;
+    --layer-process: #88a8a8;
+    --layer-method: #9d7e6b;
+    --shadow: 0 1px 0 rgba(0,0,0,0.04);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    font-feature-settings: "ss01", "ss02", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+
+  .layout { display: grid; grid-template-columns: 260px 1fr; gap: 3rem; align-items: start; padding: 2rem 0 6rem; }
+
+  nav.toc {
+    position: sticky;
+    top: 2rem;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+    font-size: 0.875rem;
+    padding-right: 1rem;
+    border-right: 1px solid var(--border);
+  }
+
+  nav.toc .toc-title {
+    font-family: 'Fraunces', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  nav.toc ol { list-style: none; counter-reset: section; }
+  nav.toc li { counter-increment: section; margin: 0.4rem 0; }
+  nav.toc li::before {
+    content: counter(section, decimal-leading-zero);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-right: 0.6rem;
+  }
+  nav.toc a {
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s;
+  }
+  nav.toc a:hover { border-bottom-color: var(--accent); }
+
+  main { min-width: 0; max-width: 820px; }
+
+  header.hero {
+    border-bottom: 2px solid var(--text);
+    padding: 4rem 0 3rem;
+    margin-bottom: 3rem;
+    position: relative;
+  }
+  header.hero::before {
+    content: "REFERENCE / ARCHIVE · VOL. II";
+    position: absolute;
+    top: 1rem;
+    right: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+  }
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .hero-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-variation-settings: "opsz" 80;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+  .hero-subtitle {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 640px;
+    margin-bottom: 2rem;
+  }
+  .hero-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem 2rem;
+    font-size: 0.875rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .hero-meta dt { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.2rem; }
+  .hero-meta dd { font-weight: 500; }
+
+  section { margin-bottom: 4rem; scroll-margin-top: 2rem; }
+
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-variation-settings: "opsz" 60;
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.015em;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.3rem;
+    margin: 2rem 0 0.75rem;
+    color: var(--accent);
+  }
+  h4 {
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin: 1.5rem 0 0.6rem;
+  }
+
+  p { margin-bottom: 1rem; }
+  strong { font-weight: 700; color: var(--accent); }
+
+  ul, ol { margin: 0.5rem 0 1rem 1.5rem; }
+  li { margin-bottom: 0.35rem; }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85em;
+    background: var(--bg-code);
+    padding: 0.1em 0.4em;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+
+  pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    overflow-x: auto;
+  }
+  pre code { background: none; border: none; padding: 0; font-size: inherit; }
+
+  .table-wrap { margin: 1.5rem 0; overflow-x: auto; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-card); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  th {
+    text-align: left;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    padding: 0.7rem 1rem;
+    background: var(--bg-code);
+    border-bottom: 1px solid var(--border-strong);
+    color: var(--accent);
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+  }
+  td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: rgba(214, 207, 193, 0.15); }
+
+  .glossary {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 4px;
+    padding: 1.5rem 1.8rem;
+    margin: 1.5rem 0;
+  }
+  .glossary h3 { margin-top: 0; color: var(--accent); font-size: 1.1rem; }
+  .glossary dl { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1rem; }
+  .glossary dt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.2rem;
+  }
+  .glossary dd { font-size: 0.92rem; color: var(--text); margin-left: 0; }
+
+  .callout {
+    background: linear-gradient(180deg, #fdf6e3 0%, #faf2db 100%);
+    border: 1px solid #d4b886;
+    border-left: 4px solid var(--warning);
+    border-radius: 4px;
+    padding: 1.2rem 1.5rem;
+    margin: 1.5rem 0;
+    position: relative;
+  }
+  .callout-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--warning);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout strong { color: var(--warning); }
+
+  .callout.term {
+    background: #eef2f3;
+    border-color: #b5c7cb;
+    border-left-color: var(--accent);
+  }
+  .callout.term .callout-label { color: var(--accent); }
+  .callout.term strong { color: var(--accent); }
+
+  .figure {
+    margin: 2rem 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.5rem;
+  }
+  .figure svg { display: block; width: 100%; height: auto; max-width: 100%; }
+  .figure figcaption {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .day-block {
+    border-left: 3px solid var(--border);
+    padding: 0.2rem 0 0.2rem 1.5rem;
+    margin: 2rem 0;
+    position: relative;
+  }
+  .day-block::before {
+    content: "";
+    position: absolute;
+    left: -7px;
+    top: 0;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .day-block.day-key::before { background: var(--warning); width: 14px; height: 14px; left: -8px; }
+  .day-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .day-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    background: var(--accent);
+    color: var(--bg);
+    padding: 0.15rem 0.6rem;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+  }
+  .day-block.day-key .day-date { background: var(--warning); }
+  .day-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.25rem;
+    color: var(--text);
+  }
+
+  .pullquote {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.25rem;
+    line-height: 1.45;
+    color: var(--accent);
+    padding: 1.5rem 0 1.5rem 2rem;
+    border-left: 3px solid var(--accent);
+    margin: 2rem 0;
+    background: linear-gradient(90deg, rgba(44, 74, 82, 0.04) 0%, transparent 100%);
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .stat {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem 1.2rem;
+  }
+  .stat-value {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--accent);
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 880px) {
+    .container { padding: 0 1.2rem; }
+    .layout { grid-template-columns: 1fr; gap: 1rem; padding: 1rem 0 4rem; }
+    nav.toc { position: static; max-height: none; border-right: none; border-bottom: 1px solid var(--border); padding: 0 0 1.5rem; margin-bottom: 1rem; }
+    nav.toc ol { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.3rem 1.5rem; }
+    main { max-width: 100%; }
+    header.hero { padding: 2rem 0 1.5rem; }
+    header.hero::before { display: none; }
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0 4rem;
+    margin-top: 4rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<header class="hero">
+  <div class="hero-eyebrow">Memory Infrastructure · Internal Reference</div>
+  <h1 class="hero-title">跨 AI Agent、跨機器<br>長期記憶管理：演化進程 II</h1>
+  <p class="hero-subtitle">治理與擴充性——系統從「能用」走到「會自己喊、會自己修、撞牆前先警告」。本篇承接 2026/05 篇（Day 0-8 從零到生產級），記錄綁定約束的遷移、三層載入模型的成形、health 閉環化，以及 7/2 的 38-agent 全面體檢與三刀落地。</p>
+  <dl class="hero-meta">
+    <div><dt>期間</dt><dd>2026/05/15 — 07/02</dd></div>
+    <div><dt>範圍</dt><dd>4 端 + Notion 日誌</dd></div>
+    <div><dt>關鍵 Repo</dt><dd>claude-memory</dd></div>
+    <div><dt>版本</dt><dd>v2.0 / 2026-07-02</dd></div>
+  </dl>
+</header>
+
+<div class="layout">
+
+<nav class="toc">
+  <div class="toc-title">Contents</div>
+  <ol>
+    <li><a href="#terms">關鍵術語</a></li>
+    <li><a href="#summary">整體軸：約束遷移</a></li>
+    <li><a href="#timeline">里程碑時間軸</a></li>
+    <li><a href="#current">目前最新作法</a></li>
+    <li><a href="#baton">Baton Stage 6-7</a></li>
+    <li><a href="#checkup">7/2 體檢方法論</a></li>
+    <li><a href="#findings">體檢發現與誠實面</a></li>
+    <li><a href="#positioning">定位：沒有統一最佳解</a></li>
+    <li><a href="#methods">累積的方法論</a></li>
+    <li><a href="#philosophy">設計哲學 7+4</a></li>
+    <li><a href="#state">目前狀態與 open threads</a></li>
+    <li><a href="#conclusion">結論</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="terms">
+<div class="section-number">SECTION 01</div>
+<h2>關鍵術語</h2>
+
+<p>承接 v1 的術語（SSOT、codex_tier、baton、scope），本篇新增以下核心概念：</p>
+
+<div class="glossary">
+<h3>Glossary · Vol. II</h3>
+<dl>
+<div><dt>native 25.6KB cap</dt><dd>Claude Code 對 <code>MEMORY.md</code> 的載入上限：「前 200 行或前 25,600 bytes、誰先到算誰」，超出尾端<strong>靜默不載</strong>。中文每字 3 bytes → byte 遠比行數先爆。本篇一切大動作的根源約束。</dd></div>
+<div><dt>compiled MEMORY.md</dt><dd>sync 把 <code>MEMORY.shared.md</code> + <code>MEMORY.&lt;profile&gt;.md</code> 兩段索引串接成的開場全載檔；office / home 各自編譯、共用 shared 段。</dd></div>
+<div><dt>demote / detail index</dt><dd>把索引行從全載索引剪進 lazy「詳細索引」檔（開場不載、需要時 Read、grep 照常可及）。零程式碼的手動 tiering，檔案本身不動。</dd></div>
+<div><dt>fail-closed gate</dt><dd>寫入前的 byte 硬防線：超線就拒寫、保留舊版、exit 1；<code>-Force</code> 才能 override。與偵測端共用同一份 <code>common.env</code> 常數。</dd></div>
+<div><dt>tripwire</dt><dd>提早警告線。例：shared 索引 17,800B ＝「再加條目就會把最大 profile 推破軟線」的預警點，設在真撞牆前約 1KB。</dd></div>
+<div><dt>orphan（孤兒檔）</dt><dd>建了檔卻沒被任何索引 / detail index / dashboard 收錄——開場與路由都看不到、且無任何信號。全系統唯一「發生時零信號」的失效模式，7/2 起雙側自動偵測。</dd></div>
+<div><dt>binding constraint</dt><dd>當下真正先撞到的那條限制。它會遷移：Codex AGENTS 32KB（5月）→ Claude native 25.6KB（6/23 起）→ 兩 profile 中較大的 home（7/2 起）。盯錯約束的優化都是白做。</dd></div>
+</dl>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="summary">
+<div class="section-number">SECTION 02</div>
+<h2>整體軸：綁定約束的遷移</h2>
+
+<p>v1 的 9 天是「<strong>從零建立</strong>」：repo、四端接入、tier 編譯、baton SOP、health 哨兵雛形。這 7 週是「<strong>治理與擴充性</strong>」，主軸只有一條：</p>
+
+<div class="pullquote">綁定約束發生了遷移，而整個架構圍繞新約束重組。</div>
+
+<p>v1 收尾時盯的天花板是 Codex AGENTS.md 的 32 KiB。6/23 的調查發現真正先撞的其實是 <strong>Claude Code native loader 的 25,600 bytes 硬上限</strong>——且因中文每字 3 bytes，byte 遠比行數先爆、原本只量行數的守門形同空轉。此後所有大動作——profile split、byte gate、tripwire、demote、lazy detail index、7/2 全面體檢——都是對這條新約束的回應。</p>
+
+<div class="stat-grid">
+  <div class="stat"><div class="stat-value">7 週</div><div class="stat-label">10 個 milestone</div></div>
+  <div class="stat"><div class="stat-value">94→78%</div><div class="stat-label">開場索引佔用（7/2 三刀後）</div></div>
+  <div class="stat"><div class="stat-value">x3.7</div><div class="stat-label">runway 回收（對抗式驗證後數字）</div></div>
+  <div class="stat"><div class="stat-value">~590</div><div class="stat-label">repo commits / 8 週</div></div>
+</div>
+
+<pre><code>05/16  ●  孤兒索引事故 → 手動 audit SOP（7/2 自動化 orphan 檢查的前身）
+05/31  ○  跨端 merge 衝突標記殘留（潛伏）
+06/16  ●  衝突標記被揪出（兩週後）→ conflict-marker 掃描進 health
+06/17  ●  git_sync_health 誕生（dirty / ahead-behind / 索引斷鏈 三檢）
+06/22  ●  fan-out 深審：索引行數監控 +「勿拆 topic 檔」裁定
+06/23  ●  ★ tiering survey：真正綁定約束＝native 25.6KB、byte 先於行數爆
+06/24  ●  profile split：25 條單端條目連檔搬 office/home
+06/25  ●  開工/收工 SOP 改 hook 強制注入（從 model attention 到 harness enforce）
+06/26  ●  propagation-drift 收斂：13 條斷鏈修復 + fail-closed 硬 gate + common.env 同源
+06/27  ●  ★ 16-agent 架構審：office 全載已破 25.6KB（靜默漏載中）→ P0/P1/P2、lazy detail index 誕生
+07/02  ●  ★ 38-agent 全面體檢 + 三刀落地 + 三端 baton（本篇觸發點）</code></pre>
+
+<p>關鍵特徵延續 v1：每階段產出可重用方法論、方法論寫回 memory 自己、每件事經得起 commit + Notion 日誌追溯。新增特徵：<strong>「偵測 → 修復」開始閉環</strong>——健檢不再只是喊，喊了有人修、修完寫成新的自動檢查。</p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="timeline">
+<div class="section-number">SECTION 03</div>
+<h2>里程碑時間軸</h2>
+
+<p>7 週不逐日記，按 10 個 architectural milestone（橘點＝關鍵轉折）：</p>
+
+<div class="day-block">
+<div class="day-header"><span class="day-date">M1 · 05/16</span><span class="day-title">孤兒索引事故：手動 audit SOP 誕生</span></div>
+<p><code>project_receipt_scanner.md</code> commit + push + sync 全做了，卻忘了編索引——檔案在、索引沒有，新對話 auto-load 看不到，等於不存在。事後寫下含 <code>comm -23</code> audit 指令的 SOP 檔：「定期跑、抓孤兒」。<strong>這是需要人記得跑的 on-demand 指令</strong>；它的自動化版本要到 7/2 才落地，而那時這份手動 SOP 早已被併進其他檔——7/2 體檢當天在一個落後 44 天的 memory 目錄裡挖到它的殘影，恰好見證「手動 SOP → 自動 gate」的完整生命週期。</p>
+</div>
+
+<div class="day-block">
+<div class="day-header"><span class="day-date">M2 · 05/31→06/16</span><span class="day-title">衝突標記潛伏兩週：conflict-marker 掃描進 health</span></div>
+<p>5/31 跨端 merge 漏清的 <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> 躺在 log.md <strong>兩週</strong>才被揪出——<code>git diff --check</code> 只查未 commit 的 diff、抓不到已 commit 進去的孤兒標記。修法：health 加行首標記掃描。誠實註記：當時只進了 <code>.ps1</code>，常做跨端 merge 的 home 端（<code>.sh</code>）反而沒有——這個不對稱要到 7/2 才補齊。</p>
+</div>
+
+<div class="day-block">
+<div class="day-header"><span class="day-date">M3 · 06/17</span><span class="day-title">git_sync_health：跨對話兜底「半成品遺失」</span></div>
+<p>三檢：① working tree dirty ② 本機 vs origin ahead/behind（fetch 後比 origin、<strong>絕不用「本機 HEAD 沒前進」反推對方沒 push</strong>——同期一次誤判的直接教訓）③ MEMORY 索引指向的檔是否存在。唯讀、掛在 sync 之後，定位是「唯一能跨對話兜底半成品遺失的機制」。</p>
+</div>
+
+<div class="day-block">
+<div class="day-header"><span class="day-date">M4 · 06/22</span><span class="day-title">fan-out 深審：「勿拆 topic 檔」裁定</span></div>
+<p>反直覺結論：<code>MEMORY.shared.md</code> 每次開對話全載，拆成 topic 檔在全載模式下不省任何 context、還會因 sync 明文 skip <code>MEMORY.*.md</code> 而讓拆出的條目<strong>靜默漏載</strong>。裁定寫進索引檔頭 inline 邊界：不拆，逼近門檻先合併/降級。</p>
+</div>
+
+<div class="day-block day-key">
+<div class="day-header"><span class="day-date">M5 · 06/23</span><span class="day-title">★ 綁定約束遷移：native 25.6KB、byte 先於行數</span></div>
+<p>tiering survey 驗證 native loader 行為後三個結論：行數維度永遠不 binding（實測 81 行 / 上限 200、只用 40%）；<strong>byte 維度早就在燒</strong>（當時已 90%+）；原本只量行數的守門形同空轉——<strong>量錯維度的監控等於沒有監控</strong>。約束從「Codex AGENTS 32KB」正式遷移到「Claude native 25.6KB」。Codex 端因有 tier 編譯反而寬裕（72%）；Claude 端攤平全載、成為結構性弱側。</p>
+</div>
+
+<div class="day-block">
+<div class="day-header"><span class="day-date">M6 · 06/24</span><span class="day-title">profile split：25 條單端條目連檔搬家</span></div>
+<p>順著新約束的第一刀：shared 索引是兩個 profile 共同吃的天花板大宗，把 25 條「其實只有單端需要」的條目連檔搬進 <code>office/</code> / <code>home/</code>。判準寫進索引檔頭：<strong>新增條目先問「另一端開場需不需要」，再決定 scope</strong>。</p>
+</div>
+
+<div class="day-block">
+<div class="day-header"><span class="day-date">M7 · 06/25</span><span class="day-title">SOP 從紀律變 enforcement：hook 強制注入</span></div>
+<p>公司端漏跑一次晨間 SOP 後，開工/收工觸發語改由 UserPromptSubmit hook 自動注入 SOP 清單（跨平台、公司+家裡 Claude 共用）——<strong>不再依賴 model attention</strong>。v1「從紀律到自動化」哲學在 SOP 層的延伸：紀律寫成文件會被忘，寫成 harness 就不會。</p>
+</div>
+
+<div class="day-block">
+<div class="day-header"><span class="day-date">M8 · 06/26</span><span class="day-title">propagation-drift 收斂：fail-closed 成為預設</span></div>
+<p>公司 Codex 審出兩個月架構債、Claude CLI 接力修：13 條 profile split 後的斷鏈；<strong>sync-codex stop line 從「只警告仍照寫」改成「超線 fail-closed 不寫入」</strong>——虛設的線變成真的牆；閾值全數收進 <code>common.env</code>（寫入端＋偵測端、PowerShell＋Bash 四路同源）；新增 pointer-integrity 檢查；cross-scope 豁免範圍正式裁定（只豁免兩份 dashboard 與 log.md）。</p>
+</div>
+
+<div class="day-block day-key">
+<div class="day-header"><span class="day-date">M9 · 06/27-28</span><span class="day-title">★ 16-agent 架構審：牆已經撞上了</span></div>
+<p>抓到最痛的一條：office 全載 MEMORY.md 已達 26,874B、<strong>破 25,600 硬上限——每個新對話正在靜默漏載尾端索引，且無任何告警</strong>。修整三層：<strong>P0</strong> demote 12 條 office 條目進新生的 lazy detail index（26,874→24,202B）；<strong>P1</strong> sync 寫入前加 byte 硬 gate（fail-closed）；<strong>P2</strong> health 補 shared 索引 tripwire（17,800）。三層剛好是「修這次、擋下次、預警下下次」。</p>
+</div>
+
+<div class="day-block day-key">
+<div class="day-header"><span class="day-date">M10 · 07/02</span><span class="day-title">★ 38-agent 全面體檢 + 三刀 + 三端 baton</span></div>
+<p>主迴圈先釘一手事實 → 5 維 fan-out（模型按難度配）→ 每條 finding 對抗式查證 → 綜整。38 agents、31 條 findings 存活、1 條被反駁剔除、4 條 severity 被修正。當天三刀落地：<strong>① demote 13 條 + CURRENT_WORK 瘦身</strong>（94%→78%、runway x3.7）；<strong>② 修 CRITICAL</strong>——sync-office 寫死單一目錄、同機另一專案 memory 落後 44 天無告警 → 改掃全部目錄＋收工自動健檢；<strong>③ health 補洞包</strong>——orphan 偵測雙側（M1 的自動化終點）、conflict 掃描補 .sh（M2 的終點）、三 scope 索引檢查、備份滾動清理。隨後 handoff 派三端接棒，<strong>公司 Codex 一小時內完成並回報</strong>，零口頭。</p>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="current">
+<div class="section-number">SECTION 04</div>
+<h2>目前最新作法（2026-07-02 快照）</h2>
+
+<p>本章即「現在的架構長什麼樣」，供任何一端 onboarding。</p>
+
+<h3>4.1 三層載入模型</h3>
+
+<div class="figure">
+<svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3',sans-serif">
+  <!-- hot layer -->
+  <rect x="20" y="20" width="720" height="72" rx="6" fill="#c9b988" opacity="0.35" stroke="#b5ad9c"/>
+  <text x="40" y="48" font-size="16" font-weight="700" fill="#2c4a52">熱層（開場全載）</text>
+  <text x="40" y="72" font-size="13" fill="#1a1a1c">compiled MEMORY.md ＝ MEMORY.shared ＋ MEMORY.&lt;profile&gt; 串接 · office 20,077B / home 20,147B（78%）</text>
+  <!-- arrow -->
+  <line x1="380" y1="92" x2="380" y2="116" stroke="#6a665d" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="396" y="110" font-size="12" fill="#6a665d" font-family="'JetBrains Mono',monospace">需要時一跳</text>
+  <!-- warm layer -->
+  <rect x="20" y="120" width="720" height="72" rx="6" fill="#88a8a8" opacity="0.3" stroke="#b5ad9c"/>
+  <text x="40" y="148" font-size="16" font-weight="700" fill="#2c4a52">溫層（lazy detail index）</text>
+  <text x="40" y="172" font-size="13" fill="#1a1a1c">3 份 detail index（shared / office / home）：archived+warm 狀態卡、歷史/低頻 reference、Codex 專屬條目</text>
+  <!-- arrow -->
+  <line x1="380" y1="192" x2="380" y2="216" stroke="#6a665d" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="396" y="210" font-size="12" fill="#6a665d" font-family="'JetBrains Mono',monospace">檔名 / grep 可達</text>
+  <!-- cold layer -->
+  <rect x="20" y="220" width="720" height="60" rx="6" fill="#9d7e6b" opacity="0.25" stroke="#b5ad9c"/>
+  <text x="40" y="246" font-size="16" font-weight="700" fill="#2c4a52">冷層（全文語料）</text>
+  <text x="40" y="268" font-size="13" fill="#1a1a1c">~176 個 .md 全數 sync 進本機 memory dir，隨時 Read / grep；logs/ 由 log.md 單一收口</text>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6a665d"/>
+    </marker>
+  </defs>
+</svg>
+<figcaption>FIG. 1 — 三層載入模型：升格（冷→熱）走「寫檔＋同 commit 編索引」；降載（熱→溫）走 demote</figcaption>
+</div>
+
+<p><strong>demote 是零程式碼的手動 tiering</strong>。7/2 體檢的結論之一：它用一個 commit 抓到自動化 tiering 八成的價值；自動化（claude_tier 軸）掛了明確 trigger（demote 後 shared 再逼近 17,800）才啟動。</p>
+
+<h3>4.2 Gate 階梯（同源 common.env、預設 fail-closed）</h3>
+
+<div class="table-wrap"><table>
+<tr><th>防線</th><th>值</th><th>行為</th></tr>
+<tr><td>shared 索引 tripwire</td><td>17,800B</td><td>health 亮燈：再加 shared 條目會把最大 profile 推破軟線</td></tr>
+<tr><td>compiled 軟線</td><td>24,576B</td><td>sync 印 warn、health 亮燈</td></tr>
+<tr><td><strong>compiled 硬線（native cap）</strong></td><td><strong>25,600B</strong></td><td><strong>sync fail-closed 拒寫、保留舊版</strong>；<code>-Force</code> 才可 override</td></tr>
+<tr><td>CURRENT_WORK / codex 版</td><td>20,480 / 8,192B</td><td>health 亮燈（dashboard 膨脹）</td></tr>
+<tr><td>log.md</td><td>131,072B 或 400 entries</td><td>觸發 roll → 月份切片</td></tr>
+<tr><td>Codex AGENTS</td><td>warn 26,624 / stop 28,672 / max 32,768B</td><td>stop 線 fail-closed 不寫入</td></tr>
+</table></div>
+
+<p>原則：<strong>寫入端與偵測端讀同一份常數</strong>——gate 定義只有一份，改一處四路同步生效。</p>
+
+<h3>4.3 Health 套件（sync 收工自動全跑）</h3>
+
+<div class="table-wrap"><table>
+<tr><th>檢查</th><th>抓什麼</th><th>何時有的</th></tr>
+<tr><td>frontmatter / tier</td><td>缺欄位、非法 codex_tier、agents 排除卻 tier≠off</td><td>v1（5/12）</td></tr>
+<tr><td>cross-scope leak</td><td>office↔home 互引、shared 寫單端事實</td><td>v1 → 6/26 豁免裁定</td></tr>
+<tr><td>pointer integrity</td><td>CURRENT_WORK 引用的路徑不存在</td><td>6/26</td></tr>
+<tr><td>byte 全套</td><td>上表 gate 階梯全部維度</td><td>6/23-27</td></tr>
+<tr><td>衝突標記</td><td>已 commit 的孤兒 <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> / <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code></td><td>6/16（.ps1）→ 7/2（.sh 補齊）</td></tr>
+<tr><td><strong>反向 orphan</strong></td><td>建檔沒被任何索引 / detail index / dashboard 收錄</td><td><strong>7/2（雙側）</strong></td></tr>
+<tr><td>git sync 衛生</td><td>dirty / ahead-behind / 三 scope 索引斷鏈</td><td>6/17 → 7/2（+home）</td></tr>
+<tr><td>lifecycle</td><td>project_status 30/90 天無 commit</td><td>v1（5/12）</td></tr>
+<tr><td>備份清理</td><td>memory.bak.* 每目錄滾動留 10 份</td><td>7/2</td></tr>
+</table></div>
+
+<p>orphan 檢查的收錄面（collector）＝ 3 份 MEMORY 索引 + 3 份 detail index + 2 份 CURRENT_WORK + workflow hub + log.md——bare filename 出現在任一處即算已收錄。這條補掉的是全系統唯一「發生時零信號」的失效模式。</p>
+
+<h3>4.4 四端矩陣</h3>
+
+<div class="table-wrap"><table>
+<tr><th>端</th><th>載入</th><th>佔用</th><th>同步</th><th>備註</th></tr>
+<tr><td>公司 Claude</td><td>compiled 20,077B</td><td>78.4%</td><td>sync-office <strong>掃全部 memory 目錄</strong></td><td>健檢＋prune 全自動</td></tr>
+<tr><td>家裡 Claude</td><td>compiled 20,147B</td><td>78.7%</td><td>sync-home 掃全部（多目錄原創端）</td><td><code>.sh</code> 實地驗證＝baton 進行中</td></tr>
+<tr><td>公司 Codex</td><td>AGENTS 23,743B</td><td>72.5%</td><td>sync-codex.ps1 tier 編譯</td><td>VALID_TIERS 缺口已修（7/2 baton、&lt;1hr）</td></tr>
+<tr><td>家裡 Codex</td><td>AGENTS（同 repo 編譯）</td><td>~72%</td><td>sync-codex.sh</td><td>baton 待接：同缺口查證＋proposals 池</td></tr>
+</table></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="baton">
+<div class="section-number">SECTION 05</div>
+<h2>Baton 演化：Stage 6-7</h2>
+
+<p>v1 記到 Stage 5（markdown 留存層 primary、口頭 secondary）。這 7 週加了兩階：</p>
+
+<h3>Stage 6（06/25）— Harness enforcement</h3>
+<p>開工/收工 SOP 由 UserPromptSubmit hook 強制注入——baton 的「接棒儀式」不再依賴 agent 記得。紀律寫成文件會被忘，寫成 harness 就不會。</p>
+
+<h3>Stage 7（07/02）— 結構化多端派工</h3>
+<p>handoff 檔按端分段、每條任務帶驗收標準、檔尾留回報欄；路由接進兩份 CURRENT_WORK（Claude 端）與 AGENTS 編譯（Codex 端 detail tier），<strong>四端誰先開對話誰看得到</strong>。首次實測：公司 Codex 一小時內自主完成、用 fake-tier 探針驗收、回寫 handoff 檔——全程零口頭。</p>
+
+<pre><code>Stage 1 隱含 → 2 命名 → 3 跨組合 → 4 payload 對比 → 5 markdown 主導
+       → 6 harness 強制注入（6/25） → 7 結構化多端派工（7/2）</code></pre>
+
+<div class="pullquote">這套架構真正的價值不是儲存，是讓「整理、歸納」變成多端共享的迴路。</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="checkup">
+<div class="section-number">SECTION 06</div>
+<h2>7/2 體檢方法論（fan-out + 對抗式驗證範本）</h2>
+
+<div class="stat-grid">
+  <div class="stat"><div class="stat-value">38</div><div class="stat-label">agents</div></div>
+  <div class="stat"><div class="stat-value">31</div><div class="stat-label">findings 存活</div></div>
+  <div class="stat"><div class="stat-value">1</div><div class="stat-label">被反駁剔除</div></div>
+  <div class="stat"><div class="stat-value">x4→x3.7</div><div class="stat-label">驗證員抓到的數字灌水</div></div>
+</div>
+
+<p>流程四段：</p>
+<ol>
+<li><strong>主迴圈先釘 ground truth</strong>：byte 數、gate 常數、health 一手輸出、目錄狀態——全部親測寫成「已知事實」餵給 agent，讓 fan-out 的角色是「對著事實查證」而非憑記憶臆測。</li>
+<li><strong>5 維 fan-out、模型按難度配</strong>：scaling 給最強模型、機械枚舉（frontmatter / 索引 / 連結 / scope 全量驗證）給輕量模型、其餘中間檔——下游反正有對抗式驗證兜底。</li>
+<li><strong>每條 finding 一條獨立驗證 agent、任務是「試著反駁」</strong>：不確定標 PLAUSIBLE、佐證不成立標 REFUTED、severity 灌水打回。戰果：一條剔除、runway 增幅 x4 重算為 x3.7、兩條 severity 調降、「已發生」措辭修正為「逼近臨界」。</li>
+<li><strong>綜整後同日落地為 code</strong>：體檢報告不是產出物，<strong>修完的系統才是</strong>——三刀＋完整測試矩陣（雙側正負面探針、gate 實測、端到端 sync 兩輪）當天閉環。</li>
+</ol>
+
+<div class="callout">
+<div class="callout-label">反向護欄（6/30、另一專案的教訓）</div>
+<p><strong>fan-out ≠ 更好的解。</strong>根因在外部系統、且有廉價手動復原時，多 agent 驗證只會製造進展假象。這條反向護欄與方法論本體同等重要。</p>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="findings">
+<div class="section-number">SECTION 07</div>
+<h2>體檢發現與誠實面</h2>
+
+<div class="table-wrap"><table>
+<tr><th>發現</th><th>嚴重度</th><th>處置</th></tr>
+<tr><td>sync-office 寫死單一目錄、他專案 memory 落後 44 天無告警</td><td>CRITICAL</td><td>7/2 修：掃全部目錄</td></tr>
+<tr><td>home profile 距靜默漏載僅 1,441B（約 3-4 條升格、以週計）</td><td>HIGH</td><td>7/2 demote：runway x3.7</td></tr>
+<tr><td>CURRENT_WORK 單一專案段佔 28.8%、dashboard 寫成 history</td><td>HIGH</td><td>7/2 瘦身（先驗證再剪）</td></tr>
+<tr><td>office 端 health 純手動、Mac 端缺開工三檢</td><td>HIGH</td><td>office 7/2 掛自動；Mac＝baton P4</td></tr>
+<tr><td>「建檔忘編索引」零偵測（唯一零信號失效模式）</td><td>MEDIUM</td><td>7/2 orphan 檢查雙側</td></tr>
+<tr><td>lifecycle WARN detect-only、可被無限期忽略</td><td>MEDIUM</td><td><strong>未修</strong>：escalation 在 backlog</td></tr>
+<tr><td>proposals 池 17 檔＝自訂門檻 2.8 倍、無人重評</td><td>MEDIUM</td><td>baton 派家裡 Codex</td></tr>
+<tr><td>infra 自我維護 ≈ 40% commits、穩態非收斂</td><td>META</td><td><strong>watch</strong>：月檢比例</td></tr>
+</table></div>
+
+<div class="callout">
+<div class="callout-label">誠實面 · Meta-tax</div>
+<p>這套系統是「需要持續投餵維護成本」的基礎設施，不是建好就穩的。好消息：content commits 仍佔六成、infra 是疊加稅不是鯨吞。壞消息：它不會自己變便宜。7/2 這輪是還債（修 CRITICAL＋補洞），之後若比例不降，正確反應是<strong>凍結架構、跑穩既有機制</strong>，而不是繼續加層。</p>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="positioning">
+<div class="section-number">SECTION 08</div>
+<h2>定位：實務上沒有統一最佳解</h2>
+
+<p>Agent 長期記憶至今仍是 open problem。主流路線與代價：</p>
+
+<div class="table-wrap"><table>
+<tr><th>路線</th><th>代表</th><th>付費點</th><th>代價</th></tr>
+<tr><td>自動萃取派</td><td>mem0、Zep/Graphiti、各家內建 memory</td><td>讀取端（自動抽取）</td><td>精度差、存錯存廢話、內容不歸使用者</td></tr>
+<tr><td>向量檢索派</td><td>RAG over notes</td><td>建索引＋檢索</td><td>幾百檔量級下精度輸給 hand-curated index + grep</td></tr>
+<tr><td><strong>策展派（本架構）</strong></td><td>repo-as-truth + 編譯視圖 + 治理</td><td><strong>寫入端（策展費＝那 40%）</strong></td><td>換得精度、跨端一致、可稽核、可攜</td></tr>
+</table></div>
+
+<p>但不管哪派，最後都收斂到同幾個<strong>不變量</strong>——這正是「長期記憶＝不斷整理、歸納」的工程對應：</p>
+
+<ol>
+<li><strong>分層載入</strong>（熱/溫/冷）——與人腦工作記憶/長期記憶同構</li>
+<li><strong>歸納（consolidation）是一等公民</strong>——daily log → monthly review → 升格；demote 是同一件事的反向</li>
+<li><strong>遺忘是功能不是 bug</strong>——lifecycle、archive、prune；25.6KB cap 逼系統面對取捨，反而是健康的約束</li>
+<li><strong>治理迴路決定壽命</strong>——沒有 health/gate 的記憶系統必然腐化，差別只是三個月還是一年</li>
+</ol>
+
+<div class="pullquote">沒有統一最佳解，但有「給定約束下的唯一合理解」——2 機 × 2 agent × 金融合規 × 跨日續工，幾乎唯一指向策展派。</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="methods">
+<div class="section-number">SECTION 09</div>
+<h2>累積的方法論（5/15-7/02 新增）</h2>
+
+<div class="table-wrap"><table>
+<tr><th>方法論</th><th>來源</th><th>成檔</th></tr>
+<tr><td>編輯 memory 兩步 SOP（改對 target＋同 commit 編索引）</td><td>M1 事故</td><td><code>feedback_memory_edit_target</code></td></tr>
+<tr><td>開工/收工 SOP hook 強制注入</td><td>M7</td><td><code>feedback_morning_sop_trigger_hook</code></td></tr>
+<tr><td>先釘 ground truth 再發 workflow 查實</td><td>6/26</td><td><code>feedback_ground_truth_before_workflow</code></td></tr>
+<tr><td>ultracode fan-out + 對抗式驗證（含反向護欄）</td><td>6 月多案＋6/30</td><td><code>feedback_ultracode_workflow_fanout</code></td></tr>
+<tr><td>同機多 agent git index.lock 對撞處理</td><td>6/25</td><td><code>feedback_git_index_lock_cross_agent</code></td></tr>
+<tr><td>Observe 期必須寫可觀察 trigger</td><td>6 月</td><td><code>feedback_observe_period_triggers</code></td></tr>
+<tr><td>Pilot → baseline → expansion（v1 隱含 → 成檔）</td><td>—</td><td><code>feedback_pilot_to_baseline</code></td></tr>
+<tr><td>量錯維度的監控＝沒有監控（byte vs 行數）</td><td>M5</td><td>health 註解＋survey</td></tr>
+<tr><td>detect-only 會退化成從不生效</td><td>7/2 體檢</td><td>報告＋backlog（escalation）</td></tr>
+<tr><td>以 binding profile 盯 runway</td><td>7/2 體檢</td><td>體檢報告＋handoff</td></tr>
+<tr><td>手動 demote 先於自動化 tiering（八成價值、零風險）</td><td>7/2 體檢</td><td>CURRENT_WORK trigger 條款</td></tr>
+</table></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="philosophy">
+<div class="section-number">SECTION 10</div>
+<h2>設計哲學：7 條全數存活 ＋ 新增 4 條</h2>
+
+<p>v1 的七條（explicit authoring / git SSOT / local-first / markdown 可攜 / filesystem 統一層 / 方法論寫進 memory 自己 / 最小爆炸半徑）經 7 週實戰<strong>無一被推翻</strong>。新增：</p>
+
+<h3>8 · Fail-closed by default</h3>
+<p>gate 寧可擋下同步也不寫出會靜默漏載的檔；讀不到設定就用保守內建值。虛設的警告線一律升級成真的牆。</p>
+
+<h3>9 · Detect → remediate 必須閉環</h3>
+<p>只偵測不修復的檢查會退化成背景噪音（lifecycle WARN 連喊 49 天無人動是活教材）；每條新檢查都要想好「喊了之後誰動、怎麼動」。</p>
+
+<h3>10 · 不做的事要掛可觀察 trigger</h3>
+<p>「暫不做」不是「不做」，是「條件 X 成立時重評」；tier 自動化、skill layer、向量檢索都掛著明確條件。</p>
+
+<h3>11 · 點名綁定約束、追蹤它的遷移</h3>
+<p>約束會動（32KB → 25.6KB → binding profile 是 home 不是 office）；盯錯約束的優化都是白做。</p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="state">
+<div class="section-number">SECTION 11</div>
+<h2>目前狀態與 open threads（2026-07-02 收尾）</h2>
+
+<div class="stat-grid">
+  <div class="stat"><div class="stat-value">78%</div><div class="stat-label">compiled 佔用（雙 profile）</div></div>
+  <div class="stat"><div class="stat-value">72.5%</div><div class="stat-label">Codex AGENTS 佔用</div></div>
+  <div class="stat"><div class="stat-value">~176</div><div class="stat-label">.md 檔（shared 75 / office 40 / home 34）</div></div>
+  <div class="stat"><div class="stat-value">全綠</div><div class="stat-label">health（orphan/conflict/pointer/byte/索引）</div></div>
+</div>
+
+<h3>Open threads</h3>
+<ol>
+<li><strong>家裡 Claude baton</strong>：Mac 實地驗三支 <code>.sh</code>（Windows 端只 harness＋語法驗證）＋ P4 健檢移植——閉環前 <code>.sh</code> 側算「已測邏輯、未驗現場」</li>
+<li><strong>家裡 Codex baton</strong>：sync-codex.sh 同缺口查證 + proposals 池治理（archive superseded、trigger 重評、proposal_health）</li>
+<li><strong>tier 自動化 trigger</strong>：demote 後 shared 再逼近 17,800 才啟動；屆時 claude_tier 須為獨立軸、不 alias codex_tier、fail-open 預設全載</li>
+<li><strong>meta-tax 月檢</strong>：infra vs content commit 比例，持續 40%+ 或上升 → 凍結架構變更</li>
+<li><strong>lifecycle escalation</strong>：同一 WARN 連續 N 次未處理 → 升級顯示或半自動產 demote diff（保留人工把關）</li>
+</ol>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="conclusion">
+<div class="section-number">SECTION 12</div>
+<h2>結論</h2>
+
+<p>v1 的結論是「9 天、每天一步、compound effect 真實存在」。這 7 週的結論是它的下一章：</p>
+
+<h3>1 · 約束遷移比功能增長更能定義架構的階段</h3>
+<p>5 月的系統圍繞「把四端接起來」生長；6-7 月的系統圍繞「25,600 bytes」重組。找到真正 binding 的那條線，之後每個決策都有了排序依據。</p>
+
+<h3>2 · 治理的成熟度是一條四段梯</h3>
+<p>從「人記得」到「系統喊」到「喊了有人修」到「修完變成新的 gate」。孤兒索引從手動 comm 指令（5/16）走到雙側自動偵測（7/2）；同一條演化在衝突標記、byte 守門、SOP 注入上各自重演。<strong>這條四段梯是可遷移的 pattern。</strong></p>
+
+<h3>3 · 多 agent 的價值在對抗式驗證，不在人多</h3>
+<p>38 個 agent 裡最有價值的是那些「試著反駁」的：剔除一條假 finding、把 x4 打回 x3.7、把「已發生」修正為「逼近臨界」。fan-out 產生覆蓋，驗證產生真實——而 6/30 的反例提醒：兩者都不能替代「根因在不在你手上」的判斷。</p>
+</section>
+
+</main>
+</div>
+
+<footer>
+<div class="container" style="padding:0;">
+<p><strong>版本</strong> v2.0 · 2026-07-02 ｜ <strong>前篇</strong> memory-infra-evolution-2026-05（v1.0）｜ <strong>用途</strong> 歷史紀錄 / 新 agent onboarding / 「目前最新作法」權威快照｜ <strong>快照有效性</strong> Section 04 數字為 2026-07-02 快照，之後以 repo health 輸出為準｜ <strong>更新觸發</strong> 下一個 architectural milestone（tier 自動化啟動 / baton 全數閉環 / 綁定約束再遷移）</p>
+</div>
+</footer>
+
+</div>
+</body>
+</html>
