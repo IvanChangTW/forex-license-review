@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>跨 AI Agent、跨機器長期記憶管理：演化進程 III — 內容知識論 — 2026/07/10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f4ed;
+    --bg-card: #fbf8f0;
+    --bg-code: #efe9dc;
+    --text: #1a1a1c;
+    --muted: #6a665d;
+    --border: #d6cfc1;
+    --border-strong: #b5ad9c;
+    --accent: #2c4a52;
+    --accent-light: #4a6d76;
+    --warning: #b8543a;
+    --warning-light: #d4886f;
+    --success: #4a6741;
+    --layer-state: #c9b988;
+    --layer-process: #88a8a8;
+    --layer-method: #9d7e6b;
+    --shadow: 0 1px 0 rgba(0,0,0,0.04);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    font-feature-settings: "ss01", "ss02", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+
+  .layout { display: grid; grid-template-columns: 260px 1fr; gap: 3rem; align-items: start; padding: 2rem 0 6rem; }
+
+  nav.toc {
+    position: sticky;
+    top: 2rem;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+    font-size: 0.875rem;
+    padding-right: 1rem;
+    border-right: 1px solid var(--border);
+  }
+
+  nav.toc .toc-title {
+    font-family: 'Fraunces', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  nav.toc ol { list-style: none; counter-reset: section; }
+  nav.toc li { counter-increment: section; margin: 0.4rem 0; }
+  nav.toc li::before {
+    content: counter(section, decimal-leading-zero);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-right: 0.6rem;
+  }
+  nav.toc a {
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s;
+  }
+  nav.toc a:hover { border-bottom-color: var(--accent); }
+
+  main { min-width: 0; max-width: 820px; }
+
+  header.hero {
+    border-bottom: 2px solid var(--text);
+    padding: 4rem 0 3rem;
+    margin-bottom: 3rem;
+    position: relative;
+  }
+  header.hero::before {
+    content: "REFERENCE / ARCHIVE · VOL. II";
+    position: absolute;
+    top: 1rem;
+    right: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+  }
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .hero-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-variation-settings: "opsz" 80;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+  .hero-subtitle {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 640px;
+    margin-bottom: 2rem;
+  }
+  .hero-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem 2rem;
+    font-size: 0.875rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .hero-meta dt { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.2rem; }
+  .hero-meta dd { font-weight: 500; }
+
+  section { margin-bottom: 4rem; scroll-margin-top: 2rem; }
+
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-variation-settings: "opsz" 60;
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.015em;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.3rem;
+    margin: 2rem 0 0.75rem;
+    color: var(--accent);
+  }
+  h4 {
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin: 1.5rem 0 0.6rem;
+  }
+
+  p { margin-bottom: 1rem; }
+  strong { font-weight: 700; color: var(--accent); }
+
+  ul, ol { margin: 0.5rem 0 1rem 1.5rem; }
+  li { margin-bottom: 0.35rem; }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85em;
+    background: var(--bg-code);
+    padding: 0.1em 0.4em;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+
+  pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    overflow-x: auto;
+  }
+  pre code { background: none; border: none; padding: 0; font-size: inherit; }
+
+  .table-wrap { margin: 1.5rem 0; overflow-x: auto; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-card); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  th {
+    text-align: left;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    padding: 0.7rem 1rem;
+    background: var(--bg-code);
+    border-bottom: 1px solid var(--border-strong);
+    color: var(--accent);
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+  }
+  td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: rgba(214, 207, 193, 0.15); }
+
+  .glossary {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 4px;
+    padding: 1.5rem 1.8rem;
+    margin: 1.5rem 0;
+  }
+  .glossary h3 { margin-top: 0; color: var(--accent); font-size: 1.1rem; }
+  .glossary dl { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1rem; }
+  .glossary dt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.2rem;
+  }
+  .glossary dd { font-size: 0.92rem; color: var(--text); margin-left: 0; }
+
+  .callout {
+    background: linear-gradient(180deg, #fdf6e3 0%, #faf2db 100%);
+    border: 1px solid #d4b886;
+    border-left: 4px solid var(--warning);
+    border-radius: 4px;
+    padding: 1.2rem 1.5rem;
+    margin: 1.5rem 0;
+    position: relative;
+  }
+  .callout-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--warning);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout strong { color: var(--warning); }
+
+  .callout.term {
+    background: #eef2f3;
+    border-color: #b5c7cb;
+    border-left-color: var(--accent);
+  }
+  .callout.term .callout-label { color: var(--accent); }
+  .callout.term strong { color: var(--accent); }
+
+  .figure {
+    margin: 2rem 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.5rem;
+  }
+  .figure svg { display: block; width: 100%; height: auto; max-width: 100%; }
+  .figure figcaption {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .day-block {
+    border-left: 3px solid var(--border);
+    padding: 0.2rem 0 0.2rem 1.5rem;
+    margin: 2rem 0;
+    position: relative;
+  }
+  .day-block::before {
+    content: "";
+    position: absolute;
+    left: -7px;
+    top: 0;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .day-block.day-key::before { background: var(--warning); width: 14px; height: 14px; left: -8px; }
+  .day-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .day-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    background: var(--accent);
+    color: var(--bg);
+    padding: 0.15rem 0.6rem;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+  }
+  .day-block.day-key .day-date { background: var(--warning); }
+  .day-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.25rem;
+    color: var(--text);
+  }
+
+  .pullquote {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.25rem;
+    line-height: 1.45;
+    color: var(--accent);
+    padding: 1.5rem 0 1.5rem 2rem;
+    border-left: 3px solid var(--accent);
+    margin: 2rem 0;
+    background: linear-gradient(90deg, rgba(44, 74, 82, 0.04) 0%, transparent 100%);
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .stat {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem 1.2rem;
+  }
+  .stat-value {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--accent);
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 880px) {
+    .container { padding: 0 1.2rem; }
+    .layout { grid-template-columns: 1fr; gap: 1rem; padding: 1rem 0 4rem; }
+    nav.toc { position: static; max-height: none; border-right: none; border-bottom: 1px solid var(--border); padding: 0 0 1.5rem; margin-bottom: 1rem; }
+    nav.toc ol { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.3rem 1.5rem; }
+    main { max-width: 100%; }
+    header.hero { padding: 2rem 0 1.5rem; }
+    header.hero::before { display: none; }
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0 4rem;
+    margin-top: 4rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<header class="hero">
+  <div class="hero-eyebrow">Memory Infrastructure · Internal Reference</div>
+  <h1 class="hero-title">跨 AI Agent、跨機器<br>長期記憶管理：演化進程 III</h1>
+  <p class="hero-subtitle">內容知識論——07/02 解決「架構會不會壞、會不會不同步」；07/10 解決「架構雖然沒壞，但內容會不會慢慢失真、重複、過期、找不到、超載」。本篇記錄一天之內完成的完整演化循環：內部體檢 → 同日修復 → 外部生態對標 → 概念借鏡 → 工作包施工 → 跨端驗收。</p>
+  <dl class="hero-meta">
+    <div><dt>期間</dt><dd>2026/07/10（單日）</dd></div>
+    <div><dt>範圍</dt><dd>4 端 + GitHub 生態對標</dd></div>
+    <div><dt>關鍵 Repo</dt><dd>claude-memory</dd></div>
+    <div><dt>版本</dt><dd>v1.0 / 2026-07-10</dd></div>
+  </dl>
+</header>
+
+<div class="layout">
+
+<nav class="toc">
+  <div class="toc-title">Contents</div>
+  <ol>
+    <li><a href="#numbers">一天的數字</a></li>
+    <li><a href="#terms">關鍵術語</a></li>
+    <li><a href="#trigger">背景與觸發</a></li>
+    <li><a href="#checkup">內查：18-agent 體檢</a></li>
+    <li><a href="#repairs">同日修復</a></li>
+    <li><a href="#survey">外比：生態對標</a></li>
+    <li><a href="#borrow">三借鏡與明確不借</a></li>
+    <li><a href="#package">工作包：完工＝檢查點過</a></li>
+    <li><a href="#relay">跨端執行實錄</a></li>
+    <li><a href="#compare">07/02 vs 07/10</a></li>
+    <li><a href="#honest">誠實邊界</a></li>
+    <li><a href="#philosophy">設計哲學 11+3</a></li>
+    <li><a href="#threads">Open threads</a></li>
+    <li><a href="#conclusion">結論</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="numbers">
+<div class="section-number">SECTION 01</div>
+<h2>一天的數字</h2>
+
+<div class="stat-grid">
+  <div class="stat"><div class="stat-value">18 + 12</div><div class="stat-label">內查體檢 + 外比調研 agent</div></div>
+  <div class="stat"><div class="stat-value">12 / 1</div><div class="stat-label">confirmed / refuted（對抗式驗證）</div></div>
+  <div class="stat"><div class="stat-value">75</div><div class="stat-label">生態主張、全附 URL 逐頁開原文</div></div>
+  <div class="stat"><div class="stat-value">10 / 10</div><div class="stat-label">工作包檢查點驗收</div></div>
+  <div class="stat"><div class="stat-value">~2h</div><div class="stat-label">排程 → 跨端施工 → 驗收（原估 1 工作天）</div></div>
+  <div class="stat"><div class="stat-value">413B → 2,110B</div><div class="stat-label">熱層距 cap 頭寸（25,187 → 23,490 bytes）</div></div>
+  <div class="stat"><div class="stat-value">9 → 17</div><div class="stat-label">lifecycle 覆蓋狀態卡（假綠燈消除）</div></div>
+  <div class="stat"><div class="stat-value">14 → 6</div><div class="stat-label">proposals backlog（回綠）</div></div>
+</div>
+
+<p>快照數字為 2026-07-10 定格；之後變動不回寫本文，以 health 輸出為準。本文是長背景／演化脈絡／對外說明書，<strong>不是 source of truth</strong>——即時狀態以 <code>CURRENT_WORK</code> / <code>project_status</code> / repo health 為準。</p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="terms">
+<div class="section-number">SECTION 02</div>
+<h2>關鍵術語</h2>
+
+<div class="glossary">
+<h3>Glossary · Vol. III</h3>
+<dl>
+<div><dt>內容知識論（content epistemics）</dt><dd>不只問「記憶存好了沒、同步了沒」，而是問「這條記憶<strong>現在還是真的嗎、誰寫的、什麼時候被推翻的</strong>」。本篇主軸。</dd></div>
+<div><dt>黏行（fused line）</dt><dd>索引檔缺換行導致兩條 bullet 熔成一行——第二條從獨立條目降格成前一條的句尾純文字，agent 掃索引時直接漏看。機械性、可 lint。</dd></div>
+<div><dt>假綠燈（false green）</dt><dd>健檢回報 clean、但掃描範圍只覆蓋部分地盤（lifecycle 只掃 shared/ 9 卡、office/ 8 卡零覆蓋）。比紅燈更危險：紅燈叫人來修，假綠燈叫人放心。</dd></div>
+<div><dt>superseded 慣例</dt><dd>事實被推翻時，舊值<strong>不刪除</strong>、標 <code>superseded: YYYY-MM-DD → 接替處</code> 保留——事實的變動史成為一級公民（借鏡 Graphiti bi-temporal）。</dd></div>
+<div><dt>provenance 欄位</dt><dd>frontmatter 選填 <code>origin_agent:</code> / <code>superseded_by:</code>——記憶有署名、可追寫入者（借鏡 MemClaw 四維治理）。</dd></div>
+<div><dt>機械漂移 vs 語意漂移</dt><dd>前者（黏行／斷鏈／超標／孤兒／未登記）lint 可零成本抓；後者（矛盾陳述、過期的「已 live」）<strong>仍靠人工策展＋季度 fan-out 體檢</strong>。本篇最重要的誠實邊界。</dd></div>
+</dl>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="trigger">
+<div class="section-number">SECTION 03</div>
+<h2>背景與觸發</h2>
+
+<p>07/02 三刀之後的 baseline：四端同步、health 檢查、backup/prune、orphan 偵測能運作——「系統能不能同步」已解。7/7 憲章（<code>reference_ai_workflow_harness.md</code>）定稿：11 條 Non-Goals ＋ 8 條 Decision Gates。</p>
+
+<p><strong>07/10 晨的觸發</strong>：sync 健檢 WARN——編譯後 MEMORY.md <strong>25,187 bytes</strong>，超過 24,576 警戒線、距 25,600 native cap 只剩 <strong>413 bytes</strong>（越線＝尾端條目開場靜默漏載）。同日 Ivan 下令「體檢目前長期記憶架構」，隨後追加「看 GitHub 熱門記憶架構有沒有可學的」——<strong>內查與外比在同一天並行</strong>。</p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="checkup">
+<div class="section-number">SECTION 04</div>
+<h2>內查：18-agent 體檢</h2>
+
+<p>方法沿 7/2 範本：<strong>先親自釘死一手量測</strong>（8 條 gate 的確定性數字）→ 5 路 fan-out 掃描（索引完整性／Non-Goal 違反／冷熱錯置／stale 事實抽驗／lifecycle 漂移）→ 高中嚴重度發現逐條<strong>對抗式驗證</strong>。fan-out 前釘死的一手事實：Gate 5 🔴 firing（bytes 是 binding constraint、行數 79/200 綠——「綁定約束會遷移」再驗證）、Gate 2 🟡 且 75% 早期線<strong>只存在於憲章文字、腳本沒實作</strong>（人工手算才抓到）、兩個 clone 其實是 symlink（無 split-brain）、log 歸檔登記 33/33 齊但 9 條被公司端寫成 Windows 反斜線。</p>
+
+<div class="table-wrap"><table>
+<tr><th>類別</th><th>發現（12 confirmed、每條有獨立 verifier）</th><th>嚴重度</th></tr>
+<tr><td>bug</td><td>索引黏行——兩條 feedback 熔成一行，<strong>同一週（7/2-7/3）犯兩次</strong></td><td>HIGH＋LOW</td></tr>
+<tr><td>stale</td><td>「開工 hook 家裡待自接」——實際 6/25 當天就接好，索引行躺了 <strong>15 天</strong></td><td>HIGH</td></tr>
+<tr><td>假綠燈</td><td>lifecycle 只掃 shared/，office/ 8 卡（含最活躍的 TRM）零覆蓋</td><td>HIGH</td></tr>
+<tr><td>Non-Goal 5</td><td>CURRENT_WORK 3/13 條目 mini-status-report 化</td><td>MEDIUM×3</td></tr>
+<tr><td>gate 缺口</td><td>Gate 2 早期警戒線無自動化</td><td>MEDIUM</td></tr>
+<tr><td>backlog</td><td>proposals 14 vs 閾值 6 常駐紅；spec-kit Trigger A 觸發 <strong>56 天</strong>沒人理</td><td>MEDIUM</td></tr>
+<tr><td>重複</td><td>offload 鐵律兩檔重寫兩遍（~2.4KB 雙源、必然 drift）</td><td>MEDIUM</td></tr>
+<tr><td>bug</td><td>roll_log.py 缺 <code>.as_posix()</code>（反斜線根因）</td><td>LOW</td></tr>
+</table></div>
+
+<div class="callout">
+<div class="callout-label">驗證機制在殺東西</div>
+<p><strong>1 條指控被推翻</strong>：「handoff M1/M2 方法論從未升格」——verifier 實查發現早已升格，指控不成立、剔除。對抗式驗證不是橡皮圖章。</p>
+</div>
+
+<p><strong>健康面</strong>（體檢也要報綠的）：73 條熱層索引 link ＋ 38 條 detail index ＋ 259 次 wiki-link 全部 <strong>0 斷鏈</strong>；Non-Goals <strong>9/11 PASS</strong>；office 索引完全乾淨；scope 紀律有持續執行的證據。</p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="repairs">
+<div class="section-number">SECTION 05</div>
+<h2>同日修復（commit 6e4d2f6）</h2>
+
+<p>9 項一次落地：黏行×2 修復、stale hook 行更正、<strong>降級 4 條低頻索引到 lazy detail index</strong>（Gate 5 → 23,490B、頭寸 2,110B）、CURRENT_WORK 兩條目壓回三件套（Non-Goal 5 矯正）、codex dashboard 同步（Gate 2 → 6,089B）、roll_log.py 修根因、log header 反斜線 ×9 正規化。</p>
+
+<div class="callout">
+<div class="callout-label">跨端併發實戰插曲（教學價值高）</div>
+<p>修復 commit 的 rebase 撞上公司端同時 push 的 TRM 更新 → 衝突解法＝<strong>取對方最新事實 × 套本端三件套格式</strong>。途中再遭遇殭屍 rebase-merge 目錄導致 detached HEAD、push 驗證兩度假陽性——最終以「驗父鏈（<code>merge-base --is-ancestor</code>）→ <code>checkout -B main</code> → push → 驗 HEAD <strong>相等且前進</strong>」收乾淨。教訓：<strong>push 驗證必須同時驗「相等」與「前進」</strong>，單驗相等會被 detached HEAD 騙。</p>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="survey">
+<div class="section-number">SECTION 06</div>
+<h2>外比：GitHub 生態對標</h2>
+
+<p>四面向 12 agent：主流三巨頭（mem0／Letta／Zep-Graphiti）設計深讀、檔案派同門（官方 auto-memory／Wuphf／MemSearch／Obsidian 系）、2026 H1 新秀與 benchmark（MemOS／Cognee／TencentDB／A-MEM）、多 agent 治理（MemClaw／OWASP／學術）。<strong>75 條主張全附 URL、逐頁開原文</strong>；8 條關鍵主張對抗式查核、5 條被修正——包括抓到一個 README 落後實際版本、一個舊架構被當現況的印象流。</p>
+
+<div class="table-wrap"><table>
+<tr><th>定心丸</th><th>證據</th></tr>
+<tr><td><strong>官方追認</strong></td><td>Claude Code auto-memory 正式版收斂到相同形狀（MEMORY.md 索引＋25KB/200 行 cap＋主題檔 lazy load）；官方 cap 是<strong>死線截斷不挑內容</strong>＝人工策展比官方原生聰明；官方明文「不跨機器同步」＝四端 sync 永遠得自建</td></tr>
+<tr><td><strong>grep 有實證</strong></td><td>Letta 純檔案＋grep 在 LongMemEval 拿 74%、打敗多個專用記憶系統；benchmark 生態反噬中（LOCOMO 被抓 6.4% 金標錯誤、廠商互測數字 84%→58% 反覆改）。<strong>Non-Goal 2 是有實證的保守，不是偷懶</strong></td></tr>
+<tr><td><strong>治理是獨門</strong></td><td>多 agent 記憶治理 2026 上半年才從論文走到早期程式碼（MemClaw 286★、OWASP Guard 69★）；OWASP 把 Memory Poisoning 列 <strong>ASI06 一級風險</strong>；「憲章＋人工策展」在學界幾乎沒人研究——<strong>刻意取捨、走在前緣</strong></td></tr>
+</table></div>
+
+<p><strong>生態趨勢（供後續校準）</strong>：mem0 捨棄寫入時 reconciliation 改 ADD-only（「覆寫會摧毀 context」＝與「legacy quirk 不順手修」同向的外部驗證）；bi-temporal 成為「事實會過期」的業界標準答案；<strong>sleep-time compute／Dreaming</strong>（背景 agent 自主改寫記憶）成為 mem0、Letta、OpenAI、華為的共同賣點——<strong>這正是本架構 Decision Gate 要擋的模式</strong>，當反面教材持續警戒、不跟進；三巨頭的記憶分層獨立收斂到「小容量即時層＋按需層＋全量歷史層」＝熱／溫／冷同構。</p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="borrow">
+<div class="section-number">SECTION 07</div>
+<h2>三借鏡與明確不借</h2>
+
+<p>照 PLUR 先例：<strong>借概念、不裝工具</strong>。每個借鏡標注「若整套採用會撞哪條 Non-Goal」，衝突的部分留在門外。</p>
+
+<div class="table-wrap"><table>
+<tr><th>借什麼</th><th>從誰</th><th>落地形式</th></tr>
+<tr><td>不刪除、只標失效</td><td>Graphiti bi-temporal</td><td><code>superseded: 日期 → 接替處</code> 慣例入 memory SOP——對治「觀測起點偏差」、防<strong>殭屍事實</strong>（帶舊 context 的 agent 把新值「更正」回舊值）</td></tr>
+<tr><td>provenance＋time 缺失維度</td><td>MemClaw 四維治理</td><td>frontmatter 選填 <code>origin_agent:</code>／<code>superseded_by:</code>——<strong>spoke 回流時代的前置地基</strong>，明標「保險性投資、B 期前無法驗收益」</td></tr>
+<tr><td>/lint 檢查清單</td><td>Wuphf（承 Karpathy llm-wiki）</td><td>黏行／孤兒引用／斷鏈／未登記歸檔的 grep 檢查折進 memory_health——百萬 token 體檢裡機械類那半，變成每次收工零成本掃</td></tr>
+</table></div>
+
+<p><strong>另存參不急用</strong>：TencentDB「上層結論可 drill-down 回原始逐字證據」當月報驗收標準；Letta 併發踩坑佐證「spoke 只准 append、覆寫權收斂單一 owner」；OWASP 四態模型（allow/redact/quarantine/block）留給 B 期外部入口開放前。</p>
+
+<p><strong>明確不借</strong>：sleep-time compute／Dreaming 自動改寫（撞人工策展鐵則）；vector-first retrieval（trigger 未觸發＋grep 74% 實證）；一切整套第三方 harness／雲端 memory provider／graph DB 常駐服務。</p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="package">
+<div class="section-number">SECTION 08</div>
+<h2>工作包 B→A→C：完工＝檢查點過</h2>
+
+<p>體檢五待辦＋三借鏡收斂成 8 項工作包，<strong>每項附 falsifiable 檢查點</strong>——完工定義不是「程式碼寫完」而是「檢查點過」：</p>
+
+<div class="table-wrap"><table>
+<tr><th>批次</th><th>內容</th><th>檢查點（節錄）</th></tr>
+<tr><td><strong>B 事實時間軸</strong>（執行序第一）</td><td>B1 superseded 慣例入 SOP；B2 origin_agent/superseded_by 慣例</td><td>B2 要求「本工作包新/改檔全帶 origin_agent」——<strong>慣例先定、A/C 批才守得到</strong>（這就是 B 排第一的理由）</td></tr>
+<tr><td><strong>A 健康可信度</strong></td><td>A1 黏行偵測；A2 Gate 2 早警 6,144B；A3 lifecycle 擴 office/；A4 lint 三規則</td><td>A1＝回歸測試：對歷史壞 commit 必須抓到、當前 0 誤報；A2＝對 6,300B 歷史態重放必觸發；A3＝17 cards scanned</td></tr>
+<tr><td><strong>C 衛生</strong></td><td>C1 handoff 三教訓升格＋歸檔；C2 proposals 封存＋Trigger 重評；C3 offload 鐵律單一權威本</td><td>C2＝proposal_health 回綠；C3＝關鍵句 grep 全 repo 唯一</td></tr>
+</table></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="relay">
+<div class="section-number">SECTION 09</div>
+<h2>跨端執行實錄：baton 完整一圈、零口頭協調</h2>
+
+<div class="day-block">
+  <div class="day-header"><span class="day-date">~10:50</span><span class="day-title">家裡 Claude：排工作包</span></div>
+  <p>工作包（含執行序理由、檢查點定義、owner 建議）寫進 <code>project_status_notion_workflow.md</code>、CURRENT_WORK 更新路由 → push（<code>d78c2ee</code>）。</p>
+</div>
+<div class="day-block">
+  <div class="day-header"><span class="day-date">午後</span><span class="day-title">公司 Codex：接棒施工</span></div>
+  <p>開工 SOP 讀 CURRENT_WORK → 接棒 → 依 B→A→C 全部施工（<code>4f3dbf9</code>／<code>3c58a26</code>）——包括原建議給家裡端的 C1/C3（owner 是建議非強制）。收工報告<strong>誠實聲明缺口</strong>：「PowerShell 實測 clean、<strong>Bash 只完成語法驗證</strong>（runtime 受本機環境卡住）」。</p>
+</div>
+<div class="day-block">
+  <div class="day-header"><span class="day-date">~16:00</span><span class="day-title">家裡 Claude：跨端驗收 10/10</span></div>
+  <p><code>.sh</code> Mac runtime clean（補上 Codex 驗不了的那塊）＋檢查點逐項驗收：A1 回歸（歷史版抓 1／當前 0）、A3 實跑 17 cards、C2 回綠 14→6、C3 grep 單一權威本、C1 三教訓逐字升格、<strong>B2 慣例第一天就被實際使用</strong>（Codex 自己的新檔 frontmatter 已帶 <code>origin_agent: codex</code>）。收檔 <code>a0c0fb0</code>、CURRENT_WORK 回 observe。</p>
+</div>
+
+<p>原估 1 工作天 → 排程到雙端驗收完成<strong>約 2 小時</strong>。全程無任何口頭協調——接棒端讀完 baton 即可施工。</p>
+
+<div class="pullquote">施工途中 Codex 把自己的 dashboard 推到 6,153B——被它自己剛蓋好的 6,144B 早期警戒<strong>當場抓回</strong>。「人記得跑 → 系統喊 → 喊了有人修 → 修完變 gate」在同一個 session 內閉環：蓋 gate 的那隻手產生的 drift，被 gate 當場接住。</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="compare">
+<div class="section-number">SECTION 10</div>
+<h2>07/02 vs 07/10 對照</h2>
+
+<div class="table-wrap"><table>
+<tr><th>面向</th><th>07/02 三刀</th><th>07/10 B→A→C</th></tr>
+<tr><td>核心目標</td><td>讓四端同步、健檢、backup/prune、orphan 偵測能運作</td><td>讓記憶<strong>內容本身</strong>能辨識漂移、過期與重複</td></tr>
+<tr><td>Health</td><td>byte／frontmatter／orphan／conflict／sync</td><td>＋黏行、6,144B 早警、office lifecycle、archived 引用、detail index 斷鏈、log archive 登記</td></tr>
+<tr><td>事實管理</td><td>檔案與同步層治理</td><td>＋superseded／origin_agent／superseded_by——開始處理「這個事實何時失效、誰改的」</td></tr>
+<tr><td>Baton</td><td>讓三端知道接棒任務</td><td>baton 自己也能被 health 檢查（archived 後舊路徑會被抓出並修正）</td></tr>
+<tr><td>Proposal 池</td><td>建 proposal_health、發現超標</td><td>實際封存 8 份、14→6、重評 56 天 Trigger</td></tr>
+<tr><td>驗證方式</td><td>驗「系統能不能同步」</td><td>驗「系統會不會抓到<strong>新產生的</strong> drift」——甚至抓到本輪自己推出的 6,153B</td></tr>
+<tr><td>知識來源</td><td>內部迭代</td><td><strong>外部代謝</strong>：75 條 URL 驗證的生態調研 → 合憲吸收 → 當天落地</td></tr>
+</table></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="honest">
+<div class="section-number">SECTION 11</div>
+<h2>誠實邊界（本篇最重要的一節）</h2>
+
+<ol>
+<li><strong>lint 只治機械漂移。</strong>語意漂移（矛盾陳述、過期的「已 live」）今天是靠百萬 token 的 fan-out 體檢抓出來的——lint 抓不到。分工：機械＝每次收工零成本掃；語意＝人工策展＋季審 fan-out。<strong>「health 全綠」不可讀成「內容全真」。</strong></li>
+<li><strong>provenance 是保險性投資</strong>：收益在 spoke 回流時代（本地 LLM 提案寫回）才能驗證，B 期前無法驗收——明標、不假裝已證明。</li>
+<li><strong>效益主張≠已驗證事實</strong>：檢查點全過＝「該修的修了、規則抓得到歷史事故」；「修完會多好」只有可重放的部分當天驗證，superseded 慣例掛 observe 等下一次真實事實更正當首例。</li>
+<li>快照數字為 2026-07-10 定格。</li>
+</ol>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="philosophy">
+<div class="section-number">SECTION 12</div>
+<h2>設計哲學：前篇 11 條全數存活，新增 3 條</h2>
+
+<ol>
+<li><strong>完工＝檢查點過，不是報告寫完</strong>——每項工作自帶 falsifiable 檢查點，跨端接棒者可獨立驗收，報告與驗收分離（本輪 Codex 施工＋家裡 Claude 驗收即實例）。</li>
+<li><strong>借概念、不裝工具</strong>——外部生態是概念礦場不是軟體貨架；每個借鏡標注與哪條 Non-Goal 衝突，衝突的部分留在門外。</li>
+<li><strong>內容知識論</strong>——記憶不只要存在與同步，要有時間（何時為真、何時失效）、有署名（誰寫的）、有絆線（發現過的失敗模式永久可偵測）。</li>
+</ol>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="threads">
+<div class="section-number">SECTION 13</div>
+<h2>Open threads（2026-07-10 收尾時點）</h2>
+
+<ul>
+<li>superseded 慣例首例驗證：等下一次真實事實更正（頻率約每週）</li>
+<li>語意漂移季審：下次全量 fan-out 體檢（約 2026-10）</li>
+<li>spoke 治理（<code>jarvis_tier</code> 策展下發）：刻意等 Mac Studio 到位、本地 LLM 家庭助理上線才開——Non-Goal 8 邊界已畫好</li>
+<li>Gate 6：log.md 125K 接近 roll 線（收工例行處理）</li>
+<li>Cowork 在收工 checklist 的立場不一致（watch 項）</li>
+</ul>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="conclusion">
+<div class="section-number">SECTION 14</div>
+<h2>結論</h2>
+
+<p>07/02 之後，這套系統知道自己<strong>有沒有壞</strong>；07/10 之後，它開始知道自己<strong>有沒有在慢慢變得不真</strong>。一天之內：內查 18 agent、外比 12 agent、修復 9 項、工作包 8 項跨端接力完工、驗收 10/10。</p>
+
+<p>而最能說明這套 harness 成熟度的，不是任何單項數字，是兩個瞬間：<strong>驗證機制推翻了自己陣營的一條指控</strong>，以及<strong>新蓋的警戒線當場抓住了蓋它的那隻手</strong>。</p>
+
+<div class="pullquote">原則未變：沒有資料庫、沒有 RAG、沒有常駐服務、沒有新記憶引擎——只有 Git ＋ Markdown ＋ health ＋ baton，被做得更會自我維持。</div>
+
+<p style="color: var(--muted); font-size: 0.875rem; margin-top: 2rem;">成文：2026-07-10 家裡 Claude；資料來源：當日對話實錄、claude-memory commits（<code>6e4d2f6</code>…<code>a0c0fb0</code>）、體檢／調研 workflow 原始輸出。承接 <a href="memory-infra-evolution-2026-07.html">演化進程 II</a>。</p>
+</section>
+
+</main>
+</div>
+</div>
+</body>
+</html>
