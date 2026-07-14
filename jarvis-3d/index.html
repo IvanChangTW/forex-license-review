@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#091113" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23091315%22/><circle cx=%2216%22 cy=%2216%22 r=%227%22 fill=%22%2362d6bd%22/></svg>" />
+    <title>JARVIS 外殼候選｜3D Review</title>
+    <script type="module" crossorigin src="./assets/research-BuyoOxHQ.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="modulepreload" crossorigin href="./assets/STLLoader-XCCMs1D2.js">
+    <link rel="stylesheet" crossorigin href="./assets/research-AgMO8iQk.css">
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">MECHANICAL CROSS-REVIEW · 2026/07/14</div>
+          <h1>JARVIS 外殼候選</h1>
+        </div>
+        <div class="top-actions"><a href="./concept.html">查看四款初版設計 →</a><div class="status"><span></span> 3D 資料已載入</div></div>
+      </header>
+
+      <main>
+        <aside class="rail">
+          <p class="rail-label">候選模型</p>
+          <nav id="model-list"></nav>
+          <section class="legend">
+            <p class="rail-label">判定</p>
+            <div><i class="dot go"></i>可作設計基底</div>
+            <div><i class="dot ref"></i>只取結構概念</div>
+            <div><i class="dot no"></i>已排除</div>
+          </section>
+        </aside>
+
+        <section class="stage">
+          <div id="viewer"></div>
+          <div class="viewer-top">
+            <span id="source-badge"></span>
+            <span id="loading">模型載入中…</span>
+          </div>
+          <div class="viewer-bottom">
+            <button id="reset-view" type="button">重置視角</button>
+            <button id="toggle-wire" type="button">顯示線框</button>
+            <button id="toggle-grid" type="button">隱藏格線</button>
+          </div>
+          <div class="hint">拖曳旋轉 · 滾輪縮放 · 右鍵平移</div>
+        </section>
+
+        <aside class="detail">
+          <div class="detail-head">
+            <span id="verdict"></span>
+            <span id="model-count"></span>
+          </div>
+          <h2 id="model-title"></h2>
+          <p id="model-subtitle" class="subtitle"></p>
+
+          <div class="metric-grid" id="metrics"></div>
+
+          <section>
+            <h3>為什麼看這個</h3>
+            <p id="why"></p>
+          </section>
+
+          <section>
+            <h3>JARVIS 判斷</h3>
+            <p id="decision"></p>
+          </section>
+
+          <section class="callout" id="callout"></section>
+
+          <a id="source-link" class="source-link" target="_blank" rel="noreferrer">開啟原始資料 ↗</a>
+        </aside>
+      </main>
+    </div>
+  </body>
+</html>

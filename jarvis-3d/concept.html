@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c1114" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%230c1114%22/><path d=%22M8 22V10h4v8h12v4z%22 fill=%22%23efb66e%22/></svg>" />
+    <title>JARVIS AIR｜四款外殼工程視圖 V0.2</title>
+    <script type="module" crossorigin src="./assets/concepts-DY0rW88f.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="modulepreload" crossorigin href="./assets/STLLoader-XCCMs1D2.js">
+    <link rel="modulepreload" crossorigin href="./assets/RoundedBoxGeometry-C6ZvlH0n.js">
+    <link rel="stylesheet" crossorigin href="./assets/concepts-CErZ2wi_.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header>
+        <div>
+          <p class="kicker">INDUSTRIAL DESIGN STUDY · ENGINEERING V0.2</p>
+          <h1>JARVIS <span>AIR</span></h1>
+        </div>
+        <div class="header-actions">
+          <a href="./assembly.html">20 張工程圖 ↗</a>
+          <a href="./index.html">研究候選 ↗</a>
+          <div class="live"><i></i> FOUR CONFIGURATIONS</div>
+        </div>
+      </header>
+
+      <main>
+        <aside class="selector">
+          <p class="section-label">空間配置</p>
+          <nav id="design-list"></nav>
+
+          <div class="scope-note">
+            <p class="section-label">設計邊界</p>
+            <p>這是比例化 3D 概念，用來決定外觀、分艙與顯示方式；尚非可列印 STEP/STL。</p>
+          </div>
+        </aside>
+
+        <section class="viewport-wrap">
+          <div id="concept-viewer"></div>
+          <div class="viewport-labels">
+            <span id="design-code"></span>
+            <span id="load-state">GENERATING GEOMETRY</span>
+          </div>
+          <div class="view-actions">
+            <button id="reset" type="button">重置視角</button>
+            <button id="cutaway" type="button">透明剖視</button>
+            <button id="wireframe" type="button">顯示線框</button>
+            <button id="autorotate" type="button">自動旋轉</button>
+          </div>
+          <div class="engineering-views" id="engineering-views">
+            <span>ENGINEERING VIEW</span>
+            <button type="button" data-view="transparent">01 透明透視</button>
+            <button type="button" data-view="exploded">02 爆炸分解</button>
+            <button type="button" data-view="components">03 元件標示</button>
+            <button type="button" data-view="airflow">04 氣流／熱區</button>
+            <button type="button" data-view="service">05 維修拆裝</button>
+          </div>
+          <div class="pcb-legend"><i></i> KiCad 60×60 PCB · 4×M2.5 @ 3.5 mm　<span></span> 缺 3D model 的接頭 keepout</div>
+          <div class="interaction">拖曳旋轉 · 滾輪縮放 · 右鍵平移</div>
+        </section>
+
+        <aside class="spec-panel">
+          <div class="spec-topline">
+            <span id="design-status"></span>
+            <span id="design-index"></span>
+          </div>
+          <h2 id="design-name"></h2>
+          <p id="design-role" class="role"></p>
+
+          <div id="spec-grid" class="spec-grid"></div>
+
+          <section>
+            <h3>設計語言</h3>
+            <p id="design-language"></p>
+          </section>
+          <section>
+            <h3>顯示與操作</h3>
+            <p id="display-plan"></p>
+          </section>
+          <section>
+            <h3>感測／氣流配置</h3>
+            <p id="air-plan"></p>
+          </section>
+          <section class="risk-box">
+            <h3>下一輪必驗</h3>
+            <ul id="risk-list"></ul>
+          </section>
+        </aside>
+      </main>
+    </div>
+  </body>
+</html>
