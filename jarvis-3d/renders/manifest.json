@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "set": "JARVIS AIR V0.3",
+  "generatedAt": "2026-07-14T07:03:05.994Z",
+  "sources": {
+    "src/concepts.js": "58869c331e3df4e5883723bd612fdc77369993afa3fa92b782783ebce8695a85",
+    "src/data/pcb-missing-3d-models.json": "901d8276cf458c78ffc6b794f87ee57922dd30c18414ee6238f34f377dc4f46f",
+    "public/models/jarvis-common-board.stl": "61a4a0a23c836463e3a3ba7ae83d28053466d175a33e869b2630ddb06637db08"
+  },
+  "images": {
+    "public-transparent.jpg": "216218f4450b253487cb092ed9416863fcf259cbf55eb21424fdea473610e8eb",
+    "public-exploded.jpg": "b2459031c16e7bacca1197d1290a0bc2550805e29d27b63f5a7078a4ae0779d5",
+    "public-components.jpg": "a562b7b0bfe71125b06fdebcc5b3116a589987e955f31d530899f5bf16ce3c65",
+    "public-airflow.jpg": "6d66dac17a8d065fc31b4596881359b7c388b13462a18cc31d38831c99a0226f",
+    "public-service.jpg": "6d0e0e518d99eff31489041c27863350967742a0a9b2f0a3ba373a32f609c52c",
+    "room-transparent.jpg": "020065c8a621435c98250e7611c908f41ab806e82e4ecd9e38a5f78de06fae7e",
+    "room-exploded.jpg": "fbf7a2e7ec0b60defad7806842447f0bfc3e5227aa4887b83607dd357ceae121",
+    "room-components.jpg": "61dacea1fc34d27477b3094a744989752c20bce834e413e3fa1efe5b89e21adf",
+    "room-airflow.jpg": "9a6c75554a87a608cca830f199c1e054278a0e9fdeec2c4b5b6a2d25a69b93c1",
+    "room-service.jpg": "9dc9e04ac300be29c0a05ce895076a187af73143e2ec35f328f795cfc0e45d67",
+    "kitchen-transparent.jpg": "ce1181cbb96d3491c226429a1ef88b88c9349202bce1587800a48d2cd376dfd0",
+    "kitchen-exploded.jpg": "8c1dc1182950a58852ec392aa5fc6e3502d128dff09fd62336828fde80c76123",
+    "kitchen-components.jpg": "dbdce82aedb643017f7bd73a5eb14cd852d2e8889f2972c29c0514b1ebf98911",
+    "kitchen-airflow.jpg": "8f974c6b53764aa128b3fee467064a9fae986cfd58d1f2de24f8d08a7e8f5484",
+    "kitchen-service.jpg": "9a037fb0fe1a1da09ac14231975cac55d67aff3071b1b7cf5fd85485cdf6c43b",
+    "outdoor-transparent.jpg": "c2d1a343e9e04139b2609def6e2403533543070e95d65c329df18b6607f78cf5",
+    "outdoor-exploded.jpg": "e428198b60138621238ba42b121e6525e8110f80e0c8a6b5927f43e53cd9fc35",
+    "outdoor-components.jpg": "9d6638039e82afb57912483479cdba864500fae07a857e1127dea46d2ac88089",
+    "outdoor-airflow.jpg": "81abf626ffc53335cfb0ad68d3f8607c97b0c88f738d4e12be98aca74122aa92",
+    "outdoor-service.jpg": "7aa9782dd004122da45cfb15573a7fc53275c2ca25eed9dbc5fa7363ddcaccaa"
+  }
+}

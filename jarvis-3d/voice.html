@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#091216" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23091216%22/><circle cx=%2216%22 cy=%2216%22 r=%228%22 fill=%22none%22 stroke=%22%2364d8c1%22 stroke-width=%222%22/><circle cx=%2216%22 cy=%2216%22 r=%222%22 fill=%22%23efb66e%22/></svg>" />
-    <title>JARVIS VOICE｜86盒 PoE 天花板節點</title>
-    <script type="module" crossorigin src="./assets/voice--Ooi3asD.js"></script>
+    <title>JARVIS VOICE｜C案維修口 PoE 天花板節點 V0.2</title>
+    <script type="module" crossorigin src="./assets/voice-AI-kALWi.js"></script>
     <link rel="modulepreload" crossorigin href="./assets/modulepreload-polyfill-B5Qt9EMX.js">
-    <link rel="modulepreload" crossorigin href="./assets/STLLoader-Dv5eKiFa.js">
-    <link rel="modulepreload" crossorigin href="./assets/RoundedBoxGeometry-DGIIH_z4.js">
+    <link rel="modulepreload" crossorigin href="./assets/STLLoader-DaTnlZDq.js">
+    <link rel="modulepreload" crossorigin href="./assets/RoundedBoxGeometry-y_40e7Bu.js">
     <link rel="stylesheet" crossorigin href="./assets/voice-CHv8qkon.css">
   </head>
   <body>
     <header>
-      <div><p>CEILING VOICE NODE · 86 BOX / POE · PRE-EVT V0.1</p><h1>JARVIS <span>VOICE</span></h1></div>
+      <div><p>CEILING VOICE NODE · ROUTE C / SERVICE-HATCH POE · PRE-EVT V0.2</p><h1>JARVIS <span>VOICE</span></h1></div>
       <nav><a href="./controller.html">三機控制器 ↗</a><a href="./assembly.html">空氣節點工程圖 ↗</a><a href="./concept.html">互動外殼 ↗</a></nav>
     </header>
     <main>
@@ -24,30 +24,30 @@
           <button data-mode="appearance" class="active"><span>01</span><b>天花板外觀</b><small>104 mm acoustic faceplate</small></button>
           <button data-mode="cutaway"><span>02</span><b>86盒透視</b><small>PCB + PoE stacked fit</small></button>
           <button data-mode="exploded"><span>03</span><b>爆炸分解</b><small>service order / carrier</small></button>
-          <button data-mode="poe"><span>04</span><b>PoE與線路</b><small>RJ45 → 5V USB-C</small></button>
+          <button data-mode="poe"><span>04</span><b>維修口與PoE</b><small>service hatch → 5V USB-C</small></button>
           <button data-mode="acoustic"><span>05</span><b>聲學與防墜</b><small>speaker / mic / lanyard</small></button>
         </div>
-        <section class="boundary"><p class="eyebrow">模型邊界</p><p>86盒以86×86×65 mm加深盒、60.3 mm鎖距建模。PoE splitter為58×25×18 mm參數化keepout，料號未凍結。</p></section>
+        <section class="boundary"><p class="eyebrow">模型邊界</p><p>Ivan 已選 C 案：天花板保留維修口，PoE splitter 不進 86 盒。盒體凍結為非金屬、採購深度至少 65 mm；splitter、喇叭與 mic SKU 仍待 EVT。</p></section>
       </aside>
       <section class="stage">
         <div id="voice-viewer"></div>
-        <div class="stage-top"><span>VOICE-86-POE</span><i id="voice-state">LOADING PCB</i></div>
+        <div class="stage-top"><span>VOICE-86-C / V0.2</span><i id="voice-state">LOADING PCB</i></div>
         <div class="stage-bottom"><button id="voice-reset">重置視角</button><button id="voice-rotate">自動旋轉</button></div>
-        <div class="legend"><i class="pcb"></i> 現行60×60 PCB　<i class="poe"></i> PoE proposed keepout　<i class="air"></i> 聲學／防墜</div>
+        <div class="legend"><i class="pcb"></i> 現行60×60 PCB　<i class="poe"></i> 維修口外置 PoE　<i class="air"></i> 聲學／防墜</div>
         <div class="hint">拖曳旋轉 · 滾輪縮放 · 右鍵平移</div>
       </section>
       <aside class="details">
-        <div class="status"><span>PRE-EVT</span><i>01 / VOICE</i></div>
-        <h2>86盒內藏 PoE<br>天花板語音節點</h2>
-        <p class="lead">網路線進86加深盒，PoE splitter在最深層轉5V；60×60主板置於轉接載板前方，聲學面板突出天花板，避免把喇叭、麥克風與發熱電源全部塞在同一平面。</p>
+        <div class="status"><span>ROUTE C · V0.2</span><i>01 / VOICE</i></div>
+        <h2>維修口外置 PoE<br>86盒語音節點</h2>
+        <p class="lead">PoE splitter 放在可觸及的天花板維修空間，RJ45 與熱源不再塞進 86 盒；盒內只保留 60×60 主板、雙節固定柱、短 5V 線與聲學面板。這是 Ivan 已拍板的 C 路線。</p>
         <div class="specs">
-          <div><span>BACK BOX</span><b>86×86×65 mm</b></div><div><span>MOUNT</span><b>60.3 mm centres</b></div>
-          <div><span>PCB</span><b>60×60 · 4×M2.5</b></div><div><span>POWER</span><b>802.3af/at → 5V</b></div>
-          <div><span>FACE</span><b>104×104×14 mm</b></div><div><span>STACK</span><b>≈52 / 65 mm</b></div>
+          <div><span>BACK BOX</span><b>non-metal · ≥65 mm</b></div><div><span>MOUNT</span><b>60.3 mm dual-stage studs</b></div>
+          <div><span>PCB</span><b>60×60 · 2 nylon + 2 metal</b></div><div><span>POWER</span><b>remote 802.3at → short 5V</b></div>
+          <div><span>FACE</span><b>104×104×14 mm</b></div><div><span>IN-BOX STACK</span><b>34 mm · +31 @65</b></div>
         </div>
-        <section><h3>由後向前的堆疊</h3><ol><li>RJ45進線與彎折keepout</li><li>PoE splitter＋固定帶</li><li>86盒轉接載板／60.3 mm鎖點</li><li>60×60主板＋四顆M2.5尼龍柱</li><li>隔振喇叭艙、偏置麥克風、前面板</li></ol></section>
-        <section><h3>目前必須凍結</h3><ul><li>實際86加深盒內徑與深度</li><li>PoE splitter料號、尺寸、溫度額定≥50°C</li><li>RJ45插頭方向與最小彎曲半徑</li><li>INMP441 breakout、喇叭尺寸與功放</li><li>防墜繩固定點與天花板材質</li></ul></section>
-        <section class="warning"><h3>初步判定</h3><p>幾何上可建立「PoE在後、PCB在前」的52 mm級堆疊；但RJ45插頭／線材彎折與實際盒內耳位可能吃掉13 mm餘裕，未實盒試裝前不可判定fit PASS。</p></section>
+        <section><h3>由維修空間到面板</h3><ol><li>Cat6 以 4×OD 彎折半徑進外置 splitter</li><li>短 5V 線由敲落孔進非金屬 86 盒</li><li>71 mm 載板＋60.3 mm 雙節公母柱</li><li>60×60 主板：天線側尼龍、下側金屬柱</li><li>隔振喇叭艙、偏置 mic、獨立防墜面板</li></ol></section>
+        <section><h3>目前必須凍結</h3><ul><li>兩款非金屬 ≥65 mm 86 盒實測內徑</li><li>at 級無電解 splitter 與維修口固定托架</li><li>INMP441 breakout 的 L/R、CHIPEN、100nF</li><li>Ø40 淺喇叭、功放與 ≥5 mm 動態間隙</li><li>防墜繩錨定建築結構，不只錨盒體</li></ul></section>
+        <section class="warning"><h3>60／65／70 mm stack</h3><p>C 案盒內預算 34 mm：名義餘裕分別 +26／+31／+36 mm。採購仍限 ≥65 mm，保留實盒耳位、5V 插頭、線材與公差；60 mm 只作敏感度對照，不列首選。</p></section>
       </aside>
     </main>
   </body>
