@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a1115" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%230a1115%22/><path d=%22M8 10h16v12H8z%22 fill=%22none%22 stroke=%22%2364d8c1%22 stroke-width=%222%22/><circle cx=%2212%22 cy=%2216%22 r=%221.5%22 fill=%22%23efb66e%22/></svg>" />
+    <title>JARVIS CONTROL｜三機控制器簡易外殼</title>
+    <script type="module" crossorigin src="./assets/controller-CGwjm5WX.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="modulepreload" crossorigin href="./assets/STLLoader-Dv5eKiFa.js">
+    <link rel="modulepreload" crossorigin href="./assets/RoundedBoxGeometry-DGIIH_z4.js">
+    <link rel="stylesheet" crossorigin href="./assets/controller-CEmr8Gue.css">
+  </head>
+  <body>
+    <header>
+      <div><p>HVAC / DEHUMIDIFIER / ERV · LOW-VOLTAGE SERVICE ENCLOSURE · CONCEPT V0.1</p><h1>JARVIS <span>CONTROL</span></h1></div>
+      <nav><a href="./voice.html">86盒語音 ↗</a><a href="./assembly.html">空氣節點工程圖 ↗</a><a href="./concept.html">互動外殼 ↗</a></nav>
+    </header>
+    <main>
+      <aside class="mode-panel">
+        <p class="eyebrow">工程視圖</p>
+        <div id="controller-modes">
+          <button data-mode="appearance" class="active"><span>01</span><b>簡易外觀</b><small>screw lid / status window</small></button>
+          <button data-mode="cutaway"><span>02</span><b>透明配置</b><small>60×60 PCB + daughterboard</small></button>
+          <button data-mode="exploded"><span>03</span><b>爆炸拆裝</b><small>lid / boards / base</small></button>
+          <button data-mode="wiring"><span>04</span><b>三機配線</b><small>low-voltage cable routing</small></button>
+          <button data-mode="mount"><span>05</span><b>壁掛／DIN</b><small>keyholes + 35 mm clip</small></button>
+        </div>
+        <section class="boundary"><p class="eyebrow">安全邊界</p><p>本模型只處理 SELV／低壓控制線。若現場介面含市電、壓縮機或泵浦負載，須另放進合規阻燃電控箱並由電氣人員覆核。</p></section>
+      </aside>
+      <section class="stage">
+        <div id="controller-viewer"></div>
+        <div class="stage-top"><span>CONTROL-3M-SIMPLE</span><i id="controller-state">LOADING PCB</i></div>
+        <div class="stage-bottom"><button id="controller-reset">重置視角</button><button id="controller-rotate">自動旋轉</button></div>
+        <div class="legend"><i class="pcb"></i> 現行 60×60 PCB　<i class="daughter"></i> HVAC 子板 proposed　<i class="cable"></i> 三組低壓出線</div>
+        <div class="hint">拖曳旋轉 · 滾輪縮放 · 右鍵平移</div>
+      </section>
+      <aside class="details">
+        <div class="status"><span>CONCEPT V0.1</span><i>03 / CONTROL</i></div>
+        <h2>三機控制器<br>簡易維修外殼</h2>
+        <p class="lead">以容易開蓋、整理線材和固定為優先。60×60 通用板鎖在四顆 M2.5 柱上，HVAC 子板以堆疊 keepout 表示；冷氣、除濕與全熱三組低壓控制線由同側出線，USB‑C 留在下側服務口。</p>
+        <div class="specs">
+          <div><span>ENCLOSURE</span><b>118×100×45 mm</b></div><div><span>MATERIAL</span><b>PC/ABS · V-0 target</b></div>
+          <div><span>PCB</span><b>60×60 · 4×M2.5</b></div><div><span>DAUGHTER</span><b>46×34×14 proposed</b></div>
+          <div><span>CABLES</span><b>3× M12-class glands</b></div><div><span>MOUNT</span><b>wall ears / DIN 35</b></div>
+        </div>
+        <section><h3>簡易結構</h3><ol><li>四螺絲上蓋＋三色狀態燈窗</li><li>60×60 主板與四顆 M2.5 尼龍柱</li><li>HVAC 2×5 上方子板堆疊區</li><li>三組低壓線束、壓線夾與標籤</li><li>底板壁掛耳或可拆式 DIN 背夾</li></ol></section>
+        <section><h3>正式前要確認</h3><ul><li>冷氣／除濕／全熱實際控制介面與線數</li><li>HVAC 子板實際長寬高、接頭朝向與散熱</li><li>線徑、接頭、端子與 cable gland 料號</li><li>USB‑C 母座位置、插頭尺寸與彎折空間</li><li>安裝處是否真的只有 SELV／低壓</li></ul></section>
+        <section class="warning"><h3>初步判定</h3><p>可作 Lab／弱電箱內的簡易防碰與理線外殼；目前子板與三組出線都是 proposed keepout。它不是市電配電箱，也不能取代 UL94 V-0／IEC 規範的成品阻燃電控盒。</p></section>
+      </aside>
+    </main>
+  </body>
+</html>
