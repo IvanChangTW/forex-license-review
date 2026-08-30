@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>跨 AI Agent、跨機器長期記憶管理：演化進程 IV — 執行路徑 — 2026/08/31</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f4ed;
+    --bg-card: #fbf8f0;
+    --bg-code: #efe9dc;
+    --text: #1a1a1c;
+    --muted: #6a665d;
+    --border: #d6cfc1;
+    --border-strong: #b5ad9c;
+    --accent: #2c4a52;
+    --accent-light: #4a6d76;
+    --warning: #b8543a;
+    --warning-light: #d4886f;
+    --success: #4a6741;
+    --layer-state: #c9b988;
+    --layer-process: #88a8a8;
+    --layer-method: #9d7e6b;
+    --shadow: 0 1px 0 rgba(0,0,0,0.04);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    font-feature-settings: "ss01", "ss02", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+
+  .layout { display: grid; grid-template-columns: 260px 1fr; gap: 3rem; align-items: start; padding: 2rem 0 6rem; }
+
+  nav.toc {
+    position: sticky;
+    top: 2rem;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+    font-size: 0.875rem;
+    padding-right: 1rem;
+    border-right: 1px solid var(--border);
+  }
+
+  nav.toc .toc-title {
+    font-family: 'Fraunces', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  nav.toc ol { list-style: none; counter-reset: section; }
+  nav.toc li { counter-increment: section; margin: 0.4rem 0; }
+  nav.toc li::before {
+    content: counter(section, decimal-leading-zero);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-right: 0.6rem;
+  }
+  nav.toc a {
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s;
+  }
+  nav.toc a:hover { border-bottom-color: var(--accent); }
+
+  main { min-width: 0; max-width: 820px; }
+
+  header.hero {
+    border-bottom: 2px solid var(--text);
+    padding: 4rem 0 3rem;
+    margin-bottom: 3rem;
+    position: relative;
+  }
+  header.hero::before {
+    content: "REFERENCE / ARCHIVE · VOL. IV";
+    position: absolute;
+    top: 1rem;
+    right: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+  }
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .hero-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-variation-settings: "opsz" 80;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+  .hero-subtitle {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 640px;
+    margin-bottom: 2rem;
+  }
+  .hero-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem 2rem;
+    font-size: 0.875rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .hero-meta dt { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.2rem; }
+  .hero-meta dd { font-weight: 500; }
+
+  section { margin-bottom: 4rem; scroll-margin-top: 2rem; }
+
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-variation-settings: "opsz" 60;
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.015em;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.3rem;
+    margin: 2rem 0 0.75rem;
+    color: var(--accent);
+  }
+  h4 {
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin: 1.5rem 0 0.6rem;
+  }
+
+  p { margin-bottom: 1rem; }
+  strong { font-weight: 700; color: var(--accent); }
+
+  ul, ol { margin: 0.5rem 0 1rem 1.5rem; }
+  li { margin-bottom: 0.35rem; }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85em;
+    background: var(--bg-code);
+    padding: 0.1em 0.4em;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+
+  pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    overflow-x: auto;
+  }
+  pre code { background: none; border: none; padding: 0; font-size: inherit; }
+
+  .table-wrap { margin: 1.5rem 0; overflow-x: auto; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-card); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  th {
+    text-align: left;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    padding: 0.7rem 1rem;
+    background: var(--bg-code);
+    border-bottom: 1px solid var(--border-strong);
+    color: var(--accent);
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+  }
+  td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: rgba(214, 207, 193, 0.15); }
+
+  .glossary {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 4px;
+    padding: 1.5rem 1.8rem;
+    margin: 1.5rem 0;
+  }
+  .glossary h3 { margin-top: 0; color: var(--accent); font-size: 1.1rem; }
+  .glossary dl { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1rem; }
+  .glossary dt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.2rem;
+  }
+  .glossary dd { font-size: 0.92rem; color: var(--text); margin-left: 0; }
+
+  .callout {
+    background: linear-gradient(180deg, #fdf6e3 0%, #faf2db 100%);
+    border: 1px solid #d4b886;
+    border-left: 4px solid var(--warning);
+    border-radius: 4px;
+    padding: 1.2rem 1.5rem;
+    margin: 1.5rem 0;
+    position: relative;
+  }
+  .callout-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--warning);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout strong { color: var(--warning); }
+
+  .callout.term {
+    background: #eef2f3;
+    border-color: #b5c7cb;
+    border-left-color: var(--accent);
+  }
+  .callout.term .callout-label { color: var(--accent); }
+  .callout.term strong { color: var(--accent); }
+
+  .figure {
+    margin: 2rem 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.5rem;
+  }
+  .figure svg { display: block; width: 100%; height: auto; max-width: 100%; }
+  .figure figcaption {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .day-block {
+    border-left: 3px solid var(--border);
+    padding: 0.2rem 0 0.2rem 1.5rem;
+    margin: 2rem 0;
+    position: relative;
+  }
+  .day-block::before {
+    content: "";
+    position: absolute;
+    left: -7px;
+    top: 0;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .day-block.day-key::before { background: var(--warning); width: 14px; height: 14px; left: -8px; }
+  .day-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .day-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    background: var(--accent);
+    color: var(--bg);
+    padding: 0.15rem 0.6rem;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+  }
+  .day-block.day-key .day-date { background: var(--warning); }
+  .day-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.25rem;
+    color: var(--text);
+  }
+
+  .pullquote {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.25rem;
+    line-height: 1.45;
+    color: var(--accent);
+    padding: 1.5rem 0 1.5rem 2rem;
+    border-left: 3px solid var(--accent);
+    margin: 2rem 0;
+    background: linear-gradient(90deg, rgba(44, 74, 82, 0.04) 0%, transparent 100%);
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .stat {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem 1.2rem;
+  }
+  .stat-value {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--accent);
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 880px) {
+    .container { padding: 0 1.2rem; }
+    .layout { grid-template-columns: 1fr; gap: 1rem; padding: 1rem 0 4rem; }
+    nav.toc { position: static; max-height: none; border-right: none; border-bottom: 1px solid var(--border); padding: 0 0 1.5rem; margin-bottom: 1rem; }
+    nav.toc ol { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.3rem 1.5rem; }
+    main { max-width: 100%; }
+    header.hero { padding: 2rem 0 1.5rem; }
+    header.hero::before { display: none; }
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0 4rem;
+    margin-top: 4rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header class="hero">
+  <div class="hero-eyebrow">Memory Infrastructure · Internal Reference</div>
+  <h1 class="hero-title">跨 AI Agent、跨機器<br>長期記憶管理：演化進程 IV</h1>
+  <p class="hero-subtitle">執行路徑——07/10 解決「內容會不會慢慢失真」；08/31 解決「規則會不會在動手的那一刻真的被執行」。本篇的核心不是新增了多少條規則，而是一組令人不舒服的量測：把教訓寫成記憶之後，首次事後漏接的間隔中位數約 26 天，而且每一次都是人抓到的，沒有一次是機器抓到。</p>
+  <dl class="hero-meta">
+    <div><dt>期間</dt><dd>2026/07/11 – 08/31（52 天）</dd></div>
+    <div><dt>範圍</dt><dd>4 端 + 12 道 gate</dd></div>
+    <div><dt>關鍵 Repo</dt><dd>claude-memory</dd></div>
+    <div><dt>版本</dt><dd>v1.0 / 2026-08-31</dd></div>
+  </dl>
+</header>
+
+<div class="layout">
+
+<nav class="toc">
+  <div class="toc-title">Contents</div>
+  <ol>
+    <li><a href="#numbers">52 天的數字</a></li>
+    <li><a href="#terms">關鍵術語</a></li>
+    <li><a href="#trigger">背景與觸發</a></li>
+    <li><a href="#halflife">主診斷：文字記憶的半衰期</a></li>
+    <li><a href="#gates">回應一：把檢查搬到執行路徑</a></li>
+    <li><a href="#sync">回應二：同步變成 transaction</a></li>
+    <li><a href="#rolllog">回應三：一支腳本的四種靜默失效</a></li>
+    <li><a href="#crossplatform">跨平台：兩端行為不同</a></li>
+    <li><a href="#spillover">方法外溢：另一個生產系統</a></li>
+    <li><a href="#honesty">誠實邊界</a></li>
+    <li><a href="#compare">07/10 vs 08/31 對照</a></li>
+    <li><a href="#philosophy">設計哲學：14 條全數存活</a></li>
+    <li><a href="#open">Open threads</a></li>
+    <li><a href="#conclusion">結論</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ═══════════════ -->
+<section id="numbers">
+<div class="section-number">SECTION 01</div>
+<h2>52 天的數字</h2>
+
+<div class="stat-grid">
+  <div class="stat"><div class="stat-value">934</div><div class="stat-label">commits（07/11 – 08/31）</div></div>
+  <div class="stat"><div class="stat-value">12</div><div class="stat-label">自動化 gate（前篇：3）</div></div>
+  <div class="stat"><div class="stat-value">~26 天</div><div class="stat-label">教訓寫成記憶後，首次事後漏接的間隔中位數</div></div>
+  <div class="stat"><div class="stat-value">0</div><div class="stat-label">由機器抓到的漏接（全部由人抓到）</div></div>
+  <div class="stat"><div class="stat-value">3 → 1</div><div class="stat-label">同步事故三連發 → transaction 化</div></div>
+  <div class="stat"><div class="stat-value">16 天</div><div class="stat-label">同步事故的真根因遲到多久才被釘死</div></div>
+  <div class="stat"><div class="stat-value">7 / 7</div><div class="stat-label">盲測命中（Non-Goal 2 的 trigger 未達成）</div></div>
+  <div class="stat"><div class="stat-value">0</div><div class="stat-label">被調高的 cap（52 天內）</div></div>
+</div>
+
+<div class="callout">
+<div class="callout-label">本文不是 source of truth</div>
+<p>本篇是敘事整理，不是規格。所有機制與門檻以 repo 內的腳本、憲章與 health 輸出為準；本文若與它們衝突，以 repo 為準。文中所有示意檔名皆為佔位符，不對應真實檔案。</p>
+</div>
+</section>
+
+<!-- ═══════════════ -->
+<section id="terms">
+<div class="section-number">SECTION 02</div>
+<h2>關鍵術語</h2>
+
+<p>沿用前三篇的詞彙，本篇新增六個。後文直接使用、不再解釋。</p>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>術語</th><th>意思</th></tr></thead>
+<tbody>
+<tr><td><strong>執行路徑上的檢查</strong></td><td>在「動手的那一刻」被強制跑到的檢查（pre-commit hook、PreToolUse gate、腳本內建斷言），相對於「開場載入的文字規則」。本篇的主軸就是這條線的遷移。</td></tr>
+<tr><td><strong>fail-closed 前置</strong></td><td>把守門搬到「任何破壞性動作之前」。不只是「會擋」，而是擋的時候<strong>什麼都還沒被動過</strong>。</td></tr>
+<tr><td><strong>分母非空斷言</strong></td><td>檢查在斷言「沒有問題」之前，先斷言「我真的檢查了東西」。防的是掃描範圍為零卻報綠。</td></tr>
+<tr><td><strong>假綠</strong></td><td>檢查通過，但通過的原因不是「沒問題」，而是「根本沒測到」。本篇出現至少四種不同成因的假綠。</td></tr>
+<tr><td><strong>漏接帳本</strong></td><td>專門記錄「條目已經存在，卻仍然被違反」的帳。它量的不是知識有沒有寫下來，而是<strong>寫下來之後有沒有用</strong>。</td></tr>
+<tr><td><strong>約束遷移</strong></td><td>系統真正的瓶頸會換位置。前篇已提出；本篇的貢獻是證明它<strong>會移動兩次，而且兩次都是被事後量測抓到的</strong>。</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- ═══════════════ -->
+<section id="trigger">
+<div class="section-number">SECTION 03</div>
+<h2>背景與觸發</h2>
+
+<p>《演化 III》結束在一個看起來很好的位置：一天之內完成內查、修復、外比、借鏡、施工、驗收；設計哲學累積到 14 條；熱層距離 cap 還有 2,110 bytes 的頭寸。那篇的自我定位是「內容知識論」——系統開始知道自己的<strong>內容</strong>有沒有在慢慢變得不真。</p>
+
+<p>接下來 52 天沒有發生任何一次架構重寫。發生的是別的事：<strong>同一批規則被反覆違反，而且每一次都是人先發現的。</strong></p>
+
+<p>觸發點不是某個事故，是一次盤點。8 月初做「漏接帳本」時第一次問了一個從來沒被量化的問題——<em>那些已經寫成記憶的教訓，後來到底有沒有真的防到事？</em> 逐案回溯的結果構成本篇 SECTION 04，也重新定義了接下來七週的工作方向。</p>
+
+<div class="callout">
+<div class="callout-label">本篇與前篇的關係</div>
+<p>前三篇解決的是「架構會不會壞」（I、II）與「內容會不會失真」（III）。本篇解決的是第三個問題：<strong>規則本身已經寫對了，但它在該生效的那一刻不在場。</strong></p>
+</div>
+</section>
+
+<!-- ═══════════════ -->
+<section id="halflife">
+<div class="section-number">SECTION 04</div>
+<h2>主診斷：文字記憶的半衰期</h2>
+
+<p>方法很土：挑出那些「已經建檔、而且明確寫了該怎麼做」的教訓條目，逐一回溯它建檔<strong>之後</strong>的所有工作紀錄，找出「同一個錯又犯了一次」的實例，並記下距離建檔多久。</p>
+
+<p>結果是這樣：</p>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>量測</th><th>結果</th></tr></thead>
+<tbody>
+<tr><td>建檔後仍發生的事後漏接</td><td>至少 6 次，分布在 4 條條目</td></tr>
+<tr><td>首次漏接距建檔的間隔</td><td>14／32／26／17／60 天，<strong>中位數約 26 天</strong></td></tr>
+<tr><td>由機器／gate／流程抓到的</td><td><strong>0 次</strong></td></tr>
+<tr><td>由人抓到的</td><td><strong>全部</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<p>後續兩次複查讓數字更難看：某一條在同一場工作階段裡被引用了 60 次，仍然在當天被違反四次；三條核心條目的累計違反次數分別是 7、5、3。</p>
+
+<div class="pullquote">文字記憶不在 shell 指令那一刻的執行路徑上。</div>
+
+<p>這句話是整篇的樞紐。它的意思不是「寫記憶沒有用」——那 6 次漏接的<strong>診斷</strong>之所以快，正是因為條目寫得夠具體。它的意思是：<strong>記憶負責讓你知道該做什麼，但它不負責讓你在該做的那一刻真的做。</strong>前者是知識問題，後者是執行問題，而 52 天前我們把兩者當成同一件事在解。</p>
+
+<p>錯誤的修法很誘人：把規則寫得更狠、加上更多星號、在更多地方重複。實測結果是這條路已經走到頭——某條條目在被引用 60 次的當天仍被違反四次，代表<strong>提高文字的顯著性不再帶來邊際效益</strong>。</p>
+
+<p>正確的方向只有一個：<strong>把檢查搬到動手的那一刻</strong>。這就是接下來三節。</p>
+</section>
+
+<!-- ═══════════════ -->
+<section id="gates">
+<div class="section-number">SECTION 05</div>
+<h2>回應一：把檢查搬到執行路徑</h2>
+
+<p>52 天內 gate 從 3 道長到 12 道。但數量不是重點，<strong>位置</strong>才是。它們可以分成三層，而這三層的可靠度差距極大。</p>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>層</th><th>在哪裡跑</th><th>會不會被跳過</th></tr></thead>
+<tbody>
+<tr><td>① 開場載入的文字規則</td><td>對話開始時進入 context</td><td><strong>會</strong>——它只影響傾向，不影響控制流</td></tr>
+<tr><td>② 健檢腳本</td><td>每日開工／收工手動或半自動跑</td><td><strong>會</strong>——忘記跑就等於不存在</td></tr>
+<tr><td>③ 執行路徑上的檢查</td><td>pre-commit hook、工具呼叫攔截、腳本內建斷言</td><td><strong>不會</strong>——它在動作與結果之間</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>52 天的工作，本質上是把規則從 ① 往 ③ 搬。幾個代表性的落點：</p>
+
+<h3>寫入前置的 fail-closed</h3>
+
+<p>索引檔有一個 25,600 bytes 的硬上限（來自載入端的原生限制）。舊版守門是在<strong>刪掉目標目錄的舊檔之後</strong>才計算——超限時舊索引已經沒了，而且中止點卡在多目錄迴圈中間，其餘目錄不同步、後續清理與健檢全部跳過。修法不是改判斷邏輯，是<strong>把它整段前移到任何寫入之前</strong>：超限就直接中止，一個檔都不碰、全部保留舊版。</p>
+
+<p>同時加了一條反向護欄：門檻的環境變數<strong>只准往下調</strong>，設定成高於硬上限的值會直接中止。理由寫在規範裡——「不為了消除警示而提高任何 cap」。52 天內沒有任何一個 cap 被調高。</p>
+
+<h3>原子切換與自癒</h3>
+
+<p>同步不再是「刪掉舊的、寫入新的」。現在的順序是：在同一個檔案系統上建 staging 目錄 → 逐檔算雜湊比對預期 → 全部相符才做兩次 rename（live 換成備份、staging 換成 live）。任何一般錯誤立刻回滾；被硬殺則備份留在原地，下次執行時自動偵測並復原。整支腳本外面還有一把鎖，撞到就中止並記錄狀態，而不是兩份程序互相蓋寫。</p>
+
+<h3>條目層的檢查器</h3>
+
+<p>歷史層（AI 可搜尋的工作紀錄）長期只有「檔案層」的兩道 gate（大小、切檔），<strong>條目層一道都沒有</strong>——單筆紀錄格式跑掉、欄位缺漏都不會被發現。這個缺口存在了一個月。補上之後，新條目逐筆告警、舊條目只計數揭露，避免一次爆出幾百條警示而沒人讀。</p>
+
+<div class="callout">
+<div class="callout-label">一個關於 enforcement 力道的來回</div>
+<p>7 月下旬曾把某道 gate 從「警告」升成「硬擋」，一週後又降回警告——因為每次動作都被卡一下，行為上的副作用比它防的問題更大。原則沒變、enforcement 放鬆。<br><br>但這個決定在 8 月底被自己的證據推翻：正是那類「只警告不擋」的規則，構成了 SECTION 04 那組漏接數字。<strong>結論是 enforcement 的強度不該由摩擦感決定，而該由「違反的後果是否可逆」決定。</strong></p>
+</div>
+</section>
+
+<!-- ═══════════════ -->
+<section id="sync">
+<div class="section-number">SECTION 06</div>
+<h2>回應二：同步變成 transaction</h2>
+
+<p>這是本期最完整的一條因果鏈，也是「先修症狀、後找根因」的實例。</p>
+
+<div class="day-block">
+<div class="day-date">第 1 次</div>
+<p>某個目錄的記憶被同步成殘缺狀態（檔案少了三分之一、索引檔不存在）。在該目錄開新對話 ＝ 載入到<strong>零記憶</strong>而毫無警示。當時只掛了一個觀察條件：「再犯就改成暫存目錄 + 原子 rename」。</p>
+</div>
+
+<div class="day-block">
+<div class="day-date">第 2 次（5 天後）</div>
+<p>同型再犯，而這次中彈的是<strong>當下這場對話自己的目錄</strong>。觀察條件達成。</p>
+</div>
+
+<div class="day-block">
+<div class="day-date">第 3 次（再 2 天後）</div>
+<p>第三次。隔天同步改成 transaction（staging + 雜湊驗證 + 兩次 rename + 備份自癒）。症狀止血。</p>
+</div>
+
+<div class="day-block">
+<div class="day-date">第 16 天</div>
+<p><strong>真根因才被釘死</strong>：對話啟動時的 hook 有時間上限，超時會把整個同步程序砍在半路；而那支 hook 的輸出被導進黑洞，所以<strong>被砍這件事本身完全不可見</strong>。</p>
+</div>
+
+<p>值得記下的不是修法，是這 16 天。transaction 化讓殘缺狀態不再出現——但它處理的是「被中斷之後不要留下爛攤子」，沒有回答「為什麼會被中斷」。<strong>症狀消失讓根因的搜尋動機一起消失了</strong>，直到另一條線索（腳本的錯誤退出碼在某些情況下恆為零）把它撈回來。</p>
+
+<div class="callout">
+<div class="callout-label">教訓</div>
+<p>止血成功會製造一種假象：問題已經解決。判準應該是「<strong>我能不能說出它為什麼會發生</strong>」，而不是「它還會不會再出現」。</p>
+</div>
+</section>
+
+<!-- ═══════════════ -->
+<section id="rolllog">
+<div class="section-number">SECTION 07</div>
+<h2>回應三：一支腳本的四種靜默失效</h2>
+
+<p>歷史層太大時要切檔封存。負責這件事的腳本很短，卻在 52 天內暴露了四種<strong>成因完全不同</strong>的靜默失效。把它們並排看，比任何抽象原則都有說服力。</p>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>#</th><th>失效</th><th>為什麼沒被發現</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><strong>把最新的紀錄當成最舊的搬走</strong>。腳本假設檔案是「新的在上、舊的在下」，實際是相反</td><td>搬走之後，被搬走的內容<strong>本來就不該在原處</strong>——結果看起來完全正常。已經出貨至少兩次</td></tr>
+<tr><td>2</td><td>在某個平台上一直寫入錯誤的換行字元</td><td>版本控制的自動轉換讓這件事在 diff 裡<strong>完全不可見</strong></td></tr>
+<tr><td>3</td><td>在較舊的直譯器版本上直接崩潰，<strong>壞了 15 天沒人知道</strong></td><td>它平常不會被自動呼叫，只有人記得時才跑</td></tr>
+<tr><td>4</td><td>切檔判斷的邊界差一位</td><td>只在檔案大小剛好落在某個窄帶時才會顯現</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>第 1 項的修法值得展開，因為它示範了「修 bug」與「修可觀察性」的差別。除了改正邏輯，還加了一條<strong>不變量斷言</strong>：任何被封存的紀錄，都不得比留下來的任何一筆更新——違反就拒絕寫入。這條斷言刻意<strong>不設開關、也不只在測試裡跑</strong>，因為它要擋的是「靜默地把最新紀錄移出搜尋範圍」，而那正是一種你永遠不會自己發現的失效。</p>
+
+<p>第 3 項則直接推動了另一個改變：這支腳本不再依賴人記得跑，改由同步流程在超過門檻時自動呼叫，而且<strong>不論有沒有實際執行，狀態行都固定回報結果</strong>。「沒有執行」從此是一個可觀察的事實，而不是一片沉默。</p>
+
+<div class="pullquote">寫下 SKIP 或 return 0 之前，先問：連續 N 次都走這條路，誰會知道？</div>
+</section>
+
+<!-- ═══════════════ -->
+<section id="crossplatform">
+<div class="section-number">SECTION 08</div>
+<h2>跨平台：兩端行為不同</h2>
+
+<p>這套系統跑在兩種作業系統上。52 天內出現三個「同一份規則，兩端行為不同」的實例，全部是靜默的。</p>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>實例</th><th>後果</th></tr></thead>
+<tbody>
+<tr><td>某個文字檢查的比對樣式在其中一端不受支援，而且樣式開頭的字元被當成命令選項</td><td>該檢查<strong>在那一端從來沒有真的跑過</strong>——不是失敗，是根本沒執行</td></tr>
+<tr><td>健檢腳本的告警訊息裡，變數緊接著一個全形標點</td><td>較舊的 shell 會把全形字的第一個位元組吃進變數名，導致嚴格模式中止、<strong>整支健檢崩掉</strong>。同型在一個月內出現三次</td></tr>
+<tr><td>上一條的反向測試順帶挖出更深的問題：該 shell 掛上結束處理常式之後，嚴格模式中止<strong>一律回報成功</strong></td><td>十次探針驗證：無處理常式回報失敗、有處理常式回報成功。<strong>意思是同步腳本的錯誤退出碼有一整類是失效的</strong>——這也正是 SECTION 06 那 16 天的推手</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>共同結構是：<strong>檢查本身沒有壞，是「檢查有沒有跑」這件事沒有被檢查。</strong>對應的修法是跨版一致性 gate——把兩端的設定逐鍵比對，並對「已經沒人使用的設定鍵」單獨告警。</p>
+</section>
+
+<!-- ═══════════════ -->
+<section id="spillover">
+<div class="section-number">SECTION 09</div>
+<h2>方法外溢：另一個生產系統</h2>
+
+<p>這套方法論最有力的驗證，不是它讓記憶系統自己變好，而是它被搬到一個完全不同的專案上仍然有效——一套實際在營運的門市管理系統，兩台主機、真實使用者、真實金流。</p>
+
+<p>8 月底那批工作是很典型的一輪：新增一個「跨店唯讀檢視」的權限旗標，讓不同分店的管理者可以互相看到營運數字。需求本身很單純，但有兩個判斷值得記錄。</p>
+
+<h3>看得到 vs 改得動，必須是兩套範圍</h3>
+
+<p>旗標的語意是「<strong>唯讀</strong>檢視」。實作上很容易順手讓它也放寬寫入——畢竟「既然看得到，改一下也合理」。但這會讓一個報表勾選項悄悄變成改單權。最後的做法是把兩組範圍<strong>徹底分開、且明文禁止互相引用</strong>：可見範圍吃旗標，可編輯範圍完全不看旗標、逐字鏡射後端既有的守門判斷。並用一個全矩陣測試把兩者綁在一起——前端比後端寬，使用者會點下去才吃到拒絕；前端比後端嚴，畫面就是在說謊。</p>
+
+<h3>反向測才是真正的驗收</h3>
+
+<p>驗收方式不是「跑測試全綠」，而是<strong>把守門暫時拿掉，確認壞事真的會發生</strong>。結果是：他店的資料真的被繞過畫面的直接呼叫刪掉了，裝回去就擋住。同一輪還用相同手法坐實了一個既有的資料外洩——某個查詢介面信任了呼叫端傳來的範圍參數，改一個值就能取回不該取回的資料。它一直存在，是這次的功能放寬把它從「難以利用」變成「可定向利用」。</p>
+
+<div class="callout">
+<div class="callout-label">最後一哩：授權畫面本身也會過期</div>
+<p>兩次放寬之後，<strong>授予這個權限的那一頁</strong>上的說明文字仍停在第一版，明寫著某類資料「仍鎖本店」——而那在第二次放寬之後已經是假的。<br><br>這是最容易被忽略的一種失效：機制全部正確、測試全部通過，但<strong>人在做授權決定時讀到的是舊的描述</strong>。修法除了改文字，還加了一道守則把它釘住；而寫那道守則時又踩到一次假綠——第一版對整個檔案做字串比對，結果被同檔一段<strong>完全無關</strong>的文字滿足，反向測把目標字串拿掉它照樣通過。範圍沒鎖，等於沒測。</p>
+</div>
+</section>
+
+<!-- ═══════════════ -->
+<section id="honesty">
+<div class="section-number">SECTION 10</div>
+<h2>誠實邊界</h2>
+
+<p>沿襲前篇慣例，這是本篇最重要的一節。這次要認的兩條，都是<strong>前幾篇自己寫錯的東西</strong>。</p>
+
+<h3>一、《演化 III》宣稱的「0 斷鏈」，在寫下的那一天就不成立</h3>
+
+<p>前篇的健康面寫著：熱層索引連結、細節索引、以及數百次的內部連結<strong>全部 0 斷鏈</strong>。</p>
+
+<p>事實是：當時的斷鏈檢查<strong>只驗一種連結語法</strong>，另一種語法的目標從來沒有被機器驗證過。8 月底第一次補上這個檢查，第一次跑就紅了三條。其中兩條，是<strong>《演化 II》與《演化 III》自己在 repo 內的伴生檔</strong>——它們指向前一篇時用的是中文標題而不是檔名，從寫下的那天起就是斷的，各壞了約 57 天與 49 天。</p>
+
+<p>這條錯誤的性質，正好是這個系統自己在 7 月底才建檔的一條教訓：<strong>「沒找到」不等於「不存在」，負面結論必須附上檢查範圍</strong>。當時的體檢框架只涵蓋一種語法，於是「沒找到斷鏈」被寫成了「0 斷鏈」。</p>
+
+<h3>二、「語意漂移靠人工策展＋季度體檢」——這條分工線畫錯了</h3>
+
+<p>前篇把「機器只治機械漂移、語意漂移交給人工策展與季度盤點」標成當時最重要的誠實邊界，並排定了下一次盤點的時間。</p>
+
+<p>SECTION 04 的數字推翻了這個分工的<strong>可行性</strong>：如果一條教訓寫下來之後平均 26 天就會被第一次違反，而且從來不是機器發現的，那麼「季度盤點」的間隔比失效週期長了三倍。</p>
+
+<p>需要更正的不是「lint 抓不到語意漂移」——那句仍然對。需要更正的是<strong>結論</strong>：不能因為機器抓不到，就把它交給一個頻率遠低於失效速度的人工流程。正確的推論是把可機械化的部分往執行路徑搬，並且接受剩下的部分<strong>目前沒有解</strong>，而不是假裝季度盤點能接住。</p>
+
+<h3>三、本篇自己的兩個弱點</h3>
+
+<ul>
+<li>有一支檢查工具，邏輯與測試都齊備，但<strong>沒有任何自動觸發點</strong>——它只有在人記得時才會跑。這正是 SECTION 07 第 3 項那種失效的溫床。</li>
+<li>某道 gate 在本次執行時掃描了零個目標卻回報通過。同一個 repo 的另一支檢查對同型問題有分母非空斷言，<strong>這一支沒有</strong>。</li>
+</ul>
+
+<p>兩條都不是「還沒做完」，是<strong>已經知道會出事、但還沒排進去</strong>。寫在這裡以免它們變成下一篇的事故。</p>
+</section>
+
+<!-- ═══════════════ -->
+<section id="compare">
+<div class="section-number">SECTION 11</div>
+<h2>07/10 vs 08/31 對照</h2>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>面向</th><th>07/10（演化 III）</th><th>08/31（本篇）</th></tr></thead>
+<tbody>
+<tr><td>核心問題</td><td>內容會不會慢慢失真</td><td>規則會不會在動手那一刻被執行</td></tr>
+<tr><td>自動化 gate</td><td>3 道</td><td><strong>12 道</strong>，並分出「執行路徑上／不在執行路徑上」兩類</td></tr>
+<tr><td>同步</td><td>刪除後寫入</td><td>staging + 雜湊驗證 + 原子切換 + 備份自癒 + 鎖</td></tr>
+<tr><td>守門時機</td><td>動作之後檢查結果</td><td><strong>動作之前</strong>；超限時一個檔都不碰</td></tr>
+<tr><td>歷史層</td><td>檔案層兩道 gate，條目層零檢查</td><td>條目層檢查器上線；新舊條目分流告警</td></tr>
+<tr><td>失效的可觀察性</td><td>失敗會靜默（輸出被導進黑洞、退出碼失真）</td><td>狀態行固定回報；「沒有執行」也是事實</td></tr>
+<tr><td>驗收標準</td><td>完工＝檢查點過</td><td><strong>先讓它紅</strong>——每道 gate 都要先亮過紅燈才算數</td></tr>
+<tr><td>知識來源</td><td>內查 + 外部生態對標</td><td><strong>自己的失敗紀錄</strong>——本篇幾乎所有結論都來自事後回溯</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- ═══════════════ -->
+<section id="philosophy">
+<div class="section-number">SECTION 12</div>
+<h2>設計哲學：前篇 14 條全數存活，新增 3 條</h2>
+
+<p>前三篇累積的 14 條原則，52 天內<strong>沒有任何一條被推翻</strong>。其中兩條被強化的方式特別值得記：</p>
+
+<ul>
+<li><strong>Fail-closed by default</strong>——本期最強的正面證據。超限時的實測輸出就是「未觸碰任何目錄、全部保留舊版」，而且門檻只准往下調。</li>
+<li><strong>點名綁定約束、追蹤它的遷移</strong>——存活的方式是<strong>它自己被違反後被證明是對的</strong>。約束在 52 天內移動了兩次：先是守門盯錯了對象（假設某個範圍最大，實測是另一個），後來發現真正的大宗根本不在被嚴格監控的那一層——管得最嚴的是最便宜的部分，沒人管的才是每場對話的主要負擔。兩次都是被事後量測抓到的，不是被規則預防的。</li>
+</ul>
+
+<p>新增三條：</p>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>#</th><th>原則</th><th>來源</th></tr></thead>
+<tbody>
+<tr><td>15</td><td><strong>知識與執行是兩個問題。</strong>把教訓寫成記憶解決的是「知道該做什麼」；「在該做的那一刻真的做」需要另一套機制。用前者的工具解後者的問題，會得到一條約 26 天就失效的曲線。</td><td>SECTION 04</td></tr>
+<tr><td>16</td><td><strong>enforcement 的強度由「後果是否可逆」決定，不由摩擦感決定。</strong>可逆的錯誤可以只警告；不可逆的必須擋，即使每次都卡一下。</td><td>SECTION 05</td></tr>
+<tr><td>17</td><td><strong>檢查必須先證明自己有在檢查。</strong>任何「沒發現問題」的結論，都要附帶分母非空的證據；任何守則上線前，都要先讓它紅一次。</td><td>SECTION 07、08、09、10</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- ═══════════════ -->
+<section id="open">
+<div class="section-number">SECTION 13</div>
+<h2>Open threads</h2>
+
+<p>2026-08-31 時點仍然開著的：</p>
+
+<ul>
+<li><strong>語意漂移沒有機器解。</strong>SECTION 10 已說明季度盤點接不住，但目前也沒有替代方案。這是本系統最大的已知缺口。</li>
+<li><strong>有工具沒有觸發點。</strong>至少一支檢查工具仍然只在人記得時才跑。</li>
+<li><strong>分母非空斷言尚未覆蓋所有 gate。</strong>已知至少一道會在掃描零個目標時報綠。</li>
+<li><strong>另一端的編譯產物逼近警戒線。</strong>約束又要遷移一次了。</li>
+<li><strong>Non-Goal 2 仍然成立。</strong>盲測 7/7 命中，引入向量檢索的觸發條件未達成。這條每次都要重新量測，不能因為「大家都在做」而放寬。</li>
+</ul>
+</section>
+
+<!-- ═══════════════ -->
+<section id="conclusion">
+<div class="section-number">SECTION 14</div>
+<h2>結論</h2>
+
+<p>07/02 之後，這套系統知道自己<strong>有沒有壞</strong>；07/10 之後，它知道自己<strong>有沒有在慢慢變得不真</strong>；08/31 之後，它開始面對一個更難的問題——<strong>它知道的事，在該用的時候到底在不在場。</strong></p>
+
+<p>52 天、934 個 commit，最有價值的產出不是那 12 道 gate，是一組讓人不舒服的數字：教訓寫下來之後大約 26 天就會被第一次違反，而且沒有一次是機器發現的。這個數字沒有被藏起來當成失敗，而是被當成了設計輸入。</p>
+
+<p>而最能說明這套系統成熟度的，同樣不是任何單項指標，是兩個瞬間：<strong>新補上的檢查第一次跑，就抓到了前兩篇文章自己壞掉的連結</strong>；以及<strong>為了防止文案說謊而寫的守則，本身第一版就是假綠，被自己的反向測抓出來</strong>。</p>
+
+<div class="pullquote">原則未變：沒有資料庫、沒有 RAG、沒有常駐服務、沒有新記憶引擎——只有 Git ＋ Markdown ＋ health ＋ baton。改變的是它們現在站在動作與結果之間，而不是站在對話的開頭。</div>
+
+<p style="color: var(--muted); font-size: 0.875rem; margin-top: 2rem;">成文：2026-08-31 家裡 Claude；資料來源：claude-memory 2026-07-11 至 2026-08-31 的 934 個 commit、各 gate 的實際輸出、以及期間的事故回溯紀錄。文中所有示意檔名皆為佔位符。承接 <a href="memory-infra-evolution-2026-07-10.html">演化進程 III</a>。</p>
+</section>
+
+</main>
+</div>
+</div>
+</body>
+</html>
