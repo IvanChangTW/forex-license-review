@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ryan 2026年9月《大家說英語》網頁模擬測驗</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--text:#1f2937;--muted:#6b7280;--accent:#315efb;--ok:#138a4b;--bad:#c0392b;--line:#e5e7eb;--soft:#eef2ff}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Noto Sans TC",Arial,sans-serif;background:var(--bg);color:var(--text)}
+.container{max-width:860px;margin:auto;padding:18px}
+.hero{background:linear-gradient(135deg,#253da1,#315efb);color:white;padding:28px 24px;border-radius:22px;box-shadow:0 10px 28px rgba(49,94,251,.18)}
+.hero h1{font-size:28px;margin:0 0 8px}.hero p{margin:5px 0;opacity:.94;line-height:1.6}
+.controls,.card{background:var(--card);border-radius:18px;padding:18px;margin-top:16px;box-shadow:0 4px 16px rgba(17,24,39,.06)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+button{border:0;border-radius:12px;padding:11px 16px;font-size:15px;font-weight:700;cursor:pointer}
+.primary{background:var(--accent);color:white}.secondary{background:#eef2f7;color:#253041}.ghost{background:white;border:1px solid var(--line);color:#374151}
+.chip{padding:8px 12px;border-radius:999px;background:#f3f4f6;border:1px solid var(--line);cursor:pointer;font-size:14px}
+.chip.active{background:var(--soft);border-color:#b8c4ff;color:#1f3bb3;font-weight:700}
+.progress-wrap{margin-top:14px}.progress{height:10px;background:#e8ebf2;border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:var(--accent);transition:.25s}
+.meta{display:flex;justify-content:space-between;gap:12px;margin-top:7px;color:var(--muted);font-size:14px}
+.qhead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.badge{font-size:12px;font-weight:800;color:#315efb;background:#eef2ff;border-radius:999px;padding:5px 9px;white-space:nowrap}
+.unit{font-size:13px;color:var(--muted);margin-top:4px}.passage{background:#fafafa;border-left:4px solid #cbd5e1;padding:13px 14px;border-radius:8px;margin:14px 0;line-height:1.65}
+.question{font-size:20px;font-weight:800;line-height:1.5;margin:16px 0}
+.option{display:block;width:100%;text-align:left;background:white;border:1.5px solid var(--line);padding:13px 14px;margin:9px 0;border-radius:13px;font-weight:600}
+.option:hover{border-color:#a8b5ff;background:#fafbff}.option.selected{border-color:#315efb;background:#eef2ff}.option.correct{border-color:#2da364;background:#edf9f2;color:#0f6a39}.option.wrong{border-color:#d35454;background:#fff1f1;color:#9f2828}
+.feedback{margin-top:14px;padding:14px;border-radius:12px;line-height:1.6;display:none}.feedback.ok{display:block;background:#edf9f2;color:#0f6a39}.feedback.bad{display:block;background:#fff1f1;color:#9f2828}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}.scorebox{text-align:center;padding:10px}.scorebig{font-size:54px;font-weight:900;color:#315efb}.small{color:var(--muted);font-size:14px;line-height:1.6}.hidden{display:none!important}
+.review-item{border-top:1px solid var(--line);padding:14px 0}.review-item:first-child{border-top:0}
+.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}.kpi div{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}.kpi strong{display:block;font-size:22px}
+.toggle{display:flex;background:#edf0f5;border-radius:12px;padding:4px}.toggle button{background:transparent;color:#4b5563;padding:8px 12px}.toggle button.active{background:white;color:#1f2937;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+@media (max-width:600px){.hero h1{font-size:23px}.question{font-size:18px}.container{padding:12px}.qhead{flex-direction:column}.kpi{grid-template-columns:1fr}button{font-size:14px}}
+</style>
+</head>
+<body>
+<div class="container">
+  <section class="hero">
+    <h1>Ryan 2026年9月《大家說英語》模擬測驗</h1>
+    <p>範圍：9/1–9/30｜單字＋文法＋閱讀</p>
+    <p>可選「練習模式」立即看答案與中文解析，或「模擬考模式」最後一次檢討。</p>
+  </section>
+
+  <section class="controls">
+    <div class="row" style="justify-content:space-between">
+      <div class="toggle">
+        <button id="practiceBtn" class="active" onclick="setMode('practice')">練習模式</button>
+        <button id="examBtn" onclick="setMode('exam')">模擬考模式</button>
+      </div>
+      <button class="ghost" onclick="resetQuiz()">重新開始</button>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <span class="chip active" data-cat="全部" onclick="setCat('全部')">全部</span>
+      <span class="chip" data-cat="單字" onclick="setCat('單字')">單字</span>
+      <span class="chip" data-cat="文法" onclick="setCat('文法')">文法</span>
+      <span class="chip" data-cat="閱讀" onclick="setCat('閱讀')">閱讀</span>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress"><div class="bar" id="bar"></div></div>
+      <div class="meta"><span id="progressText">第 1 題</span><span id="scoreText">目前答對 0 題</span></div>
+    </div>
+  </section>
+
+  <section class="card" id="quizCard">
+    <div class="qhead">
+      <div><span class="badge" id="catBadge"></span><div class="unit" id="unit"></div></div>
+      <div class="small" id="qid"></div>
+    </div>
+    <div id="passage" class="passage hidden"></div>
+    <div class="question" id="question"></div>
+    <div id="options"></div>
+    <div id="feedback" class="feedback"></div>
+    <div class="nav">
+      <button class="secondary" onclick="prevQ()">上一題</button>
+      <button class="primary" id="nextBtn" onclick="nextQ()">下一題</button>
+    </div>
+  </section>
+
+  <section class="card hidden" id="resultCard">
+    <div class="scorebox">
+      <div class="small">測驗完成</div>
+      <div class="scorebig" id="finalScore"></div>
+      <div id="finalMsg" style="font-size:18px;font-weight:800"></div>
+    </div>
+    <div class="kpi">
+      <div><strong id="vocabScore">0/0</strong><span class="small">單字</span></div>
+      <div><strong id="grammarScore">0/0</strong><span class="small">文法</span></div>
+      <div><strong id="readingScore">0/0</strong><span class="small">閱讀</span></div>
+    </div>
+    <div class="row" style="justify-content:center">
+      <button class="primary" onclick="reviewWrong()">只看錯題</button>
+      <button class="secondary" onclick="reviewAll()">查看全部解析</button>
+      <button class="ghost" onclick="resetQuiz()">再測一次</button>
+    </div>
+    <div id="review"></div>
+  </section>
+</div>
+
+<script>
+const allQuestions = [{"id": 1, "cat": "單字", "unit": "Who’s Paying? 9/1–2", "q": "Ken and Milo decided to ______ the bill, so each person paid part of the cost.", "opts": ["split", "invite", "owe", "choose"], "ans": 0, "exp": "split the bill = 分攤帳單。"}, {"id": 2, "cat": "單字", "unit": "Who’s Paying? 9/1–2", "q": "How much do I ______ you?", "opts": ["cost", "owe", "treat", "choose"], "ans": 1, "exp": "owe someone money = 欠某人錢。"}, {"id": 3, "cat": "單字", "unit": "Seeing Seoul 9/3–4", "q": "The dessert cafés in Seoul have ______ sweets and drinks.", "opts": ["unique", "local", "dead", "single"], "ans": 0, "exp": "unique = 獨特的。"}, {"id": 4, "cat": "單字", "unit": "Time for Lunch! 9/7–8", "q": "Food that is not eaten and is saved for later is called ______.", "opts": ["protein", "leftovers", "breakfast", "fruit"], "ans": 1, "exp": "leftovers = 剩菜、吃剩的食物。"}, {"id": 5, "cat": "單字", "unit": "Don’t Waste Food! 9/10–11", "q": "Buying ______ fruits and vegetables can reduce how far food needs to travel.", "opts": ["local", "wise", "dead", "famous"], "ans": 0, "exp": "local = 本地的、當地的。"}, {"id": 6, "cat": "單字", "unit": "Who’s in the Play? 9/14", "q": "A person whose job is to protect a place or person is a ______.", "opts": ["servant", "guard", "leader", "server"], "ans": 1, "exp": "guard = 守衛、警衛。"}, {"id": 7, "cat": "單字", "unit": "The Fisherman and the Genie 9/15–16", "q": "The fisherman found a jar in his fishing ______.", "opts": ["net", "mall", "plate", "court"], "ans": 0, "exp": "net = 網。"}, {"id": 8, "cat": "單字", "unit": "Confucius 9/17–18", "q": "Confucius believed a good ______ should be fair and set a good example.", "opts": ["leader", "player", "server", "star"], "ans": 0, "exp": "leader = 領導者。"}, {"id": 9, "cat": "單字", "unit": "Barbecue Around the World 9/21–22", "q": "People often cook barbecue meat over wood or ______.", "opts": ["charcoal", "fuel", "smoke", "rice"], "ans": 0, "exp": "charcoal = 木炭。"}, {"id": 10, "cat": "單字", "unit": "Let’s Play Volleyball! 9/23–24", "q": "To try hard to do something is to make an ______.", "opts": ["effort", "attack", "option", "influence"], "ans": 0, "exp": "make an effort = 努力、盡力。"}, {"id": 11, "cat": "單字", "unit": "Where Is It? 9/29–30", "q": "If you put something down and stop for two seconds, you ______ for a moment.", "opts": ["pause", "return", "notice", "collect"], "ans": 0, "exp": "pause = 暫停。"}, {"id": 12, "cat": "文法", "unit": "Who’s Paying? 9/1–2", "q": "Dad paid ______ dinner last night.", "opts": ["at", "for", "to", "with"], "ans": 1, "exp": "pay for + 東西 = 為某物付錢。"}, {"id": 13, "cat": "文法", "unit": "Who’s Paying? 9/1–2", "q": "Let me ______ for lunch.", "opts": ["pay", "to pay", "paying", "paid"], "ans": 0, "exp": "let + 人 + 原形動詞。"}, {"id": 14, "cat": "文法", "unit": "Time for Lunch! 9/7–8", "q": "You ______ heat the bento. You can eat it cold.", "opts": ["must not", "don’t have to", "can’t", "shouldn’t"], "ans": 1, "exp": "don’t have to = 不必、沒有必要。"}, {"id": 15, "cat": "文法", "unit": "Time for Lunch! 9/7–8", "q": "You might ______ this lunch box.", "opts": ["likes", "liked", "like", "to like"], "ans": 2, "exp": "might 後接原形動詞。"}, {"id": 16, "cat": "文法", "unit": "Seeing Seoul 9/3–4", "q": "These desserts look ______.", "opts": ["delicious", "deliciously", "deliciousness", "to delicious"], "ans": 0, "exp": "look 作連綴動詞時後接形容詞。"}, {"id": 17, "cat": "文法", "unit": "Seeing Seoul 9/3–4", "q": "This café is perfect ______ taking photos.", "opts": ["at", "with", "for", "to"], "ans": 2, "exp": "perfect for + 名詞 / V-ing。"}, {"id": 18, "cat": "文法", "unit": "Do I Know You? 9/9", "q": "My family ______ live in that apartment, but we moved away.", "opts": ["used to", "uses to", "is used", "use to"], "ans": 0, "exp": "used to + 原形動詞 = 過去曾經／以前常常。"}, {"id": 19, "cat": "文法", "unit": "Don’t Waste Food! 9/10–11", "q": "Emily is concerned ______ food waste.", "opts": ["to", "about", "at", "for"], "ans": 1, "exp": "be concerned about = 擔心、關心……"}, {"id": 20, "cat": "文法", "unit": "Who’s in the Play? 9/14", "q": "______ of them are servants in the play.", "opts": ["Both", "Every", "Each", "Either"], "ans": 0, "exp": "both of them = 他們兩個都……"}, {"id": 21, "cat": "文法", "unit": "The Fisherman and the Genie 9/15–16", "q": "The fisherman was ______ scared that he could not move.", "opts": ["such", "so", "too much", "many"], "ans": 1, "exp": "so + 形容詞。"}, {"id": 22, "cat": "文法", "unit": "Help Others Through Step 30 9/25", "q": "Step 30 helps people ______ safer lives.", "opts": ["live", "living", "lives", "to living"], "ans": 0, "exp": "help + 人 + 原形動詞。"}, {"id": 23, "cat": "文法", "unit": "Where Is It? 9/29–30", "q": "The average person spends a lot of time ______ for lost things.", "opts": ["look", "looking", "to look", "looked"], "ans": 1, "exp": "spend + 時間 + V-ing。"}, {"id": 24, "cat": "閱讀", "unit": "Who’s Paying? 9/1–2", "passage": "Kevin invited Amy to lunch because he wanted to thank her. After lunch, Kevin said, “Lunch is on me.” Amy suggested splitting the bill, but Kevin wanted to treat her.", "q": "What does “Lunch is on me” mean?", "opts": ["Kevin will cook lunch.", "Kevin will pay for lunch.", "Amy will pay for lunch.", "They will not eat lunch."], "ans": 1, "exp": "“Lunch is on me.” = 午餐我請客。"}, {"id": 25, "cat": "閱讀", "unit": "Seeing Seoul 9/3–4", "passage": "Betty tells Ken about Gangnam in Seoul. Visitors can see K-pop stars on K-Star Road and visit dessert cafés with unique sweets and drinks.", "q": "Why might a K-pop fan enjoy Gangnam?", "opts": ["It has famous K-pop places.", "It has fishing boats.", "It has clean-water wells.", "It has a volleyball court."], "ans": 0, "exp": "Gangnam 單元提到 K-Star Road 等 K-pop 景點。"}, {"id": 26, "cat": "閱讀", "unit": "Time for Lunch! 9/7–8", "passage": "Mia usually brings a sandwich, fruit and cookies for lunch. Her friend Yuki brings a bento with rice, vegetables and fish. Yuki says she does not have to heat it.", "q": "Which statement is true?", "opts": ["Mia always eats hot lunch.", "Yuki’s bento has rice, vegetables and fish.", "Yuki must heat the bento.", "Mia never brings fruit."], "ans": 1, "exp": "文章明確說 Yuki 的便當裡有 rice, vegetables and fish。"}, {"id": 27, "cat": "閱讀", "unit": "Do I Know You? 9/9", "passage": "Tina meets Matt, who says their families used to live in apartments near each other. Tina does not remember him at first, but Matt remembers her family.", "q": "Why is Tina uncomfortable?", "opts": ["She cannot remember Matt.", "She does not like cookies.", "She is late for school.", "She lost her wallet."], "ans": 0, "exp": "Tina 一開始記不起 Matt，因此感到不自在。"}, {"id": 28, "cat": "閱讀", "unit": "Don’t Waste Food! 9/10–11", "passage": "Food waste hurts the environment. The lesson suggests planning meals, storing food carefully, buying local fruits and vegetables, and choosing ugly fruits and vegetables.", "q": "Which action can help reduce food waste?", "opts": ["Throw away ugly fruit.", "Buy more than you need.", "Plan meals before shopping.", "Waste leftovers."], "ans": 2, "exp": "課文建議購物前規劃餐點，避免浪費。"}, {"id": 29, "cat": "閱讀", "unit": "The Fisherman and the Genie 9/15–16", "passage": "A fisherman finds a jar. A genie comes out and says he plans to kill the fisherman. The fisherman stays calm and tricks the genie into proving he can fit back inside the jar.", "q": "How does the fisherman save himself?", "opts": ["He runs away.", "He fights the genie.", "He tricks the genie into going back into the jar.", "He gives the genie money."], "ans": 2, "exp": "漁夫靠機智讓 genie 重新進入 jar。"}, {"id": 30, "cat": "閱讀", "unit": "Confucius 9/17–18", "passage": "Confucius loved learning. His mother taught him to read, write and love music. Later, he became a teacher and believed leaders should be fair and set a good example.", "q": "What did Confucius believe about leaders?", "opts": ["They should be fair.", "They should be rich.", "They should never teach.", "They should avoid people."], "ans": 0, "exp": "課文指出 leaders should be fair and set a good example。"}, {"id": 31, "cat": "閱讀", "unit": "Barbecue Around the World 9/21–22", "passage": "People around the world enjoy barbecue. In the United States, people grill burgers, hot dogs and other meats. In Korea, families grill meat at the table. Barbecue brings people together.", "q": "What is one main idea of the passage?", "opts": ["Barbecue is only popular in one country.", "People in different countries enjoy barbecue in different ways.", "Everyone cooks the same food.", "Barbecue should only be eaten indoors."], "ans": 1, "exp": "文章比較不同國家的烤肉方式。"}, {"id": 32, "cat": "閱讀", "unit": "Let’s Play Volleyball! 9/23–24", "passage": "Volleyball is played on a court with six players on each team. Players hit the ball over the net. The team works together by hitting, setting and spiking the ball.", "q": "Which skill is mentioned in the passage?", "opts": ["Spiking", "Swimming", "Cycling", "Skiing"], "ans": 0, "exp": "文章提到 hitting, setting and spiking。"}, {"id": 33, "cat": "閱讀", "unit": "Help Others Through Step 30 9/25", "passage": "Step 30 collects used shoes and sends shoes, clothes and other supplies to people in Africa. It also helps villages get clean water by digging wells.", "q": "Why are wells important in the passage?", "opts": ["They help villages get clean water.", "They are used for volleyball.", "They store clothes.", "They are places to barbecue."], "ans": 0, "exp": "挖井是為了取得 clean water。"}, {"id": 34, "cat": "閱讀", "unit": "I Have Another Surprise! 9/28", "passage": "Mia gives Ms. Jones chocolates for Teacher’s Day. Ella gives Mr. Smith flowers. Later, the two teachers meet in the hallway.", "q": "What does Ella give Mr. Smith?", "opts": ["A book", "Flowers", "A wallet", "A lunch box"], "ans": 1, "exp": "漫畫中 Ella 把 flowers 送給 Mr. Smith。"}, {"id": 35, "cat": "閱讀", "unit": "Where Is It? 9/29–30", "passage": "One tip for remembering where you put things is to say the location aloud. Another is to pause for two seconds after setting something down. You can also set reminders on your phone.", "q": "What is NOT one of the tips in the passage?", "opts": ["Say the location aloud.", "Pause after putting something down.", "Set a reminder on your phone.", "Hide the item in a new place every day."], "ans": 3, "exp": "課文沒有建議每天換位置藏東西。"}];
+let mode='practice', category='全部', current=0, filtered=[...allQuestions], answers={};
+
+function setMode(m){
+  mode=m;
+  document.getElementById('practiceBtn').classList.toggle('active',m==='practice');
+  document.getElementById('examBtn').classList.toggle('active',m==='exam');
+  render();
+}
+function setCat(c){
+  category=c;
+  document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x.dataset.cat===c));
+  filtered=c==='全部'?[...allQuestions]:allQuestions.filter(q=>q.cat===c);
+  current=0; render();
+}
+function render(){
+  const q=filtered[current];
+  document.getElementById('catBadge').textContent=q.cat;
+  document.getElementById('unit').textContent=q.unit;
+  document.getElementById('qid').textContent=`第 ${current+1} / ${filtered.length} 題`;
+  document.getElementById('question').textContent=q.q;
+  const p=document.getElementById('passage');
+  if(q.passage){p.textContent=q.passage;p.classList.remove('hidden')}else{p.classList.add('hidden');p.textContent=''}
+  const opts=document.getElementById('options');opts.innerHTML='';
+  const saved=answers[q.id];
+  q.opts.forEach((o,i)=>{
+    const b=document.createElement('button');b.className='option';b.textContent=String.fromCharCode(65+i)+'. '+o;
+    if(saved!==undefined){
+      if(saved===i)b.classList.add('selected');
+      if(mode==='practice'){
+        if(i===q.ans)b.classList.add('correct');
+        if(saved===i&&i!==q.ans)b.classList.add('wrong');
+      }
+    }
+    b.onclick=()=>answer(i);opts.appendChild(b);
+  });
+  const fb=document.getElementById('feedback');
+  if(mode==='practice'&&saved!==undefined){
+    fb.className='feedback '+(saved===q.ans?'ok':'bad');
+    fb.innerHTML=(saved===q.ans?'<b>答對了。</b> ':`<b>正確答案：${String.fromCharCode(65+q.ans)}. ${q.opts[q.ans]}</b><br>`)+q.exp;
+  }else{fb.className='feedback';fb.innerHTML=''}
+  document.getElementById('nextBtn').textContent=current===filtered.length-1?'完成測驗':'下一題';
+  updateProgress();
+}
+function answer(i){answers[filtered[current].id]=i;save();render()}
+function nextQ(){if(current<filtered.length-1){current++;render();window.scrollTo({top:0,behavior:'smooth'})}else finish()}
+function prevQ(){if(current>0){current--;render()}}
+function updateProgress(){
+  const answered=filtered.filter(q=>answers[q.id]!==undefined).length;
+  const correct=filtered.filter(q=>answers[q.id]===q.ans).length;
+  document.getElementById('bar').style.width=`${Math.round(answered/filtered.length*100)}%`;
+  document.getElementById('progressText').textContent=`已作答 ${answered} / ${filtered.length}`;
+  document.getElementById('scoreText').textContent=mode==='practice'?`目前答對 ${correct} 題`:'模擬考模式：完成後公布答案';
+}
+function finish(){
+  const qs=filtered, correct=qs.filter(q=>answers[q.id]===q.ans).length, pct=Math.round(correct/qs.length*100);
+  document.getElementById('quizCard').classList.add('hidden');document.getElementById('resultCard').classList.remove('hidden');
+  document.getElementById('finalScore').textContent=`${pct} 分`;
+  document.getElementById('finalMsg').textContent=pct>=90?'很穩！可以進入錯題精修。':pct>=75?'基礎不錯，建議把錯題再做一次。':pct>=60?'有基本概念，文法與閱讀還需要補強。':'先回頭複習重點，再做第二次會更有效。';
+  ['單字','文法','閱讀'].forEach(cat=>{
+    const list=qs.filter(q=>q.cat===cat), c=list.filter(q=>answers[q.id]===q.ans).length;
+    document.getElementById(cat==='單字'?'vocabScore':cat==='文法'?'grammarScore':'readingScore').textContent=`${c}/${list.length}`;
+  });
+  document.getElementById('review').innerHTML='';window.scrollTo({top:0,behavior:'smooth'});
+}
+function buildReview(list){
+  const r=document.getElementById('review');r.innerHTML='';
+  if(!list.length){r.innerHTML='<p class="small" style="text-align:center;margin-top:18px">沒有錯題，太棒了！</p>';return}
+  list.forEach(q=>{
+    const u=answers[q.id], div=document.createElement('div');div.className='review-item';
+    const userText=u===undefined?'未作答':`${String.fromCharCode(65+u)}. ${q.opts[u]}`;
+    div.innerHTML=`<div><span class="badge">${q.cat}</span> <span class="small">${q.unit}</span></div>
+    <div style="font-weight:800;margin:8px 0">${q.q}</div>
+    <div class="small">你的答案：${userText}</div>
+    <div style="color:#0f6a39;font-weight:800;margin-top:4px">正確答案：${String.fromCharCode(65+q.ans)}. ${q.opts[q.ans]}</div>
+    <div style="margin-top:5px;line-height:1.6">${q.exp}</div>`;r.appendChild(div);
+  });
+}
+function reviewWrong(){buildReview(filtered.filter(q=>answers[q.id]!==q.ans))}
+function reviewAll(){buildReview(filtered)}
+function resetQuiz(){
+  if(!confirm('確定要清除本次作答並重新開始嗎？'))return;
+  answers={};current=0;localStorage.removeItem('ryan_ltse_sep2026');
+  document.getElementById('resultCard').classList.add('hidden');document.getElementById('quizCard').classList.remove('hidden');render();
+}
+function save(){localStorage.setItem('ryan_ltse_sep2026',JSON.stringify(answers))}
+try{const saved=localStorage.getItem('ryan_ltse_sep2026');if(saved)answers=JSON.parse(saved)}catch(e){}
+render();
+</script>
+</body>
+</html>
